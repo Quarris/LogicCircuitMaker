@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "Q:\\Programming\\CS\\LCM\\LCM\\LCM.csproj",
-    "projectName": "LCM",
-    "projectPath": "Q:\\Programming\\CS\\LCM\\LCM\\LCM.csproj",
-    "outputPath": "Q:\\Programming\\CS\\LCM\\LCM\\obj\\",
+    "projectUniqueName": "Q:\\Programming\\CS\\LCM\\LCM.Test\\LCM.Test.csproj",
+    "projectName": "LCM.Test",
+    "projectPath": "Q:\\Programming\\CS\\LCM\\LCM.Test\\LCM.Test.csproj",
+    "outputPath": "Q:\\Programming\\CS\\LCM\\LCM.Test\\obj\\",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
       "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -30,6 +30,10 @@
   "frameworks": {
     "netcoreapp3.0": {
       "dependencies": {
+        "Microsoft.NET.Test.Sdk": {
+          "target": "Package",
+          "version": "[15.9.0, )"
+        },
         "Microsoft.NETCore.App": {
           "include": "None",
           "suppressParent": "All",
@@ -37,13 +41,13 @@
           "version": "[3.0.0-preview7-27912-14, )",
           "autoReferenced": true
         },
-        "MonoGame.Content.Builder": {
+        "NUnit3TestAdapter": {
           "target": "Package",
-          "version": "[3.7.0.4, )"
+          "version": "[3.12.0, )"
         },
-        "MonoGame.Framework.DesktopGL.Core": {
+        "nunit": {
           "target": "Package",
-          "version": "[3.7.0.7, )"
+          "version": "[3.11.0, )"
         }
       },
       "imports": [
