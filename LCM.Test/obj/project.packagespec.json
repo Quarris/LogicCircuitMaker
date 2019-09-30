@@ -10,14 +10,14 @@
       "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
     ],
     "originalTargetFrameworks": [
-      "netcoreapp3.0"
+      "net462"
     ],
     "sources": {
       "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
       "https://api.nuget.org/v3/index.json": {}
     },
     "frameworks": {
-      "netcoreapp3.0": {
+      "net462": {
         "projectReferences": {}
       }
     },
@@ -28,18 +28,19 @@
     }
   },
   "frameworks": {
-    "netcoreapp3.0": {
+    "net462": {
       "dependencies": {
         "Microsoft.NET.Test.Sdk": {
           "target": "Package",
           "version": "[15.9.0, )"
         },
-        "Microsoft.NETCore.App": {
-          "include": "None",
-          "suppressParent": "All",
+        "MonoGame.Content.Builder": {
           "target": "Package",
-          "version": "[3.0.0-preview7-27912-14, )",
-          "autoReferenced": true
+          "version": "[3.7.0.9, )"
+        },
+        "MonoGame.Framework.DesktopGL": {
+          "target": "Package",
+          "version": "[3.7.1.189, )"
         },
         "NUnit3TestAdapter": {
           "target": "Package",
@@ -49,17 +50,7 @@
           "target": "Package",
           "version": "[3.11.0, )"
         }
-      },
-      "imports": [
-        "net461",
-        "net462",
-        "net47",
-        "net471",
-        "net472",
-        "net48"
-      ],
-      "assetTargetFallback": true,
-      "warn": true
+      }
     }
   }
 }
