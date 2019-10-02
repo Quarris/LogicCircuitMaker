@@ -34,6 +34,18 @@
           "build/MonoGame.Content.Builder.targets": {}
         }
       },
+      "MonoGame.Extended/3.7.0": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.2"
+        },
+        "compile": {
+          "lib/netstandard2.0/MonoGame.Extended.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/MonoGame.Extended.dll": {}
+        }
+      },
       "MonoGame.Framework.DesktopGL/3.7.1.189": {
         "type": "package",
         "compile": {
@@ -44,6 +56,15 @@
         },
         "build": {
           "build/MonoGame.Framework.DesktopGL.targets": {}
+        }
+      },
+      "Newtonsoft.Json/11.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
       "NUnit/3.11.0": {
@@ -182,6 +203,18 @@
         "tasks/netstandard2.0/MonoGame.Content.Builder.dll"
       ]
     },
+    "MonoGame.Extended/3.7.0": {
+      "sha512": "Qmf/T7yw4SZOgsir2/oPDR0jnbqRZUkBVjWgMTyDAk9hNF16VgM443Igy1X7XVfmDH4mmYifYdvKZpyBDeGO8Q==",
+      "type": "package",
+      "path": "monogame.extended/3.7.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/MonoGame.Extended.dll",
+        "monogame.extended.3.7.0.nupkg.sha512",
+        "monogame.extended.nuspec"
+      ]
+    },
     "MonoGame.Framework.DesktopGL/3.7.1.189": {
       "sha512": "7e6CvCZAAglBIPDA+lTwdaRTv0EARPl4s7Ai8gkn7ximiFyRODrpyciSxENUgCowap4y5d5B3Then7k/6UbHGw==",
       "type": "package",
@@ -205,6 +238,36 @@
         "lib/net45/MonoGame.Framework.xml",
         "monogame.framework.desktopgl.3.7.1.189.nupkg.sha512",
         "monogame.framework.desktopgl.nuspec"
+      ]
+    },
+    "Newtonsoft.Json/11.0.2": {
+      "sha512": "IvJe1pj7JHEsP8B8J8DwlMEx8UInrs/x+9oVY+oCD13jpLu4JbJU2WCIsMRn5C4yW9+DgkaO8uiVE5VHKjpmdQ==",
+      "type": "package",
+      "path": "newtonsoft.json/11.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "newtonsoft.json.11.0.2.nupkg.sha512",
+        "newtonsoft.json.nuspec"
       ]
     },
     "NUnit/3.11.0": {
@@ -267,6 +330,7 @@
     ".NETFramework,Version=v4.6.2": [
       "Microsoft.NET.Test.Sdk >= 15.9.0",
       "MonoGame.Content.Builder >= 3.7.0.9",
+      "MonoGame.Extended >= 3.7.0",
       "MonoGame.Framework.DesktopGL >= 3.7.1.189",
       "NUnit3TestAdapter >= 3.12.0",
       "nunit >= 3.11.0"
@@ -320,6 +384,10 @@
           "MonoGame.Content.Builder": {
             "target": "Package",
             "version": "[3.7.0.9, )"
+          },
+          "MonoGame.Extended": {
+            "target": "Package",
+            "version": "[3.7.0, )"
           },
           "MonoGame.Framework.DesktopGL": {
             "target": "Package",
