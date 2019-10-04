@@ -1,20 +1,24 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using LCM.Input;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace LCM {
     public class LCMGame : Game {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        public InputHandler InputHandler { get; }
 
         public LCMGame(){
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            this.graphics = new GraphicsDeviceManager(this);
+            this.Content.RootDirectory = "Content";
+            this.IsMouseVisible = true;
+            this.InputHandler = new InputHandler();
         }
 
         protected override void Initialize(){
-            // TODO: Add your initialization logic here
+            // TODO: Add your initialization logic here.
 
             base.Initialize();
         }
@@ -26,11 +30,10 @@ namespace LCM {
         }
 
         protected override void Update(GameTime gameTime){
+            this.InputHandler.Update();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
-            
 
             // TODO: Add your update logic here
 
