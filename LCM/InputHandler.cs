@@ -1,7 +1,6 @@
-using System;
 using Microsoft.Xna.Framework.Input;
 
-namespace LCM.Input {
+namespace LCM {
     public class InputHandler {
         
         // Fields defining previous and current keyboard states
@@ -15,6 +14,8 @@ namespace LCM.Input {
         // Getters for the keyboard and mouse states
         public KeyboardState KeyboardState => this.ckState;
         public MouseState MouseState => this.cmState;
+
+        public int ScrollWheelDelta => this.cmState.ScrollWheelValue - this.pmState.ScrollWheelValue;
 
         public void Update(){
             this.pkState = this.ckState;
