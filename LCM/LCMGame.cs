@@ -1,5 +1,4 @@
-﻿using System;
-using LCM.Extensions;
+﻿using LCM.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -20,7 +19,7 @@ namespace LCM {
             this.IsMouseVisible = true;
             this.InputHandler = new InputHandler();
             this.scale = 10;
-            this.level = new Level(new Size2(10, 10));
+            this.level = new Level(new Size2(10, 10), Vector2.Zero);
             this.robot = new Robot();
         }
 
