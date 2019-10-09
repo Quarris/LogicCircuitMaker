@@ -1,4 +1,5 @@
 ﻿using LCM.Extensions;
+using LCM.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,23 +10,21 @@ namespace LCM {
         private GraphicsDeviceManager graphics;
         private SpriteBatch sb;
         private float scale;
-        private Level level;
-        private Robot robot;
         public InputHandler InputHandler { get; }
+
+        public readonly GameState GameState;
 
         public LCMGame(){
             this.graphics = new GraphicsDeviceManager(this);
             this.Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
             this.InputHandler = new InputHandler();
-            this.scale = 10;
-            this.level = new Level(new Size2(10, 10), Vector2.Zero);
-            this.robot = new Robot();
+            this.GameState = new GameState();
         }
 
         protected override void Initialize(){
-            // TODO: Add your initialization logic here.
-
+            this.scale = 10;
+            this.GameState.LoadLevel(new Level(new Size2(10, 10), Vector2.Zero));
             base.Initialize();
         }
 
@@ -50,6 +49,7 @@ namespace LCM {
             }
             // TODO: Add your update logic here
 
+            this.GameState.Update(gameTime);
             base.Update(gameTime);
         }
         
@@ -57,13 +57,11 @@ namespace LCM {
             GraphicsDevice.Clear(Color.Firebrick);
             Matrix mat = Matrix.CreateScale(this.scale);
             this.sb.Begin(transformMatrix:mat);
-            Point center = new Point(this.graphics.PreferredBackBufferWidth/2, this.graphics.PreferredBackBufferHeight/2);
-            Size2 size = this.level.Size;
-            this.sb.DrawRectangle((center.ToVector2()/this.scale).Translate(-size.Width/2 - 1, -size.Height/2 - 1), size.Add(2), Color.Azure);
-            this.sb.FillRectangle(this.robot.Position.Translate(-0.5f, -0.5f), new Size2(1, 1), Color.Aquamarine);
+            this.GameState.Draw(gameTime, this.graphics, this.sb, this.scale);
             this.sb.End();
-            
-            base.Draw(gameTime);
+            this.sb.Begin();
+            Ui.Draw(gameTime);
+            this.sb.End();
         }
     }
 }
