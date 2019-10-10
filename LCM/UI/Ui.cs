@@ -3,8 +3,8 @@ using Microsoft.Xna.Framework;
 
 namespace LCM.UI {
     public class Ui {
-        
         private static float scale = 1;
+
         public static float Scale {
             get => scale;
             set {
@@ -17,8 +17,8 @@ namespace LCM.UI {
         //TODO Add ordering to components.
         private static List<Component> uiComponents = new List<Component>();
 
-        public static void Draw(GameTime gameTime){
-            foreach (var component in uiComponents)
+        public static void Draw(GameTime gameTime) {
+            foreach (Component component in uiComponents)
                 component.Draw(gameTime);
         }
     }

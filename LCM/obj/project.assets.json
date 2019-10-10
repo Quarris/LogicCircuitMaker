@@ -41,47 +41,6 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       }
-    },
-    ".NETFramework,Version=v4.6.2/win7-x86": {
-      "MonoGame.Content.Builder/3.7.0.9": {
-        "type": "package",
-        "build": {
-          "build/MonoGame.Content.Builder.targets": {}
-        }
-      },
-      "MonoGame.Extended/3.7.0": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "11.0.2"
-        },
-        "compile": {
-          "lib/netstandard2.0/MonoGame.Extended.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/MonoGame.Extended.dll": {}
-        }
-      },
-      "MonoGame.Framework.DesktopGL/3.7.1.189": {
-        "type": "package",
-        "compile": {
-          "lib/net45/MonoGame.Framework.dll": {}
-        },
-        "runtime": {
-          "lib/net45/MonoGame.Framework.dll": {}
-        },
-        "build": {
-          "build/MonoGame.Framework.DesktopGL.targets": {}
-        }
-      },
-      "Newtonsoft.Json/11.0.2": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        }
-      }
     }
   },
   "libraries": {
@@ -148,7 +107,7 @@
       ]
     },
     "MonoGame.Extended/3.7.0": {
-      "sha512": "Qmf/T7yw4SZOgsir2/oPDR0jnbqRZUkBVjWgMTyDAk9hNF16VgM443Igy1X7XVfmDH4mmYifYdvKZpyBDeGO8Q==",
+      "sha512": "gnxfWcMLWke1I21T+0h8ckZnum2jzybfaDtMTk5LUaPTdLCIt4nHpRYM467JdpOte2wtUzsuTAtQtKICqYk9rg==",
       "type": "package",
       "path": "monogame.extended/3.7.0",
       "files": [
@@ -223,30 +182,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\tomas\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/home/quarris/.nuget/packages/": {},
+    "/usr/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "Q:\\Programming\\CS\\LCM\\LCM\\LCM.csproj",
+      "projectUniqueName": "/home/quarris/RiderProjects/LogicCircuitMaker/LCM/LCM.csproj",
       "projectName": "LCM",
-      "projectPath": "Q:\\Programming\\CS\\LCM\\LCM\\LCM.csproj",
-      "packagesPath": "C:\\Users\\tomas\\.nuget\\packages\\",
-      "outputPath": "Q:\\Programming\\CS\\LCM\\LCM\\obj\\",
+      "projectPath": "/home/quarris/RiderProjects/LogicCircuitMaker/LCM/LCM.csproj",
+      "packagesPath": "/home/quarris/.nuget/packages/",
+      "outputPath": "/home/quarris/RiderProjects/LogicCircuitMaker/LCM/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "/usr/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/home/quarris/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net462"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -276,11 +233,6 @@
             "version": "[3.7.1.189, )"
           }
         }
-      }
-    },
-    "runtimes": {
-      "win7-x86": {
-        "#import": []
       }
     }
   }

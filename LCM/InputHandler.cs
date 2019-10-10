@@ -2,7 +2,6 @@ using Microsoft.Xna.Framework.Input;
 
 namespace LCM {
     public class InputHandler {
-        
         // Fields defining previous and current keyboard states
         private KeyboardState pkState;
         private KeyboardState ckState = Keyboard.GetState();
@@ -10,26 +9,26 @@ namespace LCM {
         // Fields defining previous and current mouse states
         private MouseState pmState;
         private MouseState cmState = Mouse.GetState();
-        
+
         // Getters for the keyboard and mouse states
         public KeyboardState KeyboardState => this.ckState;
         public MouseState MouseState => this.cmState;
 
         public int ScrollWheelDelta => this.cmState.ScrollWheelValue - this.pmState.ScrollWheelValue;
 
-        public void Update(){
+        public void Update() {
             this.pkState = this.ckState;
             this.pmState = this.cmState;
-            
+
             this.ckState = Keyboard.GetState();
             this.cmState = Mouse.GetState();
         }
 
-        public bool IsKeyPressed(Keys key){
+        public bool IsKeyPressed(Keys key) {
             return !this.pkState.IsKeyDown(key) && this.ckState.IsKeyDown(key);
         }
 
-        public bool IsMouseClicked(MouseButton button){
+        public bool IsMouseClicked(MouseButton button) {
             switch (button) {
                 case MouseButton.Left:
                     return this.pmState.LeftButton == ButtonState.Released &&
@@ -42,7 +41,7 @@ namespace LCM {
                            this.cmState.MiddleButton == ButtonState.Pressed;
                 case MouseButton.X1:
                     return this.pmState.XButton1 == ButtonState.Released &&
-                           this.cmState.XButton1== ButtonState.Pressed;
+                           this.cmState.XButton1 == ButtonState.Pressed;
                 case MouseButton.X2:
                     return this.pmState.XButton2 == ButtonState.Released &&
                            this.cmState.XButton2 == ButtonState.Pressed;
