@@ -1,4 +1,5 @@
-﻿using LCM.Extensions;
+﻿using System;
+using LCM.Extensions;
 using LCM.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,20 +8,24 @@ using MonoGame.Extended;
 
 namespace LCM {
     public class LCMGame : Game {
-        private readonly GraphicsDeviceManager graphics;
-        private readonly SpriteBatch sb;
+        public readonly GraphicsDeviceManager Graphics;
+        private SpriteBatch sb;
         private float scale;
         private InputHandler InputHandler { get; }
 
         private readonly GameState gameState;
 
+        private static LCMGame instance;
+        public static LCMGame Instance => instance;
+
         public LCMGame() {
-            this.graphics = new GraphicsDeviceManager(this);
-            this.sb = new SpriteBatch(this.GraphicsDevice);
+            instance = this;
+            this.Graphics = new GraphicsDeviceManager(this);
             this.Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
             this.InputHandler = new InputHandler();
             this.gameState = new GameState();
+            this.Window.AllowUserResizing = true;
         }
 
         protected override void Initialize() {
@@ -30,7 +35,7 @@ namespace LCM {
         }
 
         protected override void LoadContent() {
-
+            this.sb = new SpriteBatch(this.GraphicsDevice);
             // TODO: use this.Content to load your game content here
         }
 
@@ -54,10 +59,10 @@ namespace LCM {
             this.GraphicsDevice.Clear(Color.Firebrick);
             Matrix mat = Matrix.CreateScale(this.scale);
             this.sb.Begin(transformMatrix: mat);
-            this.gameState.Draw(gameTime, this.graphics, this.sb, this.scale);
+            this.gameState.Draw(gameTime, this.Window, this.sb, this.scale);
             this.sb.End();
             this.sb.Begin();
-            Ui.Draw(gameTime);
+            Ui.Draw(gameTime, this.Window);
             this.sb.End();
         }
     }

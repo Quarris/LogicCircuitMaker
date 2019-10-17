@@ -22,16 +22,17 @@ namespace LCM {
             // Update Robot Position
         }
 
-        public void Draw(GameTime gameTime, GraphicsDeviceManager graphics, SpriteBatch sb, float scale) {
+        public void Draw(GameTime gameTime, GameWindow window, SpriteBatch sb, float scale) {
             // Render Level Layout (Non logic components)
             // Render Logic Components (Gates etc...)
             // Render Robot
-
-            Point center = new Point(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
-            Size2 size = this.Level.Size;
-            sb.DrawRectangle((center.ToVector2() / scale).Translate(-size.Width / 2 - 1, -size.Height / 2 - 1),
-                size.Add(2), Color.Azure);
-            sb.FillRectangle(this.Robot.Position.Translate(-0.5f, -0.5f), new Size2(1, 1), Color.Aquamarine);
+            if (this.Level != null) {
+                Point center = new Point(window.ClientBounds.Width / 2, window.ClientBounds.Height / 2);
+                Size2 size = this.Level.Size;
+                sb.DrawRectangle((center.ToVector2() / scale).Translate(-size.Width / 2 - 1, -size.Height / 2 - 1),
+                    size.Add(2), Color.Azure);
+                sb.FillRectangle(this.Robot.Position.Translate(-0.5f, -0.5f), new Size2(1, 1), Color.Aquamarine);
+            }
         }
     }
 }

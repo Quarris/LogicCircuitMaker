@@ -15,10 +15,10 @@ namespace LCM.UI {
         }
 
         //TODO Add ordering to components.
-        private static List<Component> uiComponents = new List<Component>();
+        private static List<UiComponent> uiComponents = new List<UiComponent>();
 
-        public static void Draw(GameTime gameTime) {
-            foreach (Component component in uiComponents)
+        public static void Draw(GameTime gameTime, GameWindow window) {
+            foreach (UiComponent component in uiComponents)
                 component.Draw(gameTime);
         }
     }
