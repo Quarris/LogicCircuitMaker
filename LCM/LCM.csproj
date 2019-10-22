@@ -7,6 +7,8 @@
 
 
     <ItemGroup>
+        <PackageReference Include="MLEM.Startup" Version="1.2.1" />
+        <PackageReference Include="MLEM.Ui" Version="1.2.4" />
         <PackageReference Include="MonoGame.Content.Builder" Version="3.7.0.9" />
         <PackageReference Include="MonoGame.Extended" Version="3.7.0" />
         <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.7.1.189" />

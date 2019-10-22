@@ -1,18 +1,19 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/home/quarris/RiderProjects/LogicCircuitMaker/LCM.Test/LCM.Test.csproj",
+    "projectUniqueName": "Q:\\Programming\\CS\\LCM\\LCM.Test\\LCM.Test.csproj",
     "projectName": "LCM.Test",
-    "projectPath": "/home/quarris/RiderProjects/LogicCircuitMaker/LCM.Test/LCM.Test.csproj",
-    "outputPath": "/home/quarris/RiderProjects/LogicCircuitMaker/LCM.Test/obj/",
+    "projectPath": "Q:\\Programming\\CS\\LCM\\LCM.Test\\LCM.Test.csproj",
+    "outputPath": "Q:\\Programming\\CS\\LCM\\LCM.Test\\obj\\",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
-      "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
     ],
     "originalTargetFrameworks": [
       "net462"
     ],
     "sources": {
+      "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
       "https://api.nuget.org/v3/index.json": {}
     },
     "frameworks": {

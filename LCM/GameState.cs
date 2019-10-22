@@ -17,12 +17,12 @@ namespace LCM {
             this.Robot.Position = level.RobotStartPosition;
         }
 
-        public void Update(GameTime gameTime) {
+        public void Update(LCMGame game, GameTime time) {
             // Update Level Logic
             // Update Robot Position
         }
 
-        public void Draw(GameTime gameTime, GameWindow window, SpriteBatch sb, float scale) {
+        public void Draw(LCMGame game, GameTime time, GameWindow window, SpriteBatch sb, float scale) {
             // Render Level Layout (Non logic components)
             // Render Logic Components (Gates etc...)
             // Render Robot
