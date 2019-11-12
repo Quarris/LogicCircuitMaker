@@ -6,17 +6,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MonoGame.Content.Builder" Version="3.7.0.9" />
-        <PackageReference Include="MonoGame.Extended" Version="3.7.0" />
-        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.7.1.189" />
         <PackageReference Include="nunit" Version="3.11.0" />
         <PackageReference Include="NUnit3TestAdapter" Version="3.12.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <MonoGameContentReference Include="Content\Content.mgcb" />
-        <Content Include="Content\*\**" />
+      <ProjectReference Include="..\LCM\LCM.csproj" />
     </ItemGroup>
 
 </Project>

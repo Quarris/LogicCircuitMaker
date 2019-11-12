@@ -2,6 +2,18 @@
   "version": 3,
   "targets": {
     ".NETFramework,Version=v4.6.2": {
+      "Contentless/2.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net462/_._": {}
+        },
+        "runtime": {
+          "lib/net462/_._": {}
+        },
+        "build": {
+          "build/Contentless.targets": {}
+        }
+      },
       "Coroutine/1.0.1": {
         "type": "package",
         "compile": {
@@ -11,7 +23,7 @@
           "lib/netstandard2.0/Coroutine.dll": {}
         }
       },
-      "MLEM/1.2.2": {
+      "MLEM/2.0.1": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/MLEM.dll": {}
@@ -20,10 +32,10 @@
           "lib/netstandard2.0/MLEM.dll": {}
         }
       },
-      "MLEM.Extended/1.2.2": {
+      "MLEM.Extended/2.0.0": {
         "type": "package",
         "dependencies": {
-          "MLEM": "1.2.2"
+          "MLEM": "2.0.0"
         },
         "compile": {
           "lib/netstandard2.0/MLEM.Extended.dll": {}
@@ -32,14 +44,16 @@
           "lib/netstandard2.0/MLEM.Extended.dll": {}
         }
       },
-      "MLEM.Startup/1.2.1": {
+      "MLEM.Startup/2.0.1": {
         "type": "package",
         "dependencies": {
+          "Contentless": "2.0.1",
           "Coroutine": "1.0.1",
-          "MLEM": "1.2.2",
-          "MLEM.Extended": "1.2.2",
-          "MLEM.Ui": "1.2.3",
-          "MonoGame.Extended": "3.7.0"
+          "MLEM": "2.0.1",
+          "MLEM.Extended": "2.0.0",
+          "MLEM.Ui": "2.0.2",
+          "MonoGame.Extended": "3.7.0",
+          "MonoGame.Extended.Tiled": "3.7.0"
         },
         "compile": {
           "lib/netstandard2.0/MLEM.Startup.dll": {}
@@ -48,10 +62,10 @@
           "lib/netstandard2.0/MLEM.Startup.dll": {}
         }
       },
-      "MLEM.Ui/1.2.4": {
+      "MLEM.Ui/2.0.2": {
         "type": "package",
         "dependencies": {
-          "MLEM": "1.2.2"
+          "MLEM": "2.0.1"
         },
         "compile": {
           "lib/netstandard2.0/MLEM.Ui.dll": {}
@@ -76,6 +90,31 @@
         },
         "runtime": {
           "lib/netstandard2.0/MonoGame.Extended.dll": {}
+        }
+      },
+      "MonoGame.Extended.Graphics/3.7.0": {
+        "type": "package",
+        "dependencies": {
+          "MonoGame.Extended": "3.7.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/MonoGame.Extended.Graphics.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/MonoGame.Extended.Graphics.dll": {}
+        }
+      },
+      "MonoGame.Extended.Tiled/3.7.0": {
+        "type": "package",
+        "dependencies": {
+          "MonoGame.Extended": "3.7.0",
+          "MonoGame.Extended.Graphics": "3.7.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/MonoGame.Extended.Tiled.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/MonoGame.Extended.Tiled.dll": {}
         }
       },
       "MonoGame.Framework.DesktopGL/3.7.1.189": {
@@ -101,6 +140,18 @@
       }
     },
     ".NETFramework,Version=v4.6.2/win7-x86": {
+      "Contentless/2.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net462/_._": {}
+        },
+        "runtime": {
+          "lib/net462/_._": {}
+        },
+        "build": {
+          "build/Contentless.targets": {}
+        }
+      },
       "Coroutine/1.0.1": {
         "type": "package",
         "compile": {
@@ -110,7 +161,7 @@
           "lib/netstandard2.0/Coroutine.dll": {}
         }
       },
-      "MLEM/1.2.2": {
+      "MLEM/2.0.1": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/MLEM.dll": {}
@@ -119,10 +170,10 @@
           "lib/netstandard2.0/MLEM.dll": {}
         }
       },
-      "MLEM.Extended/1.2.2": {
+      "MLEM.Extended/2.0.0": {
         "type": "package",
         "dependencies": {
-          "MLEM": "1.2.2"
+          "MLEM": "2.0.0"
         },
         "compile": {
           "lib/netstandard2.0/MLEM.Extended.dll": {}
@@ -131,14 +182,16 @@
           "lib/netstandard2.0/MLEM.Extended.dll": {}
         }
       },
-      "MLEM.Startup/1.2.1": {
+      "MLEM.Startup/2.0.1": {
         "type": "package",
         "dependencies": {
+          "Contentless": "2.0.1",
           "Coroutine": "1.0.1",
-          "MLEM": "1.2.2",
-          "MLEM.Extended": "1.2.2",
-          "MLEM.Ui": "1.2.3",
-          "MonoGame.Extended": "3.7.0"
+          "MLEM": "2.0.1",
+          "MLEM.Extended": "2.0.0",
+          "MLEM.Ui": "2.0.2",
+          "MonoGame.Extended": "3.7.0",
+          "MonoGame.Extended.Tiled": "3.7.0"
         },
         "compile": {
           "lib/netstandard2.0/MLEM.Startup.dll": {}
@@ -147,10 +200,10 @@
           "lib/netstandard2.0/MLEM.Startup.dll": {}
         }
       },
-      "MLEM.Ui/1.2.4": {
+      "MLEM.Ui/2.0.2": {
         "type": "package",
         "dependencies": {
-          "MLEM": "1.2.2"
+          "MLEM": "2.0.1"
         },
         "compile": {
           "lib/netstandard2.0/MLEM.Ui.dll": {}
@@ -175,6 +228,31 @@
         },
         "runtime": {
           "lib/netstandard2.0/MonoGame.Extended.dll": {}
+        }
+      },
+      "MonoGame.Extended.Graphics/3.7.0": {
+        "type": "package",
+        "dependencies": {
+          "MonoGame.Extended": "3.7.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/MonoGame.Extended.Graphics.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/MonoGame.Extended.Graphics.dll": {}
+        }
+      },
+      "MonoGame.Extended.Tiled/3.7.0": {
+        "type": "package",
+        "dependencies": {
+          "MonoGame.Extended": "3.7.0",
+          "MonoGame.Extended.Graphics": "3.7.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/MonoGame.Extended.Tiled.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/MonoGame.Extended.Tiled.dll": {}
         }
       },
       "MonoGame.Framework.DesktopGL/3.7.1.189": {
@@ -201,6 +279,73 @@
     }
   },
   "libraries": {
+    "Contentless/2.0.1": {
+      "sha512": "OoJYelnjqYo5ES6TLbGmVFHdnXIk8qPe974b2VJbxIlzvKbSO/AqUhdld8bwdfZJnsUvIsFKFuoR+yPm4DZSEw==",
+      "type": "package",
+      "path": "contentless/2.0.1",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "build/Contentless.targets",
+        "contentless.2.0.1.nupkg.sha512",
+        "contentless.nuspec",
+        "lib/net462/_._",
+        "tools/ATI.TextureConverter.dll",
+        "tools/ATI.TextureConverter.dll.config",
+        "tools/Assimp64.dll",
+        "tools/AssimpNet.dll",
+        "tools/AssimpNet.dll.config",
+        "tools/AssimpNet.pdb",
+        "tools/AssimpNet.xml",
+        "tools/Contentless.exe",
+        "tools/Contentless.exe.config",
+        "tools/Contentless.pdb",
+        "tools/CppNet.dll",
+        "tools/FreeImage.dll",
+        "tools/FreeImageNET.dll",
+        "tools/MonoGame.Build.Tasks.dll",
+        "tools/MonoGame.Build.Tasks.pdb",
+        "tools/MonoGame.Build.Tasks.xml",
+        "tools/MonoGame.Framework.Content.Pipeline.dll",
+        "tools/MonoGame.Framework.Content.Pipeline.pdb",
+        "tools/MonoGame.Framework.Content.Pipeline.xml",
+        "tools/MonoGame.Framework.dll",
+        "tools/MonoGame.Framework.pdb",
+        "tools/MonoGame.Framework.xml",
+        "tools/Newtonsoft.Json.dll",
+        "tools/Nvidia.TextureTools.dll",
+        "tools/Nvidia.TextureTools.dll.config",
+        "tools/PVRTexLibNET.dll",
+        "tools/PVRTexLibNET.dll.config",
+        "tools/PVRTexLibWrapper.dll",
+        "tools/SharpDX.D3DCompiler.dll",
+        "tools/SharpDX.D3DCompiler.xml",
+        "tools/SharpDX.DXGI.dll",
+        "tools/SharpDX.DXGI.xml",
+        "tools/SharpDX.Direct2D1.dll",
+        "tools/SharpDX.Direct2D1.xml",
+        "tools/SharpDX.Direct3D11.dll",
+        "tools/SharpDX.Direct3D11.xml",
+        "tools/SharpDX.MediaFoundation.dll",
+        "tools/SharpDX.MediaFoundation.xml",
+        "tools/SharpDX.XAudio2.dll",
+        "tools/SharpDX.XAudio2.xml",
+        "tools/SharpDX.XInput.dll",
+        "tools/SharpDX.XInput.xml",
+        "tools/SharpDX.dll",
+        "tools/SharpDX.xml",
+        "tools/SharpFont.dll",
+        "tools/SharpFont.xml",
+        "tools/System.ValueTuple.dll",
+        "tools/ffmpeg.exe",
+        "tools/ffprobe.exe",
+        "tools/freetype6.dll",
+        "tools/libmojoshader_64.dll",
+        "tools/nvtt.dll"
+      ]
+    },
     "Coroutine/1.0.1": {
       "sha512": "OdjToYvlzjTuVfaxrZsUyjdeklPgaMIxPZR4DINelS/3v2p8x9p0o1+A5z3Qi1T8Cetlm/1bBVRBdkA9a994TQ==",
       "type": "package",
@@ -213,51 +358,51 @@
         "lib/netstandard2.0/Coroutine.dll"
       ]
     },
-    "MLEM/1.2.2": {
-      "sha512": "CUm+dANZDn4Hg50J8sygUVkrh00OHx0VFYU85OjilWTcTVo8Ou0VBtNia5yitqaKnzW9ux8o8UBs7/E8Un3owg==",
+    "MLEM/2.0.1": {
+      "sha512": "Up+VwhJph6uVzYUcnpGFG6L6hqCbvKvTPP4y7btnLCdSjpXRtsU13/95lRJ3wgneSQOya/28/nl9/bxi0r1idA==",
       "type": "package",
-      "path": "mlem/1.2.2",
+      "path": "mlem/2.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/MLEM.dll",
-        "mlem.1.2.2.nupkg.sha512",
+        "mlem.2.0.1.nupkg.sha512",
         "mlem.nuspec"
       ]
     },
-    "MLEM.Extended/1.2.2": {
-      "sha512": "Az5LPiq7LILsabHbIz+SHg6Buixt3cvOQAaWmrrziZlqBGi1uVmaUqChsejLRbxVdi53Jt2CxMbVyaECtMjKpw==",
+    "MLEM.Extended/2.0.0": {
+      "sha512": "kpxCjjw11IFv4kdaosUJV4sUWGkK0jXFMwJAIzv3JGEnKNUfO6eBD4aaHOLFQ5MeKK0Ne6RnA5McV5GhdKvJXA==",
       "type": "package",
-      "path": "mlem.extended/1.2.2",
+      "path": "mlem.extended/2.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/MLEM.Extended.dll",
-        "mlem.extended.1.2.2.nupkg.sha512",
+        "mlem.extended.2.0.0.nupkg.sha512",
         "mlem.extended.nuspec"
       ]
     },
-    "MLEM.Startup/1.2.1": {
-      "sha512": "ve3LDLOKNe9bMKti3Lz4jFtO5kHM4/OxjY8tZEaWLD5ZZi4SJWqOVd/i/x3Qf5wtw/ZZDJHTWLEMnCN/HzORvg==",
+    "MLEM.Startup/2.0.1": {
+      "sha512": "nbDihHuOl1GR85KzgecgJZ7dETSIYnBmG2ghTcNMrCFa2DCYXPJy49KlD2sZHcPIkS0y194GnyS54SvWPDEuTg==",
       "type": "package",
-      "path": "mlem.startup/1.2.1",
+      "path": "mlem.startup/2.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/MLEM.Startup.dll",
-        "mlem.startup.1.2.1.nupkg.sha512",
+        "mlem.startup.2.0.1.nupkg.sha512",
         "mlem.startup.nuspec"
       ]
     },
-    "MLEM.Ui/1.2.4": {
-      "sha512": "gKiAHE12vUVCGyRqhWWx+xhgNqW5fOZkgXkCESnQKwT4WP/mSXJNQDDl7ynWuBkDmdbGJfic3kuSn6xnylq8qQ==",
+    "MLEM.Ui/2.0.2": {
+      "sha512": "tG7dJzUMXHzpS9bgZs9SHo/4ywbmAe1z0zl5vMk6520RYLmuWr0JAXmpKACSPr+CBqvH/cYdbBtSGjAoAnG+fw==",
       "type": "package",
-      "path": "mlem.ui/1.2.4",
+      "path": "mlem.ui/2.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/MLEM.Ui.dll",
-        "mlem.ui.1.2.4.nupkg.sha512",
+        "mlem.ui.2.0.2.nupkg.sha512",
         "mlem.ui.nuspec"
       ]
     },
@@ -335,6 +480,30 @@
         "monogame.extended.nuspec"
       ]
     },
+    "MonoGame.Extended.Graphics/3.7.0": {
+      "sha512": "WA9vFjslssAvp9PCg/Rd7jMVxX1VyQVr3wF8b/mYssMeN41nlLGddSmemEoqWrzHXvhnzqU2MhVXddPAdyiAqw==",
+      "type": "package",
+      "path": "monogame.extended.graphics/3.7.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/MonoGame.Extended.Graphics.dll",
+        "monogame.extended.graphics.3.7.0.nupkg.sha512",
+        "monogame.extended.graphics.nuspec"
+      ]
+    },
+    "MonoGame.Extended.Tiled/3.7.0": {
+      "sha512": "VsbpRy5wyPKtFftTvrDo8le0ahKrgD5IwmFjGKev9N+UL4bJ9rAmXZXMAW1kcYV9W4Q7OwdMijBSVJ2gYvyE/A==",
+      "type": "package",
+      "path": "monogame.extended.tiled/3.7.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/MonoGame.Extended.Tiled.dll",
+        "monogame.extended.tiled.3.7.0.nupkg.sha512",
+        "monogame.extended.tiled.nuspec"
+      ]
+    },
     "MonoGame.Framework.DesktopGL/3.7.1.189": {
       "sha512": "7e6CvCZAAglBIPDA+lTwdaRTv0EARPl4s7Ai8gkn7ximiFyRODrpyciSxENUgCowap4y5d5B3Then7k/6UbHGw==",
       "type": "package",
@@ -393,8 +562,9 @@
   },
   "projectFileDependencyGroups": {
     ".NETFramework,Version=v4.6.2": [
-      "MLEM.Startup >= 1.2.1",
-      "MLEM.Ui >= 1.2.4",
+      "Contentless >= 2.0.1",
+      "MLEM.Startup >= 2.0.1",
+      "MLEM.Ui >= 2.0.2",
       "MonoGame.Content.Builder >= 3.7.0.9",
       "MonoGame.Extended >= 3.7.0",
       "MonoGame.Framework.DesktopGL >= 3.7.1.189"
@@ -441,13 +611,17 @@
     "frameworks": {
       "net462": {
         "dependencies": {
+          "Contentless": {
+            "target": "Package",
+            "version": "[2.0.1, )"
+          },
           "MLEM.Startup": {
             "target": "Package",
-            "version": "[1.2.1, )"
+            "version": "[2.0.1, )"
           },
           "MLEM.Ui": {
             "target": "Package",
-            "version": "[1.2.4, )"
+            "version": "[2.0.2, )"
           },
           "MonoGame.Content.Builder": {
             "target": "Package",
