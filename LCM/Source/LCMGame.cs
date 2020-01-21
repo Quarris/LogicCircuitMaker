@@ -37,9 +37,5 @@ namespace LCM {
             this.GraphicsDevice.Clear(Color.SlateGray);
             this.GameState.Draw(gameTime, this.sb);
         }
-
-        private void LoadComponents() {
-
-        }
     }
 }

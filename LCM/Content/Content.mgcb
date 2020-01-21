@@ -13,15 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Components/Gate_AND.json
-/copy:Components/Gate_AND.json
-
-#begin Components/Gate_NOT.json
-/copy:Components/Gate_NOT.json
-
-#begin Components/Gate_OR.json
-/copy:Components/Gate_OR.json
-
 #begin Fonts/Default.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -44,5 +35,12 @@
 #begin Textures/TextureMap.png
 /importer:TextureImporter
 /processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
 /build:Textures/TextureMap.png
 

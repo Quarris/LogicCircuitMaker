@@ -9,7 +9,15 @@ namespace LCM.Game {
         private static readonly string ComponentDir = Path.Combine(LCMGame.Inst.Content.RootDirectory, "Components");
         public static readonly List<Component> ComponentList = new List<Component>();
 
+        public static Component NotGate { get; private set; }
+        public static Component AndGate { get; private set; }
+        public static Component OrGate { get; private set; }
+
         public static void LoadComponents() {
+            NotGate = new NotGate();
+            AndGate = new AndGate();
+            OrGate = new OrGate();
+            /*
             ComponentList.Clear();
 
             DirectoryInfo dir = new DirectoryInfo(ComponentDir);
@@ -22,8 +30,8 @@ namespace LCM.Game {
                 }
             }
 
-            Console.WriteLine($"Loaded {ComponentList.Count} components");
-
+            Console.WriteLine($"Loaded {ComponentList.Count} components")
+            */
         }
     }
 }
