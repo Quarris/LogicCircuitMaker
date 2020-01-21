@@ -13,6 +13,6 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgContentless Condition=" '$(PkgContentless)' == '' ">C:\Users\tomas\.nuget\packages\contentless\2.0.1</PkgContentless>
+    <PkgContentless Condition=" '$(PkgContentless)' == '' ">C:\Users\tomas\.nuget\packages\contentless\2.0.5</PkgContentless>
   </PropertyGroup>
 </Project>

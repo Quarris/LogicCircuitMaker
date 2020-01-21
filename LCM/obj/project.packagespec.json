@@ -32,15 +32,15 @@
       "dependencies": {
         "Contentless": {
           "target": "Package",
-          "version": "[2.0.1, )"
+          "version": "[2.0.5, )"
         },
         "MLEM.Startup": {
           "target": "Package",
-          "version": "[2.0.1, )"
+          "version": "[2.1.0, )"
         },
         "MLEM.Ui": {
           "target": "Package",
-          "version": "[2.0.2, )"
+          "version": "[2.1.0, )"
         },
         "MonoGame.Content.Builder": {
           "target": "Package",
@@ -53,6 +53,10 @@
         "MonoGame.Framework.DesktopGL": {
           "target": "Package",
           "version": "[3.7.1.189, )"
+        },
+        "Newtonsoft.Json": {
+          "target": "Package",
+          "version": "[12.0.3, )"
         }
       }
     }

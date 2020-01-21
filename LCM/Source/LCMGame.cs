@@ -1,11 +1,15 @@
-﻿using Microsoft.Xna.Framework;
+﻿using LCM.Game;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MLEM.Startup;
+using MLEM.Textures;
 
 namespace LCM {
     public class LCMGame : MlemGame {
         public static LCMGame Inst { get; private set; }
         private SpriteBatch sb;
+        public SpriteFont Font;
+        public UniformTextureAtlas TextureMap;
 
         public GameState GameState;
 
@@ -19,16 +23,23 @@ namespace LCM {
         protected override void LoadContent() {
             base.LoadContent();
             this.sb = new SpriteBatch(this.GraphicsDevice);
+            LCM.Game.Components.LoadComponents();
+            this.Font = this.Content.Load<SpriteFont>("Fonts/Default");
+            this.TextureMap = new UniformTextureAtlas(this.Content.Load<Texture2D>("Textures/TextureMap"), 128, 128);
         }
 
-        protected override void Update(GameTime gameTime) {
-            base.Update(gameTime);
+        protected override void DoUpdate(GameTime gameTime) {
+            base.DoUpdate(gameTime);
             this.GameState.Update(gameTime);
         }
 
         protected override void DoDraw(GameTime gameTime) {
-            this.GraphicsDevice.Clear(Color.Firebrick);
+            this.GraphicsDevice.Clear(Color.SlateGray);
             this.GameState.Draw(gameTime, this.sb);
+        }
+
+        private void LoadComponents() {
+
         }
     }
 }

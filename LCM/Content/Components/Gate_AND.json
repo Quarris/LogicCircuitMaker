@@ -1,0 +1,20 @@
+{
+    "Size": "2 2",
+    "Name": "AND Gate",
+    "Inputs": {
+        "A": {
+            "Position": "0, 0.5",
+            "Direction": "Left"
+        },
+        "B": {
+            "Position": "0, 1.5",
+            "Direction": "Left"
+        }
+    },
+    "Outputs": {
+        "Q": {
+            "Position": "2, 1",
+            "Direction": "Right"
+        }
+    }
+}

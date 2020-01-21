@@ -1,10 +1,9 @@
-using System.Drawing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using Color = Microsoft.Xna.Framework.Color;
 
-namespace LCM {
+namespace LCM.Game {
     public class Robot {
         public Vector2 Position;
 

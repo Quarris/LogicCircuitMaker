@@ -1,15 +1,15 @@
+using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using MLEM.Cameras;
 
-namespace LCM {
+namespace LCM.Extensions {
     public static class CameraExtensions {
-
-        public static void Zoom(this Camera camera, float zoom) {
-            float newScale = camera.Scale + zoom;
-            if (newScale <= 0) return;
-            Vector2 lookPos = camera.LookingPosition;
-            camera.Scale = newScale;
-            camera.LookingPosition = lookPos;
+        public static Point CameraToTilePos(this Camera camera, Vector2 cameraPos) {
+            return (camera.ToWorldPos(cameraPos) / Constants.PixelsPerUnit).FloorToPoint();
+        }
+        
+        public static Point WorldToTilePos(this Camera camera, Vector2 cameraPos) {
+            return (cameraPos / Constants.PixelsPerUnit).FloorToPoint();
         }
     }
 }

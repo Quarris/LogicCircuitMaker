@@ -1,0 +1,12 @@
+{
+    "exclude": [
+        "obj/",
+        "bin/"
+    ],
+
+    "logSkipped": true,
+
+    "overrides": {
+        ".json": "Copy"
+    }
+}

@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     ".NETFramework,Version=v4.6.2": {
-      "Contentless/2.0.1": {
+      "Contentless/2.0.5": {
         "type": "package",
         "compile": {
           "lib/net462/_._": {}
@@ -14,7 +14,7 @@
           "build/_._": {}
         }
       },
-      "Coroutine/1.0.1": {
+      "Coroutine/1.0.2": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Coroutine.dll": {}
@@ -23,7 +23,7 @@
           "lib/netstandard2.0/Coroutine.dll": {}
         }
       },
-      "Microsoft.CodeCoverage/15.9.0": {
+      "Microsoft.CodeCoverage/16.4.0": {
         "type": "package",
         "compile": {
           "lib/net45/Microsoft.VisualStudio.CodeCoverage.Shim.dll": {}
@@ -36,20 +36,20 @@
           "build/netstandard1.0/Microsoft.CodeCoverage.targets": {}
         }
       },
-      "Microsoft.NET.Test.Sdk/15.9.0": {
+      "Microsoft.NET.Test.Sdk/16.4.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CodeCoverage": "15.9.0"
+          "Microsoft.CodeCoverage": "16.4.0"
         },
         "build": {
-          "build/net45/Microsoft.Net.Test.Sdk.props": {},
-          "build/net45/Microsoft.Net.Test.Sdk.targets": {}
+          "build/net40/Microsoft.NET.Test.Sdk.props": {},
+          "build/net40/Microsoft.NET.Test.Sdk.targets": {}
         },
         "buildMultiTargeting": {
-          "buildMultiTargeting/Microsoft.Net.Test.Sdk.props": {}
+          "buildMultiTargeting/Microsoft.NET.Test.Sdk.props": {}
         }
       },
-      "MLEM/2.0.1": {
+      "MLEM/2.1.0": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/MLEM.dll": {}
@@ -58,40 +58,39 @@
           "lib/netstandard2.0/MLEM.dll": {}
         }
       },
-      "MLEM.Extended/2.0.0": {
+      "MLEM.Extended/2.1.0": {
         "type": "package",
         "dependencies": {
-          "MLEM": "2.0.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/MLEM.Extended.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/MLEM.Extended.dll": {}
-        }
-      },
-      "MLEM.Startup/2.0.1": {
-        "type": "package",
-        "dependencies": {
-          "Contentless": "2.0.1",
-          "Coroutine": "1.0.1",
-          "MLEM": "2.0.1",
-          "MLEM.Extended": "2.0.0",
-          "MLEM.Ui": "2.0.2",
+          "MLEM": "2.1.0",
           "MonoGame.Extended": "3.7.0",
           "MonoGame.Extended.Tiled": "3.7.0"
         },
         "compile": {
+          "lib/netstandard2.0/MLEM.Extended.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/MLEM.Extended.dll": {}
+        }
+      },
+      "MLEM.Startup/2.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Coroutine": "1.0.2",
+          "MLEM": "2.1.0",
+          "MLEM.Extended": "2.1.0",
+          "MLEM.Ui": "2.1.0"
+        },
+        "compile": {
           "lib/netstandard2.0/MLEM.Startup.dll": {}
         },
         "runtime": {
           "lib/netstandard2.0/MLEM.Startup.dll": {}
         }
       },
-      "MLEM.Ui/2.0.2": {
+      "MLEM.Ui/2.1.0": {
         "type": "package",
         "dependencies": {
-          "MLEM": "2.0.1"
+          "MLEM": "2.1.0"
         },
         "compile": {
           "lib/netstandard2.0/MLEM.Ui.dll": {}
@@ -155,7 +154,7 @@
           "build/_._": {}
         }
       },
-      "Newtonsoft.Json/11.0.2": {
+      "Newtonsoft.Json/12.0.3": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -164,7 +163,7 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "NUnit/3.11.0": {
+      "NUnit/3.12.0": {
         "type": "package",
         "compile": {
           "lib/net45/nunit.framework.dll": {}
@@ -176,7 +175,7 @@
           "build/NUnit.props": {}
         }
       },
-      "NUnit3TestAdapter/3.12.0": {
+      "NUnit3TestAdapter/3.15.1": {
         "type": "package",
         "build": {
           "build/net35/NUnit3TestAdapter.props": {}
@@ -186,12 +185,13 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.2",
         "dependencies": {
-          "Contentless": "2.0.1",
-          "MLEM.Startup": "2.0.1",
-          "MLEM.Ui": "2.0.2",
+          "Contentless": "2.0.5",
+          "MLEM.Startup": "2.1.0",
+          "MLEM.Ui": "2.1.0",
           "MonoGame.Content.Builder": "3.7.0.9",
           "MonoGame.Extended": "3.7.0",
-          "MonoGame.Framework.DesktopGL": "3.7.1.189"
+          "MonoGame.Framework.DesktopGL": "3.7.1.189",
+          "Newtonsoft.Json": "12.0.3"
         },
         "compile": {
           "bin/placeholder/LCM.dll": {}
@@ -203,17 +203,17 @@
     }
   },
   "libraries": {
-    "Contentless/2.0.1": {
-      "sha512": "OoJYelnjqYo5ES6TLbGmVFHdnXIk8qPe974b2VJbxIlzvKbSO/AqUhdld8bwdfZJnsUvIsFKFuoR+yPm4DZSEw==",
+    "Contentless/2.0.5": {
+      "sha512": "j/jYU7q9l2f6xi0Jffsp2fFDpr4GOPXZjoiQYkjS2d28OkLl+xJgM8DGI6XrEvyjI6JE+VF8hT0rHIhU8xpoCw==",
       "type": "package",
-      "path": "contentless/2.0.1",
+      "path": "contentless/2.0.5",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "README.md",
         "build/Contentless.targets",
-        "contentless.2.0.1.nupkg.sha512",
+        "contentless.2.0.5.nupkg.sha512",
         "contentless.nuspec",
         "lib/net462/_._",
         "tools/ATI.TextureConverter.dll",
@@ -270,22 +270,22 @@
         "tools/nvtt.dll"
       ]
     },
-    "Coroutine/1.0.1": {
-      "sha512": "OdjToYvlzjTuVfaxrZsUyjdeklPgaMIxPZR4DINelS/3v2p8x9p0o1+A5z3Qi1T8Cetlm/1bBVRBdkA9a994TQ==",
+    "Coroutine/1.0.2": {
+      "sha512": "LQ80f085LGZJUG+1RFuvvn+EfqF3BsoOga3fyXVgjXHekGGdfF1zjS0R3mzu3NhNscKsme37NGATdZijFditvQ==",
       "type": "package",
-      "path": "coroutine/1.0.1",
+      "path": "coroutine/1.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "coroutine.1.0.1.nupkg.sha512",
+        "coroutine.1.0.2.nupkg.sha512",
         "coroutine.nuspec",
         "lib/netstandard2.0/Coroutine.dll"
       ]
     },
-    "Microsoft.CodeCoverage/15.9.0": {
-      "sha512": "6bbBLRceg0s5XjyBygsv6PSVEE4rUjwzHHpPx37nyOCE4KGV+Qi3J6aQ1zmgcfy+8YpnaMQNfEn4E9mq8R+FLg==",
+    "Microsoft.CodeCoverage/16.4.0": {
+      "sha512": "qb7PMVZMAY5iUCvB/kDUEt9xqazWKZoKY/sGpAJO4VtwgN5IcEgipCu3n0i1GPCwGbWVL6k4a8a9F+FqmADJng==",
       "type": "package",
-      "path": "microsoft.codecoverage/15.9.0",
+      "path": "microsoft.codecoverage/16.4.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -314,72 +314,75 @@
         "build/netstandard1.0/zh-Hant/Microsoft.VisualStudio.TraceDataCollector.resources.dll",
         "lib/net45/Microsoft.VisualStudio.CodeCoverage.Shim.dll",
         "lib/netcoreapp1.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll",
-        "microsoft.codecoverage.15.9.0.nupkg.sha512",
+        "microsoft.codecoverage.16.4.0.nupkg.sha512",
         "microsoft.codecoverage.nuspec"
       ]
     },
-    "Microsoft.NET.Test.Sdk/15.9.0": {
-      "sha512": "T20QjEGchVbKEWdaOTBCgJNac5dtyZ0ophzGKFYJHgpGlHYoiNspdLHgcfCSOEuMWHFCy7oROxzkTW+PxDIKuQ==",
+    "Microsoft.NET.Test.Sdk/16.4.0": {
+      "sha512": "gjjqS3rCzg4DrSQq4YwJwUUvc49HtXpXrZkW9fu5VG+K4X+Ztn4+UzolyML7wPnl/EAIufk4hu628bJB4WtpFg==",
       "type": "package",
-      "path": "microsoft.net.test.sdk/15.9.0",
+      "path": "microsoft.net.test.sdk/16.4.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "build/net45/Microsoft.Net.Test.Sdk.props",
-        "build/net45/Microsoft.Net.Test.Sdk.targets",
-        "build/netcoreapp1.0/Microsoft.Net.Test.Sdk.props",
-        "build/netcoreapp1.0/Microsoft.Net.Test.Sdk.targets",
-        "build/uap10.0/Microsoft.Net.Test.Sdk.props",
-        "buildMultiTargeting/Microsoft.Net.Test.Sdk.props",
-        "microsoft.net.test.sdk.15.9.0.nupkg.sha512",
+        "build/net40/Microsoft.NET.Test.Sdk.props",
+        "build/net40/Microsoft.NET.Test.Sdk.targets",
+        "build/netcoreapp2.1/Microsoft.NET.Test.Sdk.Program.cs",
+        "build/netcoreapp2.1/Microsoft.NET.Test.Sdk.Program.fs",
+        "build/netcoreapp2.1/Microsoft.NET.Test.Sdk.Program.vb",
+        "build/netcoreapp2.1/Microsoft.NET.Test.Sdk.props",
+        "build/netcoreapp2.1/Microsoft.NET.Test.Sdk.targets",
+        "build/uap10.0/Microsoft.NET.Test.Sdk.props",
+        "buildMultiTargeting/Microsoft.NET.Test.Sdk.props",
+        "microsoft.net.test.sdk.16.4.0.nupkg.sha512",
         "microsoft.net.test.sdk.nuspec"
       ]
     },
-    "MLEM/2.0.1": {
-      "sha512": "Up+VwhJph6uVzYUcnpGFG6L6hqCbvKvTPP4y7btnLCdSjpXRtsU13/95lRJ3wgneSQOya/28/nl9/bxi0r1idA==",
+    "MLEM/2.1.0": {
+      "sha512": "u+qV0+bbluyXw1kwVvnkab/gHX9bmBShZxtbpfIz+cpgj93ga3M3U1lb/L9s/1i9rh65v7euZyEvf6sFswNetg==",
       "type": "package",
-      "path": "mlem/2.0.1",
+      "path": "mlem/2.1.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/MLEM.dll",
-        "mlem.2.0.1.nupkg.sha512",
+        "mlem.2.1.0.nupkg.sha512",
         "mlem.nuspec"
       ]
     },
-    "MLEM.Extended/2.0.0": {
-      "sha512": "kpxCjjw11IFv4kdaosUJV4sUWGkK0jXFMwJAIzv3JGEnKNUfO6eBD4aaHOLFQ5MeKK0Ne6RnA5McV5GhdKvJXA==",
+    "MLEM.Extended/2.1.0": {
+      "sha512": "SFzQ6Hxjt1sEe0MdmdmpaOsNA1Mst3T8IcobTKK8CybnbHPOjiDklcDvs+c2BHvuxDAa+S97SHl0pefubUT3Ew==",
       "type": "package",
-      "path": "mlem.extended/2.0.0",
+      "path": "mlem.extended/2.1.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/MLEM.Extended.dll",
-        "mlem.extended.2.0.0.nupkg.sha512",
+        "mlem.extended.2.1.0.nupkg.sha512",
         "mlem.extended.nuspec"
       ]
     },
-    "MLEM.Startup/2.0.1": {
-      "sha512": "nbDihHuOl1GR85KzgecgJZ7dETSIYnBmG2ghTcNMrCFa2DCYXPJy49KlD2sZHcPIkS0y194GnyS54SvWPDEuTg==",
+    "MLEM.Startup/2.1.0": {
+      "sha512": "4m59dp7EgEAQtToWLdokRQKx+aPi0JoDrLFW8I+kqtMwVnK2N72dR0FEFbg+go/FykTv3E3DQ3eggjh5K8DoOw==",
       "type": "package",
-      "path": "mlem.startup/2.0.1",
+      "path": "mlem.startup/2.1.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/MLEM.Startup.dll",
-        "mlem.startup.2.0.1.nupkg.sha512",
+        "mlem.startup.2.1.0.nupkg.sha512",
         "mlem.startup.nuspec"
       ]
     },
-    "MLEM.Ui/2.0.2": {
-      "sha512": "tG7dJzUMXHzpS9bgZs9SHo/4ywbmAe1z0zl5vMk6520RYLmuWr0JAXmpKACSPr+CBqvH/cYdbBtSGjAoAnG+fw==",
+    "MLEM.Ui/2.1.0": {
+      "sha512": "mUfFY5NwAd0n8LIwO6YNNSbzZ925ffMlTszh4xv6HCTWbK1IO7JBalA09L5RfW8tTpA7gBiVqNwIvHJv+Rh+Tw==",
       "type": "package",
-      "path": "mlem.ui/2.0.2",
+      "path": "mlem.ui/2.1.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/MLEM.Ui.dll",
-        "mlem.ui.2.0.2.nupkg.sha512",
+        "mlem.ui.2.1.0.nupkg.sha512",
         "mlem.ui.nuspec"
       ]
     },
@@ -506,10 +509,10 @@
         "monogame.framework.desktopgl.nuspec"
       ]
     },
-    "Newtonsoft.Json/11.0.2": {
-      "sha512": "IvJe1pj7JHEsP8B8J8DwlMEx8UInrs/x+9oVY+oCD13jpLu4JbJU2WCIsMRn5C4yW9+DgkaO8uiVE5VHKjpmdQ==",
+    "Newtonsoft.Json/12.0.3": {
+      "sha512": "6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
       "type": "package",
-      "path": "newtonsoft.json/11.0.2",
+      "path": "newtonsoft.json/12.0.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -532,14 +535,15 @@
         "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
         "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
         "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
-        "newtonsoft.json.11.0.2.nupkg.sha512",
-        "newtonsoft.json.nuspec"
+        "newtonsoft.json.12.0.3.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
       ]
     },
-    "NUnit/3.11.0": {
-      "sha512": "zecrYxUA5p5w8AZ2bvbBbiUIcrQnZAVPrziNMSWMdcOi0D2Oe7yKUNivWPIQMcUwQDHmWtS/ijnD48ubU/eHZQ==",
+    "NUnit/3.12.0": {
+      "sha512": "3oJTrcUcT9wmweBUwgUf0f1XIYy6RZq2ziV+RM95HMKAJGsHPN2i3MKK1dAPvDPMRLz799Llj4eyu/STB9Q7OA==",
       "type": "package",
-      "path": "nunit/3.11.0",
+      "path": "nunit/3.12.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -547,10 +551,6 @@
         "LICENSE.txt",
         "NOTICES.txt",
         "build/NUnit.props",
-        "lib/net20/NUnit.System.Linq.dll",
-        "lib/net20/nunit.framework.dll",
-        "lib/net20/nunit.framework.pdb",
-        "lib/net20/nunit.framework.xml",
         "lib/net35/nunit.framework.dll",
         "lib/net35/nunit.framework.pdb",
         "lib/net35/nunit.framework.xml",
@@ -566,14 +566,14 @@
         "lib/netstandard2.0/nunit.framework.dll",
         "lib/netstandard2.0/nunit.framework.pdb",
         "lib/netstandard2.0/nunit.framework.xml",
-        "nunit.3.11.0.nupkg.sha512",
+        "nunit.3.12.0.nupkg.sha512",
         "nunit.nuspec"
       ]
     },
-    "NUnit3TestAdapter/3.12.0": {
-      "sha512": "H1zF3uzN+nheWW3wfx1xyottGjLJxi8E3ll8XV9ga7lEClLCoILvnsWgIZRD8WGFVuEnodA47OpCqu7y/yCDsQ==",
+    "NUnit3TestAdapter/3.15.1": {
+      "sha512": "gqy0llGjhJYq9ebFvtbmBcF/MY8z5kcTIxYs+eXwp2d4Ntha8pSPxUzryvBm7H46VbWI6FS5/XNbxwiQpe88vQ==",
       "type": "package",
-      "path": "nunit3testadapter/3.12.0",
+      "path": "nunit3testadapter/3.15.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -586,8 +586,14 @@
         "build/netcoreapp1.0/NUnit3.TestAdapter.dll",
         "build/netcoreapp1.0/NUnit3.TestAdapter.pdb",
         "build/netcoreapp1.0/NUnit3TestAdapter.props",
-        "build/netcoreapp1.0/nunit.engine.netstandard.dll",
-        "nunit3testadapter.3.12.0.nupkg.sha512",
+        "build/netcoreapp1.0/nunit.engine.api.dll",
+        "build/netcoreapp1.0/nunit.engine.dll",
+        "build/netcoreapp2.0/NUnit3.TestAdapter.dll",
+        "build/netcoreapp2.0/NUnit3.TestAdapter.pdb",
+        "build/netcoreapp2.0/NUnit3TestAdapter.props",
+        "build/netcoreapp2.0/nunit.engine.api.dll",
+        "build/netcoreapp2.0/nunit.engine.dll",
+        "nunit3testadapter.3.15.1.nupkg.sha512",
         "nunit3testadapter.nuspec"
       ]
     },
@@ -600,9 +606,10 @@
   "projectFileDependencyGroups": {
     ".NETFramework,Version=v4.6.2": [
       "LCM >= 1.0.0",
-      "Microsoft.NET.Test.Sdk >= 15.9.0",
-      "NUnit3TestAdapter >= 3.12.0",
-      "nunit >= 3.11.0"
+      "Microsoft.NET.Test.Sdk >= 16.4.0",
+      "NUnit3TestAdapter >= 3.15.1",
+      "Newtonsoft.Json >= 12.0.3",
+      "nunit >= 3.12.0"
     ]
   },
   "packageFolders": {
@@ -652,15 +659,19 @@
         "dependencies": {
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",
-            "version": "[15.9.0, )"
+            "version": "[16.4.0, )"
           },
           "NUnit3TestAdapter": {
             "target": "Package",
-            "version": "[3.12.0, )"
+            "version": "[3.15.1, )"
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[12.0.3, )"
           },
           "nunit": {
             "target": "Package",
-            "version": "[3.11.0, )"
+            "version": "[3.12.0, )"
           }
         }
       }
