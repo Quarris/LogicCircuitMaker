@@ -16,7 +16,7 @@ namespace LCM.Game {
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
-            sb.FillRectangle(this.Position * 16, new Size2(2, 2) * 16, Color.LawnGreen);
+            //sb.FillRectangle(this.Position * 16, new Size2(2, 2) * 16, Color.LawnGreen);
         }
     }
 }

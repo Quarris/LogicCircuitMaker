@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using LCM.Extensions;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
@@ -8,14 +9,16 @@ using MLEM.Cameras;
 using MLEM.Input;
 using MLEM.Startup;
 using MonoGame.Extended;
+using RectangleF = MLEM.Misc.RectangleF;
 
 namespace LCM.Game {
     public class InteractionManager {
         public InputHandler Input => MlemGame.Input;
+        public Level Level => LCMGame.Inst.GameState.Level;
         public Camera Camera => LCMGame.Inst.GameState.Camera;
-        public Vector2 MouseCameraPosition => Input.MousePosition.ToVector2();
-        public Vector2 MouseWorldPosition => Camera.ToWorldPos(Input.MousePosition.ToVector2());
+        public Vector2 MouseTilePosition => Camera.ToWorldPos(Input.MousePosition.ToVector2()) / Constants.PixelsPerUnit;
         public Vector2 ClickedPosition;
+        public IInteractable HoveredItem;
         public bool IsSelecting;
         public bool IsWireSelected;
         public int SelectedComponent { get; private set; }
@@ -27,6 +30,8 @@ namespace LCM.Game {
         }
 
         public void Update(GameTime gameTime) {
+            this.HoveredItem = this.GetHoveredItem();
+
             /** Keys **/
             if (Input.IsDown(Keys.S)) {
                 Camera.Position += new Vector2(0, Constants.PixelsPerUnit / 16f * 10f);
@@ -67,20 +72,20 @@ namespace LCM.Game {
             int scrollDelta = Input.ScrollWheel - Input.LastScrollWheel;
 
             if (scrollDelta > 0) {
-                Camera.Zoom(0.1f, this.MouseCameraPosition);
-                Console.WriteLine(Camera.ActualScale);
+                Camera.Zoom(0.1f, Input.MousePosition.ToVector2());
             } else if (scrollDelta < 0) {
-                Camera.Zoom(-0.1f, this.MouseCameraPosition);
-                Console.WriteLine(Camera.ActualScale);
+                Camera.Zoom(-0.1f, Input.MousePosition.ToVector2());
             }
 
             /** Buttons **/
             if (Input.IsMouseButtonPressed(MouseButton.Left)) {
                 if (this.IsWireSelected) {
                     this.IsSelecting = true;
-                    this.ClickedPosition = this.MouseWorldPosition;
+                    this.ClickedPosition = this.MouseTilePosition;
+                } else if (this.HoveredItem != null) {
+                    this.HoveredItem.Interact(this, InteractType.LClick);
                 } else {
-                    LevelManager.TryAddTile(Camera.WorldToTilePos(this.MouseWorldPosition), Components.ComponentList[this.SelectedComponent]);
+                    LevelManager.TryAddTile(MouseTilePosition.FloorToPoint(), Components.ComponentList[this.SelectedComponent]);
                 }
             }
 
@@ -91,23 +96,38 @@ namespace LCM.Game {
             if (Input.IsMouseButtonPressed(MouseButton.Right)) {
                 if (this.IsWireSelected) {
 
+                } else if (this.HoveredItem != null) {
+                    this.HoveredItem.Interact(this, InteractType.RClick);
                 } else {
-                    LevelManager.RemoveTile(Camera.WorldToTilePos(this.MouseWorldPosition));
+
                 }
             }
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
-            Point tilePos = Camera.WorldToTilePos(this.MouseWorldPosition);
-            sb.DrawRectangle(tilePos.ToVector2() * Constants.PixelsPerUnit, new Vector2(Constants.PixelsPerUnit), Color.Black, Constants.PixelsPerUnit/16f);
-            sb.DrawString(LCMGame.Inst.Font, Components.ComponentList[this.SelectedComponent].Name, Camera.Position, Color.Black, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
-            if (this.IsSelecting) {
-                Vector2 mid1 = new Vector2(this.ClickedPosition.X + (this.MouseWorldPosition.X-this.ClickedPosition.X)/2, this.ClickedPosition.Y);
-                Vector2 mid2 = new Vector2(this.ClickedPosition.X + (this.MouseWorldPosition.X-this.ClickedPosition.X)/2, this.MouseWorldPosition.Y);
-                sb.DrawLine(this.ClickedPosition, mid1, Color.Black, Constants.PixelsPerUnit/16f);
-                sb.DrawLine(mid1, mid2, Color.Black, Constants.PixelsPerUnit/16f);
-                sb.DrawLine(mid2, this.MouseWorldPosition, Color.Black, Constants.PixelsPerUnit/16f);
+            Point tilePos = this.MouseTilePosition.FloorToPoint();
+
+            if (this.HoveredItem != null) {
+                this.HoveredItem.DrawOutline(sb, gameTime);
+            } else if (!this.IsWireSelected) {
+                sb.DrawRectangle(tilePos.ToVector2() * Constants.PixelsPerUnit, new Vector2(Constants.PixelsPerUnit), Color.Black, Constants.PixelsPerUnit/16f);
             }
+
+            // Draw Wire
+            if (this.IsSelecting) {
+                Vector2 mid1 = new Vector2(this.ClickedPosition.X + (this.MouseTilePosition.X-this.ClickedPosition.X)/2, this.ClickedPosition.Y) * Constants.PixelsPerUnit;
+                Vector2 mid2 = new Vector2(this.ClickedPosition.X + (this.MouseTilePosition.X-this.ClickedPosition.X)/2, this.MouseTilePosition.Y) * Constants.PixelsPerUnit;
+                sb.DrawLine(this.ClickedPosition * Constants.PixelsPerUnit, mid1, Color.Black, Constants.PixelsPerUnit/16f);
+                sb.DrawLine(mid1, mid2, Color.Black, Constants.PixelsPerUnit/16f);
+                sb.DrawLine(mid2, this.MouseTilePosition * Constants.PixelsPerUnit, Color.Black, Constants.PixelsPerUnit/16f);
+            }
+        }
+
+        private IInteractable GetHoveredItem() {
+            return this.Level?.Hoverables
+                .Where(item => item.HoveredArea.Contains(this.MouseTilePosition))
+                .Reverse()
+                .FirstOrDefault();
         }
     }
 }

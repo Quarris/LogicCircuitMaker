@@ -16,7 +16,7 @@ namespace LCM.Game {
             this.Level = new Level();
             this.Camera = new Camera(LCMGame.Inst.GraphicsDevice) {
                 AutoScaleWithScreen = true,
-                MinScale = 16.0f/Constants.PixelsPerUnit,
+                MinScale = 32.0f/Constants.PixelsPerUnit,
                 MaxScale = 64.0f/Constants.PixelsPerUnit,
                 Scale = 24.0f/Constants.PixelsPerUnit
             };
@@ -44,6 +44,10 @@ namespace LCM.Game {
             // Render Robot
             // Robot.Draw();
             this.interactionManager.Draw(sb, gameTime);
+            sb.End();
+            sb.Begin(samplerState:SamplerState.PointClamp);
+            // Selected Gate
+            sb.DrawString(LCMGame.Inst.Font, Components.ComponentList[this.interactionManager.SelectedComponent].Name, new Vector2(10), Color.Black, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0);
             sb.End();
         }
     }
