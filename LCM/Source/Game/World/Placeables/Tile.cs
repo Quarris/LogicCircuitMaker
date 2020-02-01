@@ -22,7 +22,7 @@ namespace LCM.Game {
         public Size2 DrawSize => this.TileSize.ToSize2() * Constants.PixelsPerUnit;
         public RectangleF DrawArea => new RectangleF(this.DrawPos, this.DrawSize);
 
-        public RectangleF HoveredArea { get; }
+        public RectangleF InteractableArea { get; }
 
         public Tile(Point tilePosition, Component component) {
             this.TilePosition = tilePosition;
@@ -32,7 +32,7 @@ namespace LCM.Game {
                 this.Connectors.Add(pair.Key, pair.Value(tilePosition));
             }
 
-            this.HoveredArea = new RectangleF(tilePosition, this.TileSize.ToSize2());
+            this.InteractableArea = new RectangleF(tilePosition, this.TileSize.ToSize2());
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
@@ -48,13 +48,13 @@ namespace LCM.Game {
         }
 
         public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
-            sb.DrawRectangle(this.DrawArea, Color.Black, 4);
+            sb.DrawRectangle(this.DrawArea, Color.Black, Constants.PixelsPerUnit/16f);
 
             //sb.DrawRectangle(this.HoveredPosition.Translate(-0.5f, -0.5f) * Constants.PixelsPerUnit, new Vector2(Constants.PixelsPerUnit), Color.Black, Constants.PixelsPerUnit/16f);
         }
 
         public void Interact(InteractionManager manager, InteractType type) {
-            if (type == InteractType.RClick) {
+            if (type == InteractType.RClickDown) {
                 LevelManager.RemoveTile(this.TilePosition);
             }
         }

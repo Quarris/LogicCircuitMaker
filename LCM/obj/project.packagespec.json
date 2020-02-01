@@ -32,15 +32,15 @@
       "dependencies": {
         "Contentless": {
           "target": "Package",
-          "version": "[2.0.5, )"
+          "version": "[2.0.6, )"
         },
         "MLEM.Startup": {
           "target": "Package",
-          "version": "[2.1.0, )"
+          "version": "[3.1.0, )"
         },
         "MLEM.Ui": {
           "target": "Package",
-          "version": "[2.1.0, )"
+          "version": "[3.1.0, )"
         },
         "MonoGame.Content.Builder": {
           "target": "Package",

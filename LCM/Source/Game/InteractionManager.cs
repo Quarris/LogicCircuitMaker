@@ -22,6 +22,7 @@ namespace LCM.Game {
         public bool IsSelecting;
         public bool IsWireSelected;
         public int SelectedComponent { get; private set; }
+        public Connector SelectedConnector;
 
         private GameState gameState;
 
@@ -79,28 +80,24 @@ namespace LCM.Game {
 
             /** Buttons **/
             if (Input.IsMouseButtonPressed(MouseButton.Left)) {
-                if (this.IsWireSelected) {
-                    this.IsSelecting = true;
-                    this.ClickedPosition = this.MouseTilePosition;
-                } else if (this.HoveredItem != null) {
-                    this.HoveredItem.Interact(this, InteractType.LClick);
+                if (this.HoveredItem != null) {
+                    this.HoveredItem.Interact(this, InteractType.LClickDown);
                 } else {
                     LevelManager.TryAddTile(MouseTilePosition.FloorToPoint(), Components.ComponentList[this.SelectedComponent]);
                 }
             }
 
-            if (Input.IsMouseButtonUp(MouseButton.Left)) {
+            if (Input.IsMouseButtonReleased(MouseButton.Left)) {
+                this.HoveredItem?.Interact(this, InteractType.LClickUp);
                 this.IsSelecting = false;
             }
 
             if (Input.IsMouseButtonPressed(MouseButton.Right)) {
-                if (this.IsWireSelected) {
+                this.HoveredItem?.Interact(this, InteractType.RClickDown);
+            }
 
-                } else if (this.HoveredItem != null) {
-                    this.HoveredItem.Interact(this, InteractType.RClick);
-                } else {
-
-                }
+            if (Input.IsMouseButtonReleased(MouseButton.Right)) {
+                this.HoveredItem?.Interact(this, InteractType.RClickUp);
             }
         }
 
@@ -114,18 +111,20 @@ namespace LCM.Game {
             }
 
             // Draw Wire
+
             if (this.IsSelecting) {
                 Vector2 mid1 = new Vector2(this.ClickedPosition.X + (this.MouseTilePosition.X-this.ClickedPosition.X)/2, this.ClickedPosition.Y) * Constants.PixelsPerUnit;
                 Vector2 mid2 = new Vector2(this.ClickedPosition.X + (this.MouseTilePosition.X-this.ClickedPosition.X)/2, this.MouseTilePosition.Y) * Constants.PixelsPerUnit;
-                sb.DrawLine(this.ClickedPosition * Constants.PixelsPerUnit, mid1, Color.Black, Constants.PixelsPerUnit/16f);
-                sb.DrawLine(mid1, mid2, Color.Black, Constants.PixelsPerUnit/16f);
-                sb.DrawLine(mid2, this.MouseTilePosition * Constants.PixelsPerUnit, Color.Black, Constants.PixelsPerUnit/16f);
+                sb.DrawLine(this.ClickedPosition * Constants.PixelsPerUnit, mid1, Color.Red, Constants.PixelsPerUnit/16f);
+                sb.DrawLine(mid1, mid2, Color.Red, Constants.PixelsPerUnit/16f);
+                sb.DrawLine(mid2, this.MouseTilePosition * Constants.PixelsPerUnit, Color.Red, Constants.PixelsPerUnit/16f);
             }
+
         }
 
         private IInteractable GetHoveredItem() {
-            return this.Level?.Hoverables
-                .Where(item => item.HoveredArea.Contains(this.MouseTilePosition))
+            return this.Level?.Interactables
+                .Where(item => item.InteractableArea.Contains(this.MouseTilePosition))
                 .Reverse()
                 .FirstOrDefault();
         }

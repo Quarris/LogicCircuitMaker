@@ -5,17 +5,19 @@ using MonoGame.Extended;
 namespace LCM.Game {
     public interface IInteractable {
 
-        RectangleF HoveredArea { get; }
+        RectangleF InteractableArea { get; }
 
         void DrawOutline(SpriteBatch sb, GameTime gameTime);
 
         void Interact(InteractionManager manager, InteractType type);
-
     }
 
     public enum InteractType {
-        LClick,
-        RClick,
-        MClick
+        LClickUp,
+        LClickDown,
+        RClickUp,
+        RClickDown,
+        MClickUp,
+        MClickDown
     }
 }
