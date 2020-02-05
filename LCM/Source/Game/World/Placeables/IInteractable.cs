@@ -5,6 +5,7 @@ using MonoGame.Extended;
 namespace LCM.Game {
     public interface IInteractable {
 
+        int Layer { get; }
         RectangleF InteractableArea { get; }
 
         void DrawOutline(SpriteBatch sb, GameTime gameTime);

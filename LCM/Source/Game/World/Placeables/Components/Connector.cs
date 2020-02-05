@@ -8,6 +8,7 @@ using RectangleF = MonoGame.Extended.RectangleF;
 
 namespace LCM.Game {
     public class Connector : IInteractable {
+        public int Layer { get; }
         public Vector2 Position { get; }
         public Direction2 Direction;
         public WirePoint Connection;
@@ -22,6 +23,7 @@ namespace LCM.Game {
             this.DrawPos = (tilePos.ToVector2() + position) * Constants.PixelsPerUnit;
             Vector2 size = new Vector2(1 / 6f);
             this.InteractableArea = new RectangleF(tilePos.ToVector2() + position - size / 2, size);
+            this.Layer = 10;
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {

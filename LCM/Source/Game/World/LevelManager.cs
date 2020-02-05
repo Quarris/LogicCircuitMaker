@@ -37,5 +37,9 @@ namespace LCM.Game {
 
              */
         }
+
+        public static void RemoveWire(Wire wire) {
+            Level.RemoveWire(wire);
+        }
     }
 }

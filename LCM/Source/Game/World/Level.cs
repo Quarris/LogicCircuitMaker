@@ -44,8 +44,6 @@ namespace LCM.Game {
             this.Wires.ItemRemoved += (sender, args) => {
                 Wire wire = args.Item;
                 this.Interactables.Remove(wire);
-                this.Interactables.Remove(wire.Point1);
-                this.Interactables.Remove(wire.Point2);
             };
         }
 
@@ -101,6 +99,10 @@ namespace LCM.Game {
 
         public void AddWire(WirePoint p1, WirePoint p2) {
             this.Wires.Add(new Wire(p1, p2));
+        }
+
+        public void RemoveWire(Wire wire) {
+            this.Wires.Remove(wire);
         }
     }
 }

@@ -11,6 +11,7 @@ using MonoGame.Extended;
 
 namespace LCM.Game {
     public class Tile : IInteractable {
+        public int Layer { get; }
         public Point TilePosition { get; private set; }
         public Size TileSize => this.Component.Size;
         public Rectangle Area => new Rectangle(this.TilePosition, this.TileSize);
@@ -31,6 +32,8 @@ namespace LCM.Game {
             foreach (KeyValuePair<string, Func<Point, Connector>> pair in component.Inputs.Concat(component.Outputs)) {
                 this.Connectors.Add(pair.Key, pair.Value(tilePosition));
             }
+
+            this.Layer = 0;
 
             this.InteractableArea = new RectangleF(tilePosition, this.TileSize.ToSize2());
         }
