@@ -16,34 +16,39 @@ namespace LCM.Game {
         public RectangleF InteractableArea { get; }
 
         public Vector2 DrawPos { get; }
+        public CircleF DrawArea { get; }
 
         public Connector(Point tilePos, Vector2 position, Direction2 direction) {
             this.Position = position;
             this.Direction = direction;
             this.DrawPos = (tilePos.ToVector2() + position) * Constants.PixelsPerUnit;
             Vector2 size = new Vector2(1 / 6f);
-            this.InteractableArea = new RectangleF(tilePos.ToVector2() + position - size / 2, size);
+            this.DrawArea = new CircleF(this.DrawPos, Constants.PixelsPerUnit * size.X / 2f);
+            this.InteractableArea = new RectangleF(tilePos.ToVector2() + position - size, size * 2);
             this.Layer = 10;
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
-            sb.DrawCircle(new CircleF(this.DrawPos, Constants.PixelsPerUnit * this.InteractableArea.Width / 2f), 10,
+            sb.DrawCircle(this.DrawArea, 10,
                 Color.Aqua, 10);
         }
 
         public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
-            sb.DrawCircle(new CircleF(this.DrawPos, Constants.PixelsPerUnit * this.InteractableArea.Width / 2f + 1.5f), 10,
-                Color.Black, 3);
+            sb.DrawCircle(this.DrawArea, 10, Color.Black, 3);
         }
 
-        public void Interact(InteractionManager manager, InteractType type) {
+        public bool CanInteract() {
+            return this.Connection == null;
+        }
+
+        public void Interact(InteractionManager manager, InteractType type, object[] data) {
             switch (type) {
-                case InteractType.LClickDown:
+                case InteractType.LClickPress:
                     manager.IsSelecting = true;
                     manager.SelectedConnector = this;
                     manager.ClickedPosition = this.InteractableArea.Center;
                     break;
-                case InteractType.LClickUp:
+                case InteractType.LClickRelease:
                     if (manager.IsSelecting) {
                         manager.IsSelecting = false;
 

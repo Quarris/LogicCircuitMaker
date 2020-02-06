@@ -10,15 +10,19 @@ namespace LCM.Game {
 
         void DrawOutline(SpriteBatch sb, GameTime gameTime);
 
-        void Interact(InteractionManager manager, InteractType type);
+        bool CanInteract();
+
+        void Interact(InteractionManager manager, InteractType type, object[] data = null);
     }
 
     public enum InteractType {
-        LClickUp,
-        LClickDown,
-        RClickUp,
-        RClickDown,
-        MClickUp,
-        MClickDown
+        LClickRelease,
+        LClickPress,
+        RClickRelease,
+        RClickPress,
+        MClickRelease,
+        MClickPress,
+        LDrag,
+        RDrag
     }
 }

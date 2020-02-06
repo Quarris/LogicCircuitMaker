@@ -18,6 +18,8 @@ namespace LCM.Game {
         public Camera Camera => LCMGame.Inst.GameState.Camera;
         public Vector2 MouseTilePosition => Camera.ToWorldPos(Input.MousePosition.ToVector2()) / Constants.PixelsPerUnit;
         public Vector2 ClickedPosition;
+        public Vector2 DragPosition;
+        public bool IsDragging;
         public IInteractable HoveredItem;
         public bool IsSelecting;
         public bool IsWireSelected;
@@ -80,31 +82,40 @@ namespace LCM.Game {
 
             /** Buttons **/
             if (Input.IsMouseButtonPressed(MouseButton.Left)) {
+                this.ClickedPosition = this.MouseTilePosition;
                 if (this.HoveredItem != null) {
-                    this.HoveredItem.Interact(this, InteractType.LClickDown);
+                    this.HoveredItem.Interact(this, InteractType.LClickPress);
                 } else {
                     LevelManager.TryAddTile(MouseTilePosition.FloorToPoint(), Components.ComponentList[this.SelectedComponent]);
                 }
             }
 
             if (Input.IsMouseButtonReleased(MouseButton.Left)) {
-                this.HoveredItem?.Interact(this, InteractType.LClickUp);
+                this.HoveredItem?.Interact(this, InteractType.LClickRelease);
                 this.IsSelecting = false;
             }
 
             if (Input.IsMouseButtonPressed(MouseButton.Right)) {
-                this.HoveredItem?.Interact(this, InteractType.RClickDown);
+                this.HoveredItem?.Interact(this, InteractType.RClickPress);
             }
 
             if (Input.IsMouseButtonReleased(MouseButton.Right)) {
-                this.HoveredItem?.Interact(this, InteractType.RClickUp);
+                this.HoveredItem?.Interact(this, InteractType.RClickRelease);
+            }
+
+            if (Input.IsMouseButtonPressed(MouseButton.Middle)) {
+                this.HoveredItem?.Interact(this, InteractType.MClickPress);
+            }
+
+            if (Input.IsMouseButtonReleased(MouseButton.Middle)) {
+                this.HoveredItem?.Interact(this, InteractType.MClickRelease);
             }
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
             Point tilePos = this.MouseTilePosition.FloorToPoint();
 
-            if (this.HoveredItem != null) {
+            if (this.HoveredItem != null && this.HoveredItem.CanInteract()) {
                 this.HoveredItem.DrawOutline(sb, gameTime);
             } else if (!this.IsWireSelected) {
                 sb.DrawRectangle(tilePos.ToVector2() * Constants.PixelsPerUnit, new Vector2(Constants.PixelsPerUnit), Color.Black, Constants.PixelsPerUnit/16f);

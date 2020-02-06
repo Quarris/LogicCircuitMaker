@@ -52,12 +52,14 @@ namespace LCM.Game {
 
         public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
             sb.DrawRectangle(this.DrawArea, Color.Black, Constants.PixelsPerUnit/16f);
-
-            //sb.DrawRectangle(this.HoveredPosition.Translate(-0.5f, -0.5f) * Constants.PixelsPerUnit, new Vector2(Constants.PixelsPerUnit), Color.Black, Constants.PixelsPerUnit/16f);
         }
 
-        public void Interact(InteractionManager manager, InteractType type) {
-            if (type == InteractType.RClickDown) {
+        public bool CanInteract() {
+            return true;
+        }
+
+        public void Interact(InteractionManager manager, InteractType type, object[] data) {
+            if (type == InteractType.RClickPress) {
                 LevelManager.RemoveTile(this.TilePosition);
             }
         }

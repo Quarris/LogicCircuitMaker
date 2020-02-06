@@ -51,9 +51,13 @@ namespace LCM.Game {
             sb.DrawRectangle(this.DrawRect, Color.Black, 4);
         }
 
-        public void Interact(InteractionManager manager, InteractType type) {
+        public bool CanInteract() {
+            return true;
+        }
+
+        public void Interact(InteractionManager manager, InteractType type, object[] data) {
             switch (type) {
-                case InteractType.RClickDown: {
+                case InteractType.RClickPress: {
                     LevelManager.RemoveWire(this);
                     break;
                 }
@@ -83,7 +87,11 @@ namespace LCM.Game {
             sb.DrawCircle(new CircleF(this.Position * Constants.PixelsPerUnit, Constants.PixelsPerUnit * this.InteractableArea.Width / 2f), 10, Color.Black, 2.5f);
         }
 
-        public void Interact(InteractionManager manager, InteractType type) {
+        public bool CanInteract() {
+            return true;
+        }
+
+        public void Interact(InteractionManager manager, InteractType type, object[] data) {
 
         }
     }
