@@ -13,16 +13,16 @@ using RectangleF = MLEM.Misc.RectangleF;
 
 namespace LCM.Game {
     public class InteractionManager {
-        public InputHandler Input => MlemGame.Input;
-        public Level Level => LCMGame.Inst.GameState.Level;
-        public Camera Camera => LCMGame.Inst.GameState.Camera;
-        public Vector2 MouseTilePosition => Camera.ToWorldPos(Input.MousePosition.ToVector2()) / Constants.PixelsPerUnit;
+        public static InputHandler Input => MlemGame.Input;
+        public static Level Level => LCMGame.Inst.GameState.Level;
+        public static Camera Camera => LCMGame.Inst.GameState.Camera;
+        public static Vector2 MouseTilePosition => Camera.ToWorldPos(Input.MousePosition.ToVector2()) / Constants.PixelsPerUnit;
+
         public Vector2 ClickedPosition;
         public Vector2 DragPosition;
         public bool IsDragging;
         public IInteractable HoveredItem;
         public bool IsSelecting;
-        public bool IsWireSelected;
         public int SelectedComponent { get; private set; }
         public Connector SelectedConnector;
 
@@ -52,10 +52,6 @@ namespace LCM.Game {
                 Camera.Position += new Vector2(Constants.PixelsPerUnit / 16f * 10f, 0);
             }
 
-            if (Input.IsKeyPressed(Keys.I)) {
-                this.IsWireSelected = !this.IsWireSelected;
-            }
-
             if (Input.IsKeyPressed(Keys.D1)) {
                 Console.WriteLine($"Loading component {Components.ComponentList[0].Name}");
                 this.SelectedComponent = 0;
@@ -82,7 +78,7 @@ namespace LCM.Game {
 
             /** Buttons **/
             if (Input.IsMouseButtonPressed(MouseButton.Left)) {
-                this.ClickedPosition = this.MouseTilePosition;
+                this.ClickedPosition = MouseTilePosition;
                 if (this.HoveredItem != null) {
                     this.HoveredItem.Interact(this, InteractType.LClickPress);
                 } else {
@@ -113,29 +109,29 @@ namespace LCM.Game {
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
-            Point tilePos = this.MouseTilePosition.FloorToPoint();
+            Point tilePos = MouseTilePosition.FloorToPoint();
 
             if (this.HoveredItem != null && this.HoveredItem.CanInteract()) {
                 this.HoveredItem.DrawOutline(sb, gameTime);
-            } else if (!this.IsWireSelected) {
+            } else {
                 sb.DrawRectangle(tilePos.ToVector2() * Constants.PixelsPerUnit, new Vector2(Constants.PixelsPerUnit), Color.Black, Constants.PixelsPerUnit/16f);
             }
 
             // Draw Wire
 
             if (this.IsSelecting) {
-                Vector2 mid1 = new Vector2(this.ClickedPosition.X + (this.MouseTilePosition.X-this.ClickedPosition.X)/2, this.ClickedPosition.Y) * Constants.PixelsPerUnit;
-                Vector2 mid2 = new Vector2(this.ClickedPosition.X + (this.MouseTilePosition.X-this.ClickedPosition.X)/2, this.MouseTilePosition.Y) * Constants.PixelsPerUnit;
+                Vector2 mid1 = new Vector2(this.ClickedPosition.X + (MouseTilePosition.X-this.ClickedPosition.X)/2, this.ClickedPosition.Y) * Constants.PixelsPerUnit;
+                Vector2 mid2 = new Vector2(this.ClickedPosition.X + (MouseTilePosition.X-this.ClickedPosition.X)/2, MouseTilePosition.Y) * Constants.PixelsPerUnit;
                 sb.DrawLine(this.ClickedPosition * Constants.PixelsPerUnit, mid1, Color.Red, Constants.PixelsPerUnit/16f);
                 sb.DrawLine(mid1, mid2, Color.Red, Constants.PixelsPerUnit/16f);
-                sb.DrawLine(mid2, this.MouseTilePosition * Constants.PixelsPerUnit, Color.Red, Constants.PixelsPerUnit/16f);
+                sb.DrawLine(mid2, MouseTilePosition * Constants.PixelsPerUnit, Color.Red, Constants.PixelsPerUnit/16f);
             }
 
         }
 
         private IInteractable GetHoveredItem() {
-            return this.Level?.Interactables
-                .Where(item => item.InteractableArea.Contains(this.MouseTilePosition))
+            return Level?.Interactables
+                .Where(item => item.InteractableArea.Contains(MouseTilePosition))
                 .OrderByDescending(item => item.Layer)
                 .FirstOrDefault();
         }
