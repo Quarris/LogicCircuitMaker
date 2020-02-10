@@ -37,11 +37,11 @@ namespace LCM.Game {
             sb.DrawCircle(this.DrawArea, 10, Color.Black, 3);
         }
 
-        public bool CanInteract() {
+        public bool CanInteract(InteractType type) {
             return this.Connection == null;
         }
 
-        public void Interact(InteractionManager manager, InteractType type, object[] data) {
+        public void Interact(InteractionManager manager, InteractType type) {
             switch (type) {
                 case InteractType.LClickPress:
                     manager.IsSelecting = true;
@@ -59,7 +59,7 @@ namespace LCM.Game {
                             break;
                         }
 
-                        (WirePoint wireStart, WirePoint wireEnd) = LevelManager.CreateWire(start, end);
+                        (WirePoint wireStart, WirePoint wireEnd) = LevelManager.CreateWire(start, end, manager.SelectedConnector, this);
 
                         manager.SelectedConnector.Connection = wireStart;
                         this.Connection = wireEnd;

@@ -16,20 +16,22 @@ namespace LCM.Game {
         public InputHandler Input => MlemGame.Input;
         public Level Level => LCMGame.Inst.GameState.Level;
         public Camera Camera => LCMGame.Inst.GameState.Camera;
-        public Vector2 MouseTilePosition => Camera.ToWorldPos(Input.MousePosition.ToVector2()) / Constants.PixelsPerUnit;
+        public Vector2 MouseTilePosition =>
+            Camera.ToWorldPos(Input.MousePosition.ToVector2()) / Constants.PixelsPerUnit;
+
+        public readonly DraggingContext DraggingContext = new DraggingContext();
         public Vector2 ClickedPosition;
-        public Vector2 DragPosition;
-        public bool IsDragging;
         public IInteractable HoveredItem;
+        public IInteractable InteractingItem;
         public bool IsSelecting;
         public bool IsWireSelected;
         public int SelectedComponent { get; private set; }
         public Connector SelectedConnector;
 
-        private GameState gameState;
+        public GameState GameState { get; }
 
         public InteractionManager(GameState gameState) {
-            this.gameState = gameState;
+            this.GameState = gameState;
         }
 
         public void Update(GameTime gameTime) {
@@ -86,21 +88,29 @@ namespace LCM.Game {
                 if (this.HoveredItem != null) {
                     this.HoveredItem.Interact(this, InteractType.LClickPress);
                 } else {
-                    LevelManager.TryAddTile(MouseTilePosition.FloorToPoint(), Components.ComponentList[this.SelectedComponent]);
+                    LevelManager.TryAddTile(MouseTilePosition.FloorToPoint(),
+                        Components.ComponentList[this.SelectedComponent]);
                 }
             }
 
             if (Input.IsMouseButtonReleased(MouseButton.Left)) {
                 this.HoveredItem?.Interact(this, InteractType.LClickRelease);
                 this.IsSelecting = false;
+                if (this.DraggingContext.Button == MouseButton.Left) {
+                    this.DraggingContext.Deactivate();
+                }
             }
 
             if (Input.IsMouseButtonPressed(MouseButton.Right)) {
+                this.ClickedPosition = this.MouseTilePosition;
                 this.HoveredItem?.Interact(this, InteractType.RClickPress);
             }
 
             if (Input.IsMouseButtonReleased(MouseButton.Right)) {
                 this.HoveredItem?.Interact(this, InteractType.RClickRelease);
+                if (this.DraggingContext.Button == MouseButton.Right) {
+                    this.DraggingContext.Deactivate();
+                }
             }
 
             if (Input.IsMouseButtonPressed(MouseButton.Middle)) {
@@ -109,6 +119,15 @@ namespace LCM.Game {
 
             if (Input.IsMouseButtonReleased(MouseButton.Middle)) {
                 this.HoveredItem?.Interact(this, InteractType.MClickRelease);
+                if (this.DraggingContext.Button == MouseButton.Middle) {
+                    this.DraggingContext.Deactivate();
+                }
+            }
+
+            this.SetDraggingContext();
+            if (this.DraggingContext.IsActive && this.HoveredItem != null && this.HoveredItem.CanInteract(InteractType.Drag)) {
+                this.HoveredItem.Interact(this, InteractType.Drag);
+                Console.WriteLine($"Dragging with {this.DraggingContext.Button} from {this.DraggingContext.StartPosition} at {gameTime.TotalGameTime}.");
             }
         }
 
@@ -118,19 +137,44 @@ namespace LCM.Game {
             if (this.HoveredItem != null && this.HoveredItem.CanInteract()) {
                 this.HoveredItem.DrawOutline(sb, gameTime);
             } else if (!this.IsWireSelected) {
-                sb.DrawRectangle(tilePos.ToVector2() * Constants.PixelsPerUnit, new Vector2(Constants.PixelsPerUnit), Color.Black, Constants.PixelsPerUnit/16f);
+                sb.DrawRectangle(tilePos.ToVector2() * Constants.PixelsPerUnit, new Vector2(Constants.PixelsPerUnit),
+                    Color.Black, Constants.PixelsPerUnit / 16f);
             }
 
             // Draw Wire
 
             if (this.IsSelecting) {
-                Vector2 mid1 = new Vector2(this.ClickedPosition.X + (this.MouseTilePosition.X-this.ClickedPosition.X)/2, this.ClickedPosition.Y) * Constants.PixelsPerUnit;
-                Vector2 mid2 = new Vector2(this.ClickedPosition.X + (this.MouseTilePosition.X-this.ClickedPosition.X)/2, this.MouseTilePosition.Y) * Constants.PixelsPerUnit;
-                sb.DrawLine(this.ClickedPosition * Constants.PixelsPerUnit, mid1, Color.Red, Constants.PixelsPerUnit/16f);
-                sb.DrawLine(mid1, mid2, Color.Red, Constants.PixelsPerUnit/16f);
-                sb.DrawLine(mid2, this.MouseTilePosition * Constants.PixelsPerUnit, Color.Red, Constants.PixelsPerUnit/16f);
+                Vector2 mid1 =
+                    new Vector2(this.ClickedPosition.X + (this.MouseTilePosition.X - this.ClickedPosition.X) / 2,
+                        this.ClickedPosition.Y) * Constants.PixelsPerUnit;
+                Vector2 mid2 =
+                    new Vector2(this.ClickedPosition.X + (this.MouseTilePosition.X - this.ClickedPosition.X) / 2,
+                        this.MouseTilePosition.Y) * Constants.PixelsPerUnit;
+                sb.DrawLine(this.ClickedPosition * Constants.PixelsPerUnit, mid1, Color.Red,
+                    Constants.PixelsPerUnit / 16f);
+                sb.DrawLine(mid1, mid2, Color.Red, Constants.PixelsPerUnit / 16f);
+                sb.DrawLine(mid2, this.MouseTilePosition * Constants.PixelsPerUnit, Color.Red,
+                    Constants.PixelsPerUnit / 16f);
             }
+        }
 
+        private void SetDraggingContext() {
+            if (Input.IsMouseButtonDown(MouseButton.Left) &&
+                !this.ClickedPosition.EqualsWithTolerence(this.MouseTilePosition, 0.1f)) {
+                if (!this.DraggingContext.IsActive) {
+                    this.DraggingContext.Activate(MouseButton.Left, this.ClickedPosition);
+                }
+            } else if (Input.IsMouseButtonDown(MouseButton.Right) &&
+                       !this.ClickedPosition.EqualsWithTolerence(this.MouseTilePosition, 0.1f)) {
+                if (!this.DraggingContext.IsActive) {
+                    this.DraggingContext.Activate(MouseButton.Right, this.ClickedPosition);
+                }
+            } else if (Input.IsMouseButtonDown(MouseButton.Middle) &&
+                       !this.ClickedPosition.EqualsWithTolerence(this.MouseTilePosition, 0.1f)) {
+                if (!this.DraggingContext.IsActive) {
+                    this.DraggingContext.Activate(MouseButton.Middle, this.ClickedPosition);
+                }
+            }
         }
 
         private IInteractable GetHoveredItem() {

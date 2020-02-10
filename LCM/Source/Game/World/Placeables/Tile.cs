@@ -54,11 +54,11 @@ namespace LCM.Game {
             sb.DrawRectangle(this.DrawArea, Color.Black, Constants.PixelsPerUnit/16f);
         }
 
-        public bool CanInteract() {
+        public bool CanInteract(InteractType type) {
             return true;
         }
 
-        public void Interact(InteractionManager manager, InteractType type, object[] data) {
+        public void Interact(InteractionManager manager, InteractType type) {
             if (type == InteractType.RClickPress) {
                 LevelManager.RemoveTile(this.TilePosition);
             }

@@ -15,13 +15,13 @@ namespace LCM.Game {
             Level.RemoveTile(point);
         }
 
-        public static (WirePoint, WirePoint) CreateWire(Vector2 start, Vector2 end) {
-            WirePoint wireStart = new WirePoint(start);
+        public static (WirePoint, WirePoint) CreateWire(Vector2 start, Vector2 end, Connector startConnector, Connector endConnector) {
+            WirePoint wireStart = new WirePoint(start, startConnector);
 
             WirePoint mid1 = new WirePoint(new Vector2(start.X + (end.X - start.X)/2f, start.Y));
             WirePoint mid2 = new WirePoint(new Vector2(start.X + (end.X - start.X)/2f, end.Y));
 
-            WirePoint wireEnd = new WirePoint(end);
+            WirePoint wireEnd = new WirePoint(end, endConnector);
 
             Level.AddWire(wireStart, mid1);
             Level.AddWire(mid1, mid2);
