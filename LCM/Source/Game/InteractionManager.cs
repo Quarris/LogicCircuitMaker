@@ -9,20 +9,17 @@ using MLEM.Cameras;
 using MLEM.Input;
 using MLEM.Startup;
 using MonoGame.Extended;
-using RectangleF = MLEM.Misc.RectangleF;
 
 namespace LCM.Game {
     public class InteractionManager {
         public InputHandler Input => MlemGame.Input;
         public Level Level => LCMGame.Inst.GameState.Level;
         public Camera Camera => LCMGame.Inst.GameState.Camera;
-        public Vector2 MouseTilePosition =>
-            Camera.ToWorldPos(Input.MousePosition.ToVector2()) / Constants.PixelsPerUnit;
+        public Vector2 MouseTilePosition => Camera.ToWorldPos(Input.MousePosition.ToVector2()) / Constants.PixelsPerUnit;
 
         public readonly DraggingContext DraggingContext = new DraggingContext();
         public Vector2 ClickedPosition;
         public IInteractable HoveredItem;
-        public IInteractable InteractingItem;
         public bool IsSelecting;
         public bool IsWireSelected;
         public int SelectedComponent { get; private set; }
@@ -125,9 +122,8 @@ namespace LCM.Game {
             }
 
             this.SetDraggingContext();
-            if (this.DraggingContext.IsActive && this.HoveredItem != null && this.HoveredItem.CanInteract(InteractType.Drag)) {
-                this.HoveredItem.Interact(this, InteractType.Drag);
-                Console.WriteLine($"Dragging with {this.DraggingContext.Button} from {this.DraggingContext.StartPosition} at {gameTime.TotalGameTime}.");
+            if (this.DraggingContext.IsActive && this.DraggingContext.Item != null && this.DraggingContext.Item.CanInteract(InteractType.Drag)) {
+                this.DraggingContext.Item.Interact(this, InteractType.Drag);
             }
         }
 
@@ -159,20 +155,17 @@ namespace LCM.Game {
         }
 
         private void SetDraggingContext() {
-            if (Input.IsMouseButtonDown(MouseButton.Left) &&
-                !this.ClickedPosition.EqualsWithTolerence(this.MouseTilePosition, 0.1f)) {
+            if (Input.IsMouseButtonDown(MouseButton.Left) && !this.ClickedPosition.EqualsWithTolerence(this.MouseTilePosition, 0.1f)) {
                 if (!this.DraggingContext.IsActive) {
-                    this.DraggingContext.Activate(MouseButton.Left, this.ClickedPosition);
+                    this.DraggingContext.Activate(MouseButton.Left, this.ClickedPosition, this.HoveredItem);
                 }
-            } else if (Input.IsMouseButtonDown(MouseButton.Right) &&
-                       !this.ClickedPosition.EqualsWithTolerence(this.MouseTilePosition, 0.1f)) {
+            } else if (Input.IsMouseButtonDown(MouseButton.Right) && !this.ClickedPosition.EqualsWithTolerence(this.MouseTilePosition, 0.1f)) {
                 if (!this.DraggingContext.IsActive) {
-                    this.DraggingContext.Activate(MouseButton.Right, this.ClickedPosition);
+                    this.DraggingContext.Activate(MouseButton.Right, this.ClickedPosition, this.HoveredItem);
                 }
-            } else if (Input.IsMouseButtonDown(MouseButton.Middle) &&
-                       !this.ClickedPosition.EqualsWithTolerence(this.MouseTilePosition, 0.1f)) {
+            } else if (Input.IsMouseButtonDown(MouseButton.Middle) && !this.ClickedPosition.EqualsWithTolerence(this.MouseTilePosition, 0.1f)) {
                 if (!this.DraggingContext.IsActive) {
-                    this.DraggingContext.Activate(MouseButton.Middle, this.ClickedPosition);
+                    this.DraggingContext.Activate(MouseButton.Middle, this.ClickedPosition, this.HoveredItem);
                 }
             }
         }

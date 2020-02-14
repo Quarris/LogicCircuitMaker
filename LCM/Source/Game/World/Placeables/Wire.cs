@@ -15,9 +15,16 @@ namespace LCM.Game {
         public Axis Axis { get; }
 
         private RectangleF interactableArea;
-        public RectangleF InteractableArea => this.interactableArea;
+        public RectangleF InteractableArea {
+            get => this.interactableArea;
+            set {
+                this.interactableArea = value;
+                this.drawRect = Helper.RectFromCorners((Vector2) value.TopLeft * Constants.PixelsPerUnit, (Vector2) value.BottomRight * Constants.PixelsPerUnit);
+            }
+        }
 
-        private RectangleF DrawRect;
+        private RectangleF drawRect;
+        private RectangleF DrawRect => this.drawRect;
 
         public Wire(WirePoint point1, WirePoint point2) {
             this.Point1 = point1;
@@ -25,14 +32,16 @@ namespace LCM.Game {
             point1.ConnectedWires.Add(this);
             point2.ConnectedWires.Add(this);
             this.interactableArea = Helper.RectFromCorners(point1.Position - new Vector2(1 / 16f), point2.Position + new Vector2(1 / 16f));
-            this.DrawRect = Helper.RectFromCorners((Vector2) this.interactableArea.TopLeft * Constants.PixelsPerUnit, (Vector2) this.interactableArea.BottomRight * Constants.PixelsPerUnit);
             this.Axis = Math.Abs(this.Point1.Position.X - this.Point2.Position.X) < 0.0001f ? Axis.Y : Axis.X;
-            if (this.Axis == Axis.Y) {
-                this.interactableArea.X -= 0.1f;
-                this.interactableArea.Width += 0.2f;
-            } else if (this.Axis == Axis.X) {
-                this.interactableArea.Y -= 0.1f;
-                this.interactableArea.Height += 0.2f;
+            switch (this.Axis) {
+                case Axis.Y:
+                    this.interactableArea.X -= 0.1f;
+                    this.interactableArea.Width += 0.2f;
+                    break;
+                case Axis.X:
+                    this.interactableArea.Y -= 0.1f;
+                    this.interactableArea.Height += 0.2f;
+                    break;
             }
 
             this.Layer = 20;
@@ -40,22 +49,18 @@ namespace LCM.Game {
 
         public void Move(Vector2 target) {
             switch (this.Axis) {
-                case Axis.Y: { // If is vertical
+                case Axis.Y: // If is vertical
                     // Move horizontally
                     this.Point1.Position.X = target.X;
                     this.Point2.Position.X = target.X;
                     this.interactableArea.X = target.X - this.interactableArea.Width / 2;
-                    this.DrawRect.X = (target.X - this.interactableArea.Width / 2) * Constants.PixelsPerUnit;
                     break;
-                }
-                case Axis.X: { // Else if horizontal
+                case Axis.X: // Else if horizontal
                     // Move vertically
                     this.Point1.Position.Y = target.Y;
                     this.Point2.Position.Y = target.Y;
                     this.interactableArea.Y = target.Y - this.interactableArea.Height / 2f;
-                    this.DrawRect.Y = (target.Y - this.interactableArea.Height / 2) * Constants.PixelsPerUnit;
                     break;
-                }
             }
         }
 
@@ -81,18 +86,14 @@ namespace LCM.Game {
 
         public void Interact(InteractionManager manager, InteractType type) {
             switch (type) {
-                case InteractType.RClickPress: {
+                case InteractType.RClickPress:
                     LevelManager.RemoveWire(this);
                     break;
-                }
-                case InteractType.Drag: {
-                    if (manager.DraggingContext.Button == MouseButton.Left) {
+                case InteractType.Drag:
+                    if (manager.DraggingContext.Button == MouseButton.Left)
                         this.Move(manager.MouseTilePosition);
-                    }
-
                     break;
                 }
-            }
         }
     }
 
