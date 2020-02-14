@@ -1,6 +1,6 @@
 /.idea
 /.git
-*bin
-*obj
-*DotSettings
-*spritefont
+*/bin
+*/obj
+**/*DotSettings
+**/*spritefont
