@@ -1,3 +1,4 @@
+using System;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -59,13 +60,17 @@ namespace LCM.Game {
                             break;
                         }
 
-                        (WirePoint wireStart, WirePoint wireEnd) = LevelManager.CreateWire(start, end, manager.SelectedConnector, this);
+                        Wire wire = LevelManager.CreateWire(manager.SelectedConnector, this);
 
-                        manager.SelectedConnector.Connection = wireStart;
-                        this.Connection = wireEnd;
+
+                        manager.SelectedConnector.Connection = wire.Point1;
+                        this.Connection = wire.Point2;
                     }
                     break;
             }
+        }
+        public override string ToString() {
+            return this.Position.ToString();
         }
     }
 }

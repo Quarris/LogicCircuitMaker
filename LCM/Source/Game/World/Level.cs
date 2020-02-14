@@ -12,12 +12,12 @@ namespace LCM.Game {
     public class Level {
         public readonly ObservableCollection<Tile> Tiles;
         public readonly ISet<IInteractable> Interactables;
-        public readonly ObservableCollection<WireSegment> Wires;
+        public readonly ObservableCollection<Wire> Wires;
 
         public Level() {
             this.Tiles = new ObservableCollection<Tile>();
             this.Interactables = new HashSet<IInteractable>();
-            this.Wires = new ObservableCollection<WireSegment>();
+            this.Wires = new ObservableCollection<Wire>();
 
             this.Tiles.ItemAdded += (sender, args) => {
                 Tile tile = args.Item;
@@ -35,15 +35,21 @@ namespace LCM.Game {
             };
 
             this.Wires.ItemAdded += (sender, args) => {
-                WireSegment wireSegment = args.Item;
-                this.Interactables.Add(wireSegment);
-                this.Interactables.Add(wireSegment.Point1);
-                this.Interactables.Add(wireSegment.Point2);
+                Wire wire = args.Item;
+                foreach (WireSegment segment in wire.Segments) {
+                    this.Interactables.Add(segment);
+                    this.Interactables.Add(segment.Point1);
+                    this.Interactables.Add(segment.Point2);
+                }
             };
 
             this.Wires.ItemRemoved += (sender, args) => {
-                WireSegment wireSegment = args.Item;
-                this.Interactables.Remove(wireSegment);
+                Wire wire = args.Item;
+                foreach (WireSegment segment in wire.Segments) {
+                    this.Interactables.Remove(segment);
+                    this.Interactables.Remove(segment.Point1);
+                    this.Interactables.Remove(segment.Point2);
+                }
             };
         }
 
@@ -56,7 +62,7 @@ namespace LCM.Game {
                 tile.Draw(sb, gameTime);
             }
 
-            foreach (WireSegment wire in this.Wires) {
+            foreach (Wire wire in this.Wires) {
                 wire.Draw(sb, gameTime);
             }
         }
@@ -97,12 +103,12 @@ namespace LCM.Game {
             return false;
         }
 
-        public void AddWire(WirePoint p1, WirePoint p2) {
-            this.Wires.Add(new WireSegment(p1, p2));
+        public void AddWire(Wire wire) {
+            this.Wires.Add(wire);
         }
 
-        public void RemoveWire(WireSegment wireSegment) {
-            this.Wires.Remove(wireSegment);
+        public void RemoveWire(Wire wire) {
+            this.Wires.Remove(wire);
         }
     }
 }

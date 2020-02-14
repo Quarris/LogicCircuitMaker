@@ -40,5 +40,9 @@ namespace LCM.Game {
 
         public void Interact(InteractionManager manager, InteractType type) {
         }
+
+        public override string ToString() {
+            return this.Position.ToString();
+        }
     }
 }

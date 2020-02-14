@@ -9,6 +9,8 @@ namespace LCM.Game {
     public class WireSegment : IInteractable {
         public int Layer { get; }
 
+        public Wire Wire;
+
         public readonly WirePoint Point1;
         public readonly WirePoint Point2;
 
@@ -26,7 +28,8 @@ namespace LCM.Game {
         private RectangleF drawRect;
         private RectangleF DrawRect => this.drawRect;
 
-        public WireSegment(WirePoint point1, WirePoint point2) {
+        public WireSegment(Wire wire, WirePoint point1, WirePoint point2) {
+            this.Wire = wire;
             this.Point1 = point1;
             this.Point2 = point2;
             point1.ConnectedWires.Add(this);
@@ -87,7 +90,7 @@ namespace LCM.Game {
         public void Interact(InteractionManager manager, InteractType type) {
             switch (type) {
                 case InteractType.RClickPress:
-                    LevelManager.RemoveWire(this);
+                    LevelManager.RemoveWire(this.Wire);
                     break;
                 case InteractType.Drag:
                     if (manager.DraggingContext.Button == MouseButton.Left)
