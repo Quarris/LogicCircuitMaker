@@ -38,8 +38,8 @@ namespace LCM.Game {
              */
         }
 
-        public static void RemoveWire(Wire wire) {
-            Level.RemoveWire(wire);
+        public static void RemoveWire(WireSegment wireSegment) {
+            Level.RemoveWire(wireSegment);
         }
     }
 }

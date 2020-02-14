@@ -12,12 +12,12 @@ namespace LCM.Game {
     public class Level {
         public readonly ObservableCollection<Tile> Tiles;
         public readonly ISet<IInteractable> Interactables;
-        public readonly ObservableCollection<Wire> Wires;
+        public readonly ObservableCollection<WireSegment> Wires;
 
         public Level() {
             this.Tiles = new ObservableCollection<Tile>();
             this.Interactables = new HashSet<IInteractable>();
-            this.Wires = new ObservableCollection<Wire>();
+            this.Wires = new ObservableCollection<WireSegment>();
 
             this.Tiles.ItemAdded += (sender, args) => {
                 Tile tile = args.Item;
@@ -35,15 +35,15 @@ namespace LCM.Game {
             };
 
             this.Wires.ItemAdded += (sender, args) => {
-                Wire wire = args.Item;
-                this.Interactables.Add(wire);
-                this.Interactables.Add(wire.Point1);
-                this.Interactables.Add(wire.Point2);
+                WireSegment wireSegment = args.Item;
+                this.Interactables.Add(wireSegment);
+                this.Interactables.Add(wireSegment.Point1);
+                this.Interactables.Add(wireSegment.Point2);
             };
 
             this.Wires.ItemRemoved += (sender, args) => {
-                Wire wire = args.Item;
-                this.Interactables.Remove(wire);
+                WireSegment wireSegment = args.Item;
+                this.Interactables.Remove(wireSegment);
             };
         }
 
@@ -56,7 +56,7 @@ namespace LCM.Game {
                 tile.Draw(sb, gameTime);
             }
 
-            foreach (Wire wire in this.Wires) {
+            foreach (WireSegment wire in this.Wires) {
                 wire.Draw(sb, gameTime);
             }
         }
@@ -98,11 +98,11 @@ namespace LCM.Game {
         }
 
         public void AddWire(WirePoint p1, WirePoint p2) {
-            this.Wires.Add(new Wire(p1, p2));
+            this.Wires.Add(new WireSegment(p1, p2));
         }
 
-        public void RemoveWire(Wire wire) {
-            this.Wires.Remove(wire);
+        public void RemoveWire(WireSegment wireSegment) {
+            this.Wires.Remove(wireSegment);
         }
     }
 }

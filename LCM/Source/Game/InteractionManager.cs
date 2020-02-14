@@ -138,7 +138,6 @@ namespace LCM.Game {
             }
 
             // Draw Wire
-
             if (this.IsSelecting) {
                 Vector2 mid1 =
                     new Vector2(this.ClickedPosition.X + (this.MouseTilePosition.X - this.ClickedPosition.X) / 2,
