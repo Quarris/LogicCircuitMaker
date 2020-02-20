@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MLEM.Pathfinding;
 
 namespace LCM.Game {
     public class Wire {
@@ -14,17 +15,16 @@ namespace LCM.Game {
 
         public readonly List<WireSegment> Segments;
 
-        public Wire(Connector start, Connector end, List<Vector2> points) {
+        public Wire(Connector start, Connector end, IReadOnlyList<Vector2> points) {
             this.Connector1 = start;
             this.Connector2 = end;
 
             this.Segments = new List<WireSegment>();
-
+            WirePoint startPoint = new WirePoint(points[0], start);
             for (int i = 0; i < points.Count-1; i++) {
-                WirePoint startPoint = new WirePoint(points[i], i == 0 ? start : null);
                 WirePoint endPoint = new WirePoint(points[i+1], i == points.Count - 2 ? end : null);
-
                 this.Segments.Add(new WireSegment(this, startPoint, endPoint));
+                startPoint = endPoint;
             }
         }
 
