@@ -32,6 +32,27 @@ namespace LCM.Extensions {
             return new Size2(size.Width, size.Height);
         }
 
+        public static Direction2 CardinalTo(this Vector2 origin, Vector2 position) {
+            float angle = position.Translate(-origin.X, -origin.Y).ToAngle();
+            if (angle > -MathHelper.PiOver4 && angle <= MathHelper.PiOver4) {
+                return Direction2.Up;
+            }
+
+            if (angle > MathHelper.PiOver4 && angle <= MathHelper.PiOver2 + MathHelper.PiOver4) {
+                return Direction2.Right;
+            }
+
+            if (angle > MathHelper.PiOver2 + MathHelper.PiOver4 || angle <= -MathHelper.PiOver2 - MathHelper.PiOver4) {
+                return Direction2.Down;
+            }
+
+            if (angle > -MathHelper.PiOver2 - MathHelper.PiOver4 && angle <= -MathHelper.PiOver4) {
+                return Direction2.Left;
+            }
+
+            return Direction2.None;
+        }
+
         public static Direction2 DirectionTo(this Vector2 origin, Vector2 position) {
             float angle = position.Translate(-origin.X, -origin.Y).ToAngle();
             if (angle >= -PiOver8 && angle < PiOver8) {
@@ -66,7 +87,7 @@ namespace LCM.Extensions {
                 return Direction2.UpLeft;
             }
 
-            throw new Exception($"I don't know how you broke this honestly...\n { origin } DirectionTo { position } with angle { angle }");
+            throw new Exception($"I don't know how you broke this honestly...\n {origin} DirectionTo {position} with angle {angle}");
         }
     }
 }

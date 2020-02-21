@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
+using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 
@@ -19,14 +21,7 @@ namespace LCM.Game {
             Vector2 start = startConnector.InteractableArea.Center;
             Vector2 end = endConnector.InteractableArea.Center;
 
-            List<Vector2> points = new List<Vector2> {
-                start,
-                new Vector2(start.X + (end.X - start.X) / 2f, start.Y),
-                new Vector2(start.X + (end.X - start.X) / 2f, end.Y),
-                end
-            };
-
-            Wire wire = new Wire(startConnector, endConnector, points);
+            Wire wire = new Wire(startConnector, endConnector, Helper.GetWirePointPositions(start, end));
 
             Level.AddWire(wire);
 

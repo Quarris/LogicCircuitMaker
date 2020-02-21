@@ -6,7 +6,7 @@ namespace LCM.Utilities {
     }
 
     public static class AxisHelper {
-        public static Axis GetAxis(Direction2 direction) {
+        public static Axis GetAxis(this Direction2 direction) {
             if (direction == Direction2.Left || direction == Direction2.Right) {
                 return Axis.X;
             }

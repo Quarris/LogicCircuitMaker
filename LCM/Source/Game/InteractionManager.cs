@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using LCM.Extensions;
 using LCM.Utilities;
@@ -139,17 +140,10 @@ namespace LCM.Game {
 
             // Draw Wire
             if (this.IsSelecting) {
-                Vector2 mid1 =
-                    new Vector2(this.ClickedPosition.X + (this.MouseTilePosition.X - this.ClickedPosition.X) / 2,
-                        this.ClickedPosition.Y) * Constants.PixelsPerUnit;
-                Vector2 mid2 =
-                    new Vector2(this.ClickedPosition.X + (this.MouseTilePosition.X - this.ClickedPosition.X) / 2,
-                        this.MouseTilePosition.Y) * Constants.PixelsPerUnit;
-                sb.DrawLine(this.ClickedPosition * Constants.PixelsPerUnit, mid1, Color.Red,
-                    Constants.PixelsPerUnit / 16f);
-                sb.DrawLine(mid1, mid2, Color.Red, Constants.PixelsPerUnit / 16f);
-                sb.DrawLine(mid2, this.MouseTilePosition * Constants.PixelsPerUnit, Color.Red,
-                    Constants.PixelsPerUnit / 16f);
+                IList<Vector2> points = Helper.GetWirePointPositions(this.ClickedPosition, this.MouseTilePosition);
+                for (int i = 0; i < points.Count-1; i++) {
+                    sb.DrawLine(points[i] * Constants.PixelsPerUnit, points[i+1] * Constants.PixelsPerUnit, Color.Red, Constants.PixelsPerUnit / 16f);
+                }
             }
         }
 

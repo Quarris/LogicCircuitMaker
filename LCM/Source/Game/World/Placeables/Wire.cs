@@ -12,9 +12,9 @@ namespace LCM.Game {
         public WirePoint Point1 => this.Segments.First().Point1;
         public WirePoint Point2 => this.Segments.Last().Point2;
 
-        public readonly List<WireSegment> Segments;
+        public readonly IList<WireSegment> Segments;
 
-        public Wire(Connector start, Connector end, List<Vector2> points) {
+        public Wire(Connector start, Connector end, IList<Vector2> points) {
             this.Connector1 = start;
             this.Connector2 = end;
 
