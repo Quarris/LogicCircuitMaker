@@ -5,6 +5,7 @@ using LCM.Extensions;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MLEM.Extended.Extensions;
 using MLEM.Extensions;
 using MLEM.Textures;
 using MonoGame.Extended;
@@ -46,7 +47,7 @@ namespace LCM.Game {
                 0.35f,
                 Color.Black
             );
-            sb.FillRectangle(this.DrawArea, Color.GreenYellow);
+            sb.Draw(this.Component.GetTexture(), this.DrawPos, Color.White);
             this.DrawConnectors(sb, gameTime);
         }
 

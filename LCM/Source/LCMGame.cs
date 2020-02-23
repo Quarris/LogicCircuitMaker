@@ -25,7 +25,7 @@ namespace LCM {
             this.sb = new SpriteBatch(this.GraphicsDevice);
             LCM.Game.Components.LoadComponents();
             this.Font = this.Content.Load<SpriteFont>("Fonts/Default");
-            this.TextureMap = new UniformTextureAtlas(this.Content.Load<Texture2D>("Textures/TextureMap"), 128, 128);
+            this.TextureMap = new UniformTextureAtlas(this.Content.Load<Texture2D>("Textures/TextureMap"), 8, 8);
         }
 
         protected override void DoUpdate(GameTime gameTime) {

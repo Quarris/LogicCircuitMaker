@@ -142,7 +142,7 @@ namespace LCM.Game {
             if (this.IsSelecting) {
                 IList<Vector2> points = Helper.GetWirePointPositions(this.ClickedPosition, this.MouseTilePosition);
                 for (int i = 0; i < points.Count-1; i++) {
-                    sb.DrawLine(points[i] * Constants.PixelsPerUnit, points[i+1] * Constants.PixelsPerUnit, Color.Red, Constants.PixelsPerUnit / 16f);
+                    sb.DrawLine(points[i] * Constants.PixelsPerUnit, points[i+1] * Constants.PixelsPerUnit, Color.Red, 6);
                 }
             }
         }

@@ -24,6 +24,9 @@ namespace LCM.Utilities {
         private static float ClampWireValue(double value) {
             value *= 10;
             int rounded = Round(value);
+            if (Math.Abs(value - rounded) < 0.001f) {
+                return rounded / 10f;
+            }
             if (rounded % 2 == 0) {
                 double rem = value - rounded;
                 if (rem > 0 && rem < 0.5f) rounded += 1;

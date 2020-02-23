@@ -10,6 +10,8 @@ namespace LCM.Game {
 
         void DrawOutline(SpriteBatch sb, GameTime gameTime);
 
+        // TODO Add the position of the interaction. Allows to more precisely define the shape for non-rectangular gates
+
         bool CanInteract(InteractType type = InteractType.None);
 
         void Interact(InteractionManager manager, InteractType type);
