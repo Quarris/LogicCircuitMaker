@@ -12,7 +12,7 @@ namespace LCM.Game {
         }
 
         public override TextureRegion GetTexture() {
-            return LCMGame.Inst.TextureMap[2, 0, 1, 1];
+            return LCMGame.Inst.TextureMap[2, 0];
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LCM.Game;
+using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MLEM.Startup;
@@ -34,7 +35,7 @@ namespace LCM {
         }
 
         protected override void DoDraw(GameTime gameTime) {
-            this.GraphicsDevice.Clear(Color.SlateGray);
+            this.GraphicsDevice.Clear(Constants.BackgroundColor);
             this.GameState.Draw(gameTime, this.sb);
         }
     }

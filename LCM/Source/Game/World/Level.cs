@@ -70,11 +70,11 @@ namespace LCM.Game {
             int maxY = (frustum.Bottom / Constants.PixelsPerUnit).Ceil();
             for (int x = minX; x < maxX; x++) {
                 int thickness = x == 0 ? 16 : x % 10 == 0 ? 8 : 4;
-                sb.DrawLine(x * Constants.PixelsPerUnit, minY * Constants.PixelsPerUnit, x * Constants.PixelsPerUnit, maxY * Constants.PixelsPerUnit, Color.DarkSlateGray, thickness);
+                sb.DrawLine(x * Constants.PixelsPerUnit, minY * Constants.PixelsPerUnit, x * Constants.PixelsPerUnit, maxY * Constants.PixelsPerUnit, Constants.LineColor, thickness);
             }
             for (int y = minY; y < maxY; y++) {
                 int thickness = y == 0 ? 16 : y % 10 == 0 ? 8 : 4;
-                sb.DrawLine(minX * Constants.PixelsPerUnit, y * Constants.PixelsPerUnit, maxX * Constants.PixelsPerUnit, y * Constants.PixelsPerUnit, Color.DarkSlateGray, thickness);
+                sb.DrawLine(minX * Constants.PixelsPerUnit, y * Constants.PixelsPerUnit, maxX * Constants.PixelsPerUnit, y * Constants.PixelsPerUnit, Constants.LineColor, thickness);
             }
 
             // Render tiles

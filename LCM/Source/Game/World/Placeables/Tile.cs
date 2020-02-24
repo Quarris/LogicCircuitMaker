@@ -38,12 +38,12 @@ namespace LCM.Game {
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
-            sb.Draw(this.Component.GetTexture(), this.DrawPos, Color.White);
+            sb.Draw(this.Component.GetTexture(), this.DrawPos, Constants.ComponentColor);
             this.DrawConnectors(sb, gameTime);
         }
 
         public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
-            sb.DrawRectangle(this.DrawArea, Color.Black, Constants.PixelsPerUnit/16f);
+            sb.Draw(this.Component.GetTexture(), this.DrawPos, Color.Multiply(Constants.ComponentColor, 1.5f));
         }
 
         public bool CanInteract(InteractType type) {

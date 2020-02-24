@@ -9,7 +9,7 @@ namespace LCM.Game {
     public class WireSegment : IInteractable {
         public int Layer { get; }
 
-        public Wire Wire;
+        public readonly Wire Wire;
 
         public readonly WirePoint Point1;
         public readonly WirePoint Point2;
@@ -70,7 +70,8 @@ namespace LCM.Game {
         public void Draw(SpriteBatch sb, GameTime gameTime) {
             sb.FillRectangle(Helper.RectFromCorners(
                 (this.Point1.Position - new Vector2(1 / 32f)) * Constants.PixelsPerUnit,
-                (this.Point2.Position + new Vector2(1 / 32f)) * Constants.PixelsPerUnit), Color.Red);
+                (this.Point2.Position + new Vector2(1 / 32f)) * Constants.PixelsPerUnit),
+                this.Wire.state == LogicState.Invalid ? Color.DimGray : this.Wire.state == LogicState.Off ? Color.DarkRed : Color.Red);
             this.Point1.Draw(sb, gameTime);
             this.Point2.Draw(sb, gameTime);
         }

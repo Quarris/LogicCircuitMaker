@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -9,9 +8,10 @@ namespace LCM.Game {
         public readonly Connector Connector1;
         public readonly Connector Connector2;
 
+        public LogicState state = LogicState.Invalid;
+
         public WirePoint Point1 => this.Segments.First().Point1;
         public WirePoint Point2 => this.Segments.Last().Point2;
-
         public readonly IList<WireSegment> Segments;
 
         public Wire(Connector start, Connector end, IList<Vector2> points) {

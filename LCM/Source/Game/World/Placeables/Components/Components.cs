@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -11,26 +10,15 @@ namespace LCM.Game {
         public static Component NotGate { get; private set; }
         public static Component AndGate { get; private set; }
         public static Component OrGate { get; private set; }
+        public static Component Input { get; private set; }
+        public static Component Output { get; private set; }
 
         public static void LoadComponents() {
             NotGate = new NotGate();
             AndGate = new AndGate();
             OrGate = new OrGate();
-            /*
-            ComponentList.Clear();
-
-            DirectoryInfo dir = new DirectoryInfo(ComponentDir);
-            Console.WriteLine($"Loading {dir.GetFiles().Length} components");
-            foreach (FileInfo file in dir.GetFiles("*.json")) {
-                using (var reader = file.OpenText()) {
-                    Component component = JsonUtils.Serializer.Deserialize<Component>(new Newtonsoft.Json.JsonTextReader(reader));
-                    ComponentList.Add(component);
-                    Console.WriteLine($"Adding component from {file.Name}");
-                }
-            }
-
-            Console.WriteLine($"Loaded {ComponentList.Count} components")
-            */
+            Input = new Input();
+            Output = new Output();
         }
     }
 }

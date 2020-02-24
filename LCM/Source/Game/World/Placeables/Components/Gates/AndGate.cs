@@ -1,6 +1,4 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MLEM.Extended.Extensions;
 using MLEM.Misc;
 using MLEM.Textures;
 using MonoGame.Extended;
@@ -14,7 +12,7 @@ namespace LCM.Game {
         }
 
         public override TextureRegion GetTexture() {
-            return LCMGame.Inst.TextureMap[1, 0, 1, 1];
+            return LCMGame.Inst.TextureMap[1, 0];
         }
     }
 }

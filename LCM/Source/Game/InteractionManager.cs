@@ -59,18 +59,23 @@ namespace LCM.Game {
             }
 
             if (Input.IsKeyPressed(Keys.D1)) {
-                Console.WriteLine($"Loading component {Components.ComponentList[0].Name}");
                 this.SelectedComponent = 0;
             }
 
             if (Input.IsKeyPressed(Keys.D2)) {
-                Console.WriteLine($"Loading component {Components.ComponentList[1].Name}");
                 this.SelectedComponent = 1;
             }
 
             if (Input.IsKeyPressed(Keys.D3)) {
-                Console.WriteLine($"Loading component {Components.ComponentList[2].Name}");
                 this.SelectedComponent = 2;
+            }
+
+            if (Input.IsKeyPressed(Keys.OemMinus)) {
+                this.SelectedComponent = 3;
+            }
+
+            if (Input.IsKeyPressed(Keys.OemPlus)) {
+                this.SelectedComponent = 4;
             }
 
             /** Scroll **/
@@ -151,7 +156,7 @@ namespace LCM.Game {
             } else if (this.HoveredItem == null) { // Render tile preview
                 Component component = Components.ComponentList[this.SelectedComponent];
                 if (!LevelManager.Level.IsAreaOccupied(MouseTilePosition.FloorToPoint(), component.Size)) {
-                    sb.Draw(component.GetTexture(), this.MouseTilePosition.Floor() * Constants.PixelsPerUnit, Color.White);
+                    sb.Draw(component.GetTexture(), this.MouseTilePosition.Floor() * Constants.PixelsPerUnit, Constants.ComponentColor);
                 }
             }
         }
