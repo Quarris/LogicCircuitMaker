@@ -7,6 +7,7 @@ using MonoGame.Extended;
 
 namespace LCM.Game {
     public class GameState {
+        public static GameState Get => LCMGame.Inst.GameState;
         public Level Level { get; }
         public Camera Camera { get; }
         private InputHandler Input => LCMGame.Input;

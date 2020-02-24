@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using MLEM.Textures;
 using MonoGame.Extended;
 
@@ -21,6 +20,8 @@ namespace LCM.Game {
             this.Outputs = new Dictionary<string, Func<Point, Connector>>();
             Components.ComponentList.Insert(this.Id, this);
         }
+
+
 
         public abstract TextureRegion GetTexture();
     }

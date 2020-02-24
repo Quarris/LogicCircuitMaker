@@ -1,6 +1,12 @@
+using System;
 using System.Collections.Generic;
+using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MLEM.Cameras;
+using MLEM.Extended.Extensions;
+using MLEM.Extensions;
+using MLEM.Startup;
 using MonoGame.Extended;
 using MonoGame.Extended.Collections;
 
@@ -54,6 +60,25 @@ namespace LCM.Game {
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
+            Camera camera = GameState.Get.Camera;
+            RectangleF frustum = camera.GetVisibleRectangle().ToExtended();
+
+            int minX = (frustum.Left / Constants.PixelsPerUnit).Floor();
+            int minY = (frustum.Top / Constants.PixelsPerUnit).Floor();
+            int maxX = (frustum.Right / Constants.PixelsPerUnit).Ceil();
+            int maxY = (frustum.Bottom / Constants.PixelsPerUnit).Ceil();
+            for (int x = minX; x < maxX; x++) {
+                int thickness = x == 0 ? 16 : x % 10 == 0 ? 8 : 4;
+                sb.DrawLine(x * Constants.PixelsPerUnit, minY * Constants.PixelsPerUnit, x * Constants.PixelsPerUnit, maxY * Constants.PixelsPerUnit, Color.DarkSlateGray, thickness);
+            }
+
+            for (int y = minY; y < maxY; y++) {
+                int thickness = y == 0 ? 16 : y % 10 == 0 ? 8 : 4;
+                sb.DrawLine(minX * Constants.PixelsPerUnit, y * Constants.PixelsPerUnit, maxX * Constants.PixelsPerUnit, y * Constants.PixelsPerUnit, Color.DarkSlateGray, thickness);
+            }
+
+            Console.WriteLine(camera.GetVisibleRectangle());
+
             foreach (Tile tile in this.Tiles) {
                 tile.Draw(sb, gameTime);
             }

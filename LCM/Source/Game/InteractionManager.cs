@@ -7,8 +7,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MLEM.Cameras;
+using MLEM.Extensions;
 using MLEM.Input;
 using MLEM.Startup;
+using MLEM.Textures;
 using MonoGame.Extended;
 
 namespace LCM.Game {
@@ -86,8 +88,7 @@ namespace LCM.Game {
                 if (this.HoveredItem != null) {
                     this.HoveredItem.Interact(this, InteractType.LClickPress);
                 } else {
-                    LevelManager.TryAddTile(MouseTilePosition.FloorToPoint(),
-                        Components.ComponentList[this.SelectedComponent]);
+                    LevelManager.TryAddTile(MouseTilePosition.FloorToPoint(), Components.ComponentList[this.SelectedComponent]);
                 }
             }
 
@@ -129,13 +130,17 @@ namespace LCM.Game {
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
-            Point tilePos = this.MouseTilePosition.FloorToPoint();
-
             if (this.HoveredItem != null && this.HoveredItem.CanInteract()) {
                 this.HoveredItem.DrawOutline(sb, gameTime);
-            } else if (!this.IsWireSelected) {
-                sb.DrawRectangle(tilePos.ToVector2() * Constants.PixelsPerUnit, new Vector2(Constants.PixelsPerUnit),
-                    Color.Black, Constants.PixelsPerUnit / 16f);
+                if (this.HoveredItem is Tile tile) {
+                    sb.DrawCenteredString(
+                        LCMGame.Inst.Font,
+                        tile.Component.Name,
+                        tile.DrawPos + new Vector2(tile.TileSize.Width / 2f, -1) * Constants.PixelsPerUnit,
+                        0.35f,
+                        Color.Black
+                    );
+                }
             }
 
             // Draw Wire
@@ -143,6 +148,11 @@ namespace LCM.Game {
                 IList<Vector2> points = Helper.GetWirePointPositions(this.ClickedPosition, this.MouseTilePosition);
                 for (int i = 0; i < points.Count-1; i++) {
                     sb.DrawLine(points[i] * Constants.PixelsPerUnit, points[i+1] * Constants.PixelsPerUnit, Color.Red, 6);
+                }
+            } else if (this.HoveredItem == null) {
+                Component component = Components.ComponentList[this.SelectedComponent];
+                if (!LevelManager.Level.IsAreaOccupied(MouseTilePosition.FloorToPoint(), component.Size)) {
+                    sb.Draw(component.GetTexture(), this.MouseTilePosition.Floor() * Constants.PixelsPerUnit, Color.White);
                 }
             }
         }

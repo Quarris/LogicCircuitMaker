@@ -5,8 +5,6 @@ using LCM.Extensions;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MLEM.Extended.Extensions;
-using MLEM.Extensions;
 using MLEM.Textures;
 using MonoGame.Extended;
 
@@ -40,13 +38,6 @@ namespace LCM.Game {
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
-            sb.DrawCenteredString(
-                LCMGame.Inst.Font,
-                this.Component.Name,
-                this.DrawPos + new Vector2(this.TileSize.Width / 2f, -1) * Constants.PixelsPerUnit,
-                0.35f,
-                Color.Black
-            );
             sb.Draw(this.Component.GetTexture(), this.DrawPos, Color.White);
             this.DrawConnectors(sb, gameTime);
         }

@@ -4,7 +4,7 @@ namespace LCM {
     public static class Program {
         [STAThread]
         static void Main(){
-            using (var game = new LCMGame())
+            using (LCMGame game = new LCMGame())
                 game.Run();
         }
     }

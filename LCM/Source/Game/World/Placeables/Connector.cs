@@ -31,7 +31,7 @@ namespace LCM.Game {
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
             sb.DrawCircle(this.DrawArea, 10, Color.Aqua, 10);
-            sb.DrawLine(this.DrawPos, this.DrawPos + (this.Direction.Offset().ToVector2()/2f) * Constants.PixelsPerUnit, Color.Black, 4);
+            sb.DrawLine(this.DrawPos, this.DrawPos + this.Direction.Offset().ToVector2()/2f * Constants.PixelsPerUnit, Color.Black, 6);
         }
 
         public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
