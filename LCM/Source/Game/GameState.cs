@@ -1,9 +1,11 @@
+using LCM.Extensions;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MLEM.Cameras;
 using MLEM.Input;
 using MonoGame.Extended;
+using MonoGame.Extended.BitmapFonts;
 
 namespace LCM.Game {
     public class GameState {
@@ -38,17 +40,15 @@ namespace LCM.Game {
 
         public void Draw(GameTime gameTime, SpriteBatch sb) {
             sb.Begin(transformMatrix: this.Camera.ViewMatrix, samplerState: SamplerState.PointClamp);
-            sb.FillRectangle(float.MinValue, -1, float.MaxValue * 16, 2 * 16, Color.Black);
-            sb.FillRectangle(-1, float.MinValue, 2 * 16, float.MaxValue * 16, Color.Black);
             // Render Logic Components (Gates etc...)
             this.Level.Draw(sb, gameTime);
-            // Render Robot
-            // Robot.Draw();
             this.interactionManager.Draw(sb, gameTime);
             sb.End();
             sb.Begin(samplerState:SamplerState.PointClamp);
             // Selected Gate
             sb.DrawString(LCMGame.Inst.Font, Components.ComponentList[this.interactionManager.SelectedComponent].Name, new Vector2(10), Color.Black, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0);
+
+            sb.DrawString(LCMGame.Inst.Font, $"{this.interactionManager.MouseTilePosition.FloorToPoint().X} : {this.interactionManager.MouseTilePosition.FloorToPoint().Y}", new Vector2(10, LCMGame.Inst.GraphicsDevice.Viewport.Height - LCMGame.Inst.Font.MeasureString("R").Y * 0.1f - 10), Color.Black, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0);
             sb.End();
         }
     }

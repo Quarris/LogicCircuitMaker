@@ -143,13 +143,12 @@ namespace LCM.Game {
                 }
             }
 
-            // Draw Wire
-            if (this.IsSelecting) {
+            if (this.IsSelecting) { // Render wire preview
                 IList<Vector2> points = Helper.GetWirePointPositions(this.ClickedPosition, this.MouseTilePosition);
                 for (int i = 0; i < points.Count-1; i++) {
                     sb.DrawLine(points[i] * Constants.PixelsPerUnit, points[i+1] * Constants.PixelsPerUnit, Color.Red, 6);
                 }
-            } else if (this.HoveredItem == null) {
+            } else if (this.HoveredItem == null) { // Render tile preview
                 Component component = Components.ComponentList[this.SelectedComponent];
                 if (!LevelManager.Level.IsAreaOccupied(MouseTilePosition.FloorToPoint(), component.Size)) {
                     sb.Draw(component.GetTexture(), this.MouseTilePosition.Floor() * Constants.PixelsPerUnit, Color.White);

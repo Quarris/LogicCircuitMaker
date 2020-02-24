@@ -61,8 +61,9 @@ namespace LCM.Game {
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
             Camera camera = GameState.Get.Camera;
-            RectangleF frustum = camera.GetVisibleRectangle().ToExtended();
 
+            // Render the grid
+            RectangleF frustum = camera.GetVisibleRectangle().ToExtended();
             int minX = (frustum.Left / Constants.PixelsPerUnit).Floor();
             int minY = (frustum.Top / Constants.PixelsPerUnit).Floor();
             int maxX = (frustum.Right / Constants.PixelsPerUnit).Ceil();
@@ -71,16 +72,17 @@ namespace LCM.Game {
                 int thickness = x == 0 ? 16 : x % 10 == 0 ? 8 : 4;
                 sb.DrawLine(x * Constants.PixelsPerUnit, minY * Constants.PixelsPerUnit, x * Constants.PixelsPerUnit, maxY * Constants.PixelsPerUnit, Color.DarkSlateGray, thickness);
             }
-
             for (int y = minY; y < maxY; y++) {
                 int thickness = y == 0 ? 16 : y % 10 == 0 ? 8 : 4;
                 sb.DrawLine(minX * Constants.PixelsPerUnit, y * Constants.PixelsPerUnit, maxX * Constants.PixelsPerUnit, y * Constants.PixelsPerUnit, Color.DarkSlateGray, thickness);
             }
 
+            // Render tiles
             foreach (Tile tile in this.Tiles) {
                 tile.Draw(sb, gameTime);
             }
 
+            // Render Wires
             foreach (Wire wire in this.Wires) {
                 wire.Draw(sb, gameTime);
             }
