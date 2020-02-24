@@ -77,8 +77,6 @@ namespace LCM.Game {
                 sb.DrawLine(minX * Constants.PixelsPerUnit, y * Constants.PixelsPerUnit, maxX * Constants.PixelsPerUnit, y * Constants.PixelsPerUnit, Color.DarkSlateGray, thickness);
             }
 
-            Console.WriteLine(camera.GetVisibleRectangle());
-
             foreach (Tile tile in this.Tiles) {
                 tile.Draw(sb, gameTime);
             }
