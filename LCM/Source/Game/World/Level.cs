@@ -77,14 +77,14 @@ namespace LCM.Game {
                 sb.DrawLine(minX * Constants.PixelsPerUnit, y * Constants.PixelsPerUnit, maxX * Constants.PixelsPerUnit, y * Constants.PixelsPerUnit, Constants.LineColor, thickness);
             }
 
-            // Render tiles
-            foreach (Tile tile in this.Tiles) {
-                tile.Draw(sb, gameTime);
-            }
-
             // Render Wires
             foreach (Wire wire in this.Wires) {
                 wire.Draw(sb, gameTime);
+            }
+
+            // Render tiles
+            foreach (Tile tile in this.Tiles) {
+                tile.Draw(sb, gameTime);
             }
         }
 

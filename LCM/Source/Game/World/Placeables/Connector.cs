@@ -1,4 +1,5 @@
 using System;
+using LCM.Extensions;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,31 +12,26 @@ namespace LCM.Game {
     public class Connector : IInteractable {
         public int Layer { get; }
         public Vector2 Position { get; }
-        public Direction2 Direction;
+        public readonly Direction2 Direction;
         public WirePoint Connection;
 
         public RectangleF InteractableArea { get; }
 
-        public Vector2 DrawPos { get; }
-        public CircleF DrawArea { get; }
-
         public Connector(Point tilePos, Vector2 position, Direction2 direction) {
-            this.Position = position;
+            this.Position = tilePos.ToVector2() + position;
             this.Direction = direction;
-            this.DrawPos = (tilePos.ToVector2() + position) * Constants.PixelsPerUnit;
             Vector2 size = new Vector2(1 / 6f);
-            this.DrawArea = new CircleF(this.DrawPos, Constants.PixelsPerUnit * size.X / 2f);
-            this.InteractableArea = new RectangleF(tilePos.ToVector2() + position - size, size * 2);
+            this.InteractableArea = new RectangleF(this.Position - size, size * 2);
             this.Layer = 10;
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
-            sb.DrawCircle(this.DrawArea, 10, Color.Aqua, 10);
-            sb.DrawLine(this.DrawPos, this.DrawPos + this.Direction.Offset().ToVector2()/2f * Constants.PixelsPerUnit, Color.Black, 6);
+            sb.TiledDrawLine(this.Position, this.Position + this.Direction.Offset().ToVector2()/2f, Color.Black, 6);
+            sb.TiledDrawCircle(this.Position, 1/12f, 10, Color.Aqua, 10);
         }
 
         public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
-            sb.DrawCircle(this.DrawArea, 10, Color.Black, 3);
+            sb.TiledDrawCircle(this.Position, 1/12f, 10, Color.Aqua, 3);
         }
 
         public bool CanInteract(InteractType type) {

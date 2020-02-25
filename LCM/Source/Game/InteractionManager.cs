@@ -141,7 +141,7 @@ namespace LCM.Game {
                     sb.DrawCenteredString(
                         LCMGame.Inst.Font,
                         tile.Component.Name,
-                        tile.DrawPos + new Vector2(tile.TileSize.Width / 2f, -1) * Constants.PixelsPerUnit,
+                        tile.Position.ToVector2() * Constants.PixelsPerUnit + new Vector2(tile.Size.Width / 2f, -1) * Constants.PixelsPerUnit,
                         0.35f,
                         Color.Black
                     );

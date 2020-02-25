@@ -1,10 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
+using LCM.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MLEM.Textures;
 
 namespace LCM.Game {
     public class Wire {
+        public static readonly TextureRegion Texture = LCMGame.Inst.TextureMap[0, 2];
+
         public readonly Connector Connector1;
         public readonly Connector Connector2;
 
@@ -13,6 +17,8 @@ namespace LCM.Game {
         public WirePoint Point1 => this.Segments.First().Point1;
         public WirePoint Point2 => this.Segments.Last().Point2;
         public readonly IList<WireSegment> Segments;
+
+        public Color Color => this.state == LogicState.Invalid ? Color.DimGray : this.state == LogicState.Off ? Color.DarkRed : Color.Red;
 
         public Wire(Connector start, Connector end, IList<Vector2> points) {
             this.Connector1 = start;
@@ -30,7 +36,13 @@ namespace LCM.Game {
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
             foreach (WireSegment segment in this.Segments) {
-                segment.Draw(sb, gameTime);
+                sb.TiledDrawLine(segment.Point1.Position, segment.Point2.Position, this.Color, 6);
+            }
+
+            foreach (WireSegment segment in this.Segments) {
+                if (segment.Point1 != this.Point1) {
+                    sb.TiledDrawCircle(segment.Point1.Position, 1/12f, 10, Color.Aqua, 10);
+                }
             }
         }
     }

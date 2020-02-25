@@ -1,9 +1,12 @@
 using System;
+using LCM.Extensions;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MLEM.Extended.Extensions;
 using MLEM.Input;
 using MonoGame.Extended;
+using MlemRect = MLEM.Misc.RectangleF;
 
 namespace LCM.Game {
     public class WireSegment : IInteractable {
@@ -34,7 +37,8 @@ namespace LCM.Game {
             this.Point2 = point2;
             point1.ConnectedWires.Add(this);
             point2.ConnectedWires.Add(this);
-            this.interactableArea = Helper.RectFromCorners(point1.Position - new Vector2(1 / 16f), point2.Position + new Vector2(1 / 16f));
+
+            this.interactableArea = MlemRect.FromCorners(point1.Position - new Vector2(1 / 16f), point2.Position + new Vector2(1 / 16f)).ToExtended();
             this.Axis = Math.Abs(this.Point1.Position.X - this.Point2.Position.X) < 0.0001f ? Axis.Y : Axis.X;
             switch (this.Axis) {
                 case Axis.Y:
@@ -67,17 +71,9 @@ namespace LCM.Game {
             }
         }
 
-        public void Draw(SpriteBatch sb, GameTime gameTime) {
-            sb.FillRectangle(Helper.RectFromCorners(
-                (this.Point1.Position - new Vector2(1 / 32f)) * Constants.PixelsPerUnit,
-                (this.Point2.Position + new Vector2(1 / 32f)) * Constants.PixelsPerUnit),
-                this.Wire.state == LogicState.Invalid ? Color.DimGray : this.Wire.state == LogicState.Off ? Color.DarkRed : Color.Red);
-            this.Point1.Draw(sb, gameTime);
-            this.Point2.Draw(sb, gameTime);
-        }
-
         public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
-            sb.DrawRectangle(this.DrawRect, Color.Black, 4);
+            RectangleF rectangle = MlemRect.FromCorners(this.Point1.Position.Translate(-1/12f, -1/12f), this.Point2.Position.Translate(1/12f, 1/12f)).ToExtended();
+            sb.TiledDrawRectangle(rectangle, Color.Black, 4);
         }
 
         public bool CanInteract(InteractType type) {

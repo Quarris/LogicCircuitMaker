@@ -11,39 +11,35 @@ using MonoGame.Extended;
 namespace LCM.Game {
     public class Tile : IInteractable {
         public int Layer { get; }
-        public Point TilePosition { get; private set; }
-        public Size TileSize => this.Component.Size;
-        public Rectangle Area => new Rectangle(this.TilePosition, this.TileSize);
+        public Point Position { get; private set; }
+        public Size Size => this.Component.Size;
+        public Rectangle Area => new Rectangle(this.Position, this.Size);
 
         public readonly Component Component;
         public readonly Dictionary<string, Connector> Connectors;
 
-        public Vector2 DrawPos => this.TilePosition.ToVector2() * Constants.PixelsPerUnit;
-        public Size2 DrawSize => this.TileSize.ToSize2() * Constants.PixelsPerUnit;
-        public RectangleF DrawArea => new RectangleF(this.DrawPos, this.DrawSize);
-
         public RectangleF InteractableArea { get; }
 
-        public Tile(Point tilePosition, Component component) {
-            this.TilePosition = tilePosition;
+        public Tile(Point position, Component component) {
+            this.Position = position;
             this.Component = component;
             this.Connectors = new Dictionary<string, Connector>();
             foreach (KeyValuePair<string, Func<Point, Connector>> pair in component.Inputs.Concat(component.Outputs)) {
-                this.Connectors.Add(pair.Key, pair.Value(tilePosition));
+                this.Connectors.Add(pair.Key, pair.Value(position));
             }
 
             this.Layer = 0;
 
-            this.InteractableArea = new RectangleF(tilePosition, this.TileSize.ToSize2());
+            this.InteractableArea = new RectangleF(position, this.Size.ToSize2());
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
-            sb.Draw(this.Component.GetTexture(), this.DrawPos, Constants.ComponentColor);
+            sb.TiledDraw(this.Component.GetTexture(), this.Position.ToVector2(), Constants.ComponentColor);
             this.DrawConnectors(sb, gameTime);
         }
 
         public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
-            sb.Draw(this.Component.GetTexture(), this.DrawPos, Color.Multiply(Constants.ComponentColor, 1.5f));
+            sb.TiledDraw(this.Component.GetTexture(), this.Position.ToVector2(), Color.Multiply(Constants.ComponentColor, 1.5f));
         }
 
         public bool CanInteract(InteractType type) {
@@ -52,7 +48,7 @@ namespace LCM.Game {
 
         public void Interact(InteractionManager manager, InteractType type) {
             if (type == InteractType.RClickPress) {
-                LevelManager.RemoveTile(this.TilePosition);
+                LevelManager.RemoveTile(this.Position);
             }
         }
 
