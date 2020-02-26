@@ -15,8 +15,8 @@ namespace LCM.Game {
             tile.Outputs["Q"].LogicState = tile.Inputs["A"].LogicState | tile.Inputs["B"].LogicState;
         }
 
-        public override TextureRegion GetTexture() {
-            return LCMGame.Inst.TextureMap[2, 0];
+        public override TextureRegion GetTexture(UniformTextureAtlas atlas) {
+            return atlas[2, 0];
         }
     }
 }

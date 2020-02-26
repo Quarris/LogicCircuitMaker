@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using MLEM.Misc;
 using MLEM.Textures;
@@ -10,11 +11,11 @@ namespace LCM.Game {
         }
 
         public override void Operate(Tile tile) {
-            tile.Outputs["Q"].LogicState = LogicState.On;
+            tile.Outputs["Q"].LogicState = (LogicState) new Random().Next(0, 2);
         }
 
-        public override TextureRegion GetTexture() {
-            return LCMGame.Inst.TextureMap[0, 1];
+        public override TextureRegion GetTexture(UniformTextureAtlas atlas) {
+            return atlas[0, 1];
         }
     }
 }

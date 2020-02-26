@@ -49,7 +49,7 @@ namespace LCM.Game {
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
-            sb.TiledDraw(this.Component.GetTexture(), this.Position.ToVector2(), Constants.ComponentColor);
+            sb.TiledDraw(this.Component.GetTexture(LCMGame.Inst.TextureMap), this.Position.ToVector2(), Constants.ComponentColor);
             foreach (KeyValuePair<string, Connector> connector in this.Connectors) {
                 sb.TiledDrawLine(connector.Value.Position, connector.Value.Position + connector.Value.Direction.Offset().ToVector2()/2f, Color.Black, 6);
                 sb.TiledDrawCircle(connector.Value.Position, 1/12f, 10, Color.Aqua, 10);
@@ -57,7 +57,7 @@ namespace LCM.Game {
         }
 
         public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
-            sb.TiledDraw(this.Component.GetTexture(), this.Position.ToVector2(), Color.Multiply(Constants.ComponentColor, 1.5f));
+            sb.TiledDraw(this.Component.GetTexture(LCMGame.Inst.TextureMap), this.Position.ToVector2(), Color.Multiply(Constants.ComponentColor, 1.5f));
         }
 
         public bool CanInteract(InteractType type) {

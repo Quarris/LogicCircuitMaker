@@ -13,8 +13,8 @@ namespace LCM.Game {
 
         }
 
-        public override TextureRegion GetTexture() {
-            return LCMGame.Inst.TextureMap[1, 1];
+        public override TextureRegion GetTexture(UniformTextureAtlas atlas) {
+            return atlas[1, 1];
         }
     }
 }

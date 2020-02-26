@@ -33,6 +33,6 @@ namespace LCM.Game {
 
         public abstract void Operate(Tile tile);
 
-        public abstract TextureRegion GetTexture();
+        public abstract TextureRegion GetTexture(UniformTextureAtlas atlas);
     }
 }

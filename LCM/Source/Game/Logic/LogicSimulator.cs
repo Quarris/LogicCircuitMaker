@@ -51,14 +51,15 @@ namespace LCM.Game {
                     return;
                 }
 
-                Tile next = this.workedOn.Outputs
+                IEnumerable<Tile> tiles = this.workedOn.Outputs
                     .Where(kv => kv.Value.LogicState != LogicState.Undefined)
                     .Select(kv => kv.Value)
-                    .Select(conn => conn.Wire.Connector1 == conn ? conn.Wire.Connector2 : conn.Wire.Connector1)
-                    .FirstOrDefault()?.Tile;
+                    .Where(conn => conn.Wire != null)
+                    .Select(conn => conn.Wire.Connector1 == conn ? conn.Wire.Connector2.Tile : conn.Wire.Connector1.Tile)
+                    .Where(tile => !(tile.Component is Output) && !this.queue.Contains(tile));
 
-                if (next != null && !(next.Component is Output) && !this.queue.Contains(next)) {
-                    this.queue.Enqueue(next);
+                foreach (Tile tile in tiles) {
+                    this.queue.Enqueue(tile);
                 }
             }
 

@@ -12,6 +12,8 @@ namespace LCM.Game {
         public static Component OrGate { get; private set; }
         public static Component Input { get; private set; }
         public static Component Output { get; private set; }
+        public static Component Splitter { get; private set; }
+        public static Component XorGate { get; private set; }
 
         public static void LoadComponents() {
             NotGate = new NotGate();
@@ -19,6 +21,8 @@ namespace LCM.Game {
             OrGate = new OrGate();
             Input = new Input();
             Output = new Output();
+            XorGate = new XorGate();
+            Splitter = new Splitter();
         }
     }
 }
