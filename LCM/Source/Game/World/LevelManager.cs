@@ -9,8 +9,8 @@ namespace LCM.Game {
     public class LevelManager {
         public static Level Level => LCMGame.Inst.GameState.Level;
 
-        public static bool TryAddTile(Point position, Component component) {
-            return Level.TryAddTile(position, component);
+        public static bool TryAddTile(Point position, Tile tile) {
+            return Level.TryAddTile(position, tile);
         }
 
         public static void RemoveTile(Point point) {

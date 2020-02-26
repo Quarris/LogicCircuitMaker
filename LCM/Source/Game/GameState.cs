@@ -47,7 +47,7 @@ namespace LCM.Game {
 
             sb.Begin(samplerState:SamplerState.PointClamp);
             // Selected Gate
-            sb.DrawString(LCMGame.Inst.Font, Components.ComponentList[this.interactionManager.SelectedComponent].Name, new Vector2(10), Color.Black, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0);
+            //sb.DrawString(LCMGame.Inst.Font, Components.ComponentList[this.interactionManager.SelectedComponent].Name, new Vector2(10), Color.Black, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0);
 
             sb.DrawString(LCMGame.Inst.Font, $"{this.interactionManager.MouseTilePosition.FloorToPoint().X} : {this.interactionManager.MouseTilePosition.FloorToPoint().Y}", new Vector2(10, LCMGame.Inst.GraphicsDevice.Viewport.Height - LCMGame.Inst.Font.MeasureString("R").Y * 0.1f - 10), Color.Black, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0);
             sb.End();

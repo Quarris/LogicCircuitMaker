@@ -23,6 +23,7 @@ namespace LCM {
 
         protected override void LoadContent() {
             base.LoadContent();
+            JsonUtils.Init();
             this.sb = new SpriteBatch(this.GraphicsDevice);
             LCM.Game.Components.LoadComponents();
             this.Font = this.Content.Load<SpriteFont>("Fonts/Default");

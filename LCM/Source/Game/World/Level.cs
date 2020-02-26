@@ -87,9 +87,8 @@ namespace LCM.Game {
             }
         }
 
-        public bool TryAddTile(Point position, Component component) {
-            if (!this.IsAreaOccupied(position, component.Size)) {
-                Tile tile = new Tile(position, component);
+        public bool TryAddTile(Point position, Tile tile) {
+            if (!this.IsAreaOccupied(position, tile.Size)) {
                 this.Tiles.Add(tile);
                 return true;
             }

@@ -77,7 +77,7 @@ namespace LCM.Game {
         }
 
         public override string ToString() {
-            return $"{this.Component.Name}{this.Position}";
+            return $"{this.Component.DisplayName}{this.Position}";
         }
     }
 }

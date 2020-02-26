@@ -44,3 +44,18 @@
 /processorParam:TextureFormat=Color
 /build:Textures/TextureMap.png
 
+#begin Components/AndGate.json
+/copy:Components/AndGate.json
+
+#begin Components/NotGate.json
+/copy:Components/NotGate.json
+
+#begin Components/OrGate.json
+/copy:Components/OrGate.json
+
+#begin Components/Splitter.json
+/copy:Components/Splitter.json
+
+#begin Components/XorGate.json
+/copy:Components/XorGate.json
+

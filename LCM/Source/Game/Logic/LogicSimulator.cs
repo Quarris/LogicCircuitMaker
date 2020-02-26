@@ -55,8 +55,7 @@ namespace LCM.Game {
                     .Where(kv => kv.Value.LogicState != LogicState.Undefined)
                     .Select(kv => kv.Value)
                     .Where(conn => conn.Wire != null)
-                    .Select(conn => conn.Wire.Connector1 == conn ? conn.Wire.Connector2.Tile : conn.Wire.Connector1.Tile)
-                    .Where(tile => !(tile.Component is Output) && !this.queue.Contains(tile));
+                    .Select(conn => conn.Wire.Connector1 == conn ? conn.Wire.Connector2.Tile : conn.Wire.Connector1.Tile);
 
                 foreach (Tile tile in tiles) {
                     this.queue.Enqueue(tile);
@@ -78,7 +77,7 @@ namespace LCM.Game {
         }
 
         private void CollectInputs() {
-            foreach (Tile tile in this.level.Tiles.Where(t => t.Component is Input)) {
+            foreach (Tile tile in this.level.Tiles) {
                 this.queue.Enqueue(tile);
             }
         }
