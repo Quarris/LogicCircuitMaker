@@ -12,7 +12,7 @@ namespace LCM.Game {
         }
 
         public override void Operate(Tile tile) {
-            tile.Outputs["Q"].LogicState = tile.Inputs["A"].LogicState & tile.Inputs["B"].LogicState;
+            tile.Outputs["Q"].LogicState = tile.Inputs["A"].LogicState | tile.Inputs["B"].LogicState;
         }
 
         public override TextureRegion GetTexture() {
