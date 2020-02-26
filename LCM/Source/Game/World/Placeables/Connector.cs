@@ -13,21 +13,32 @@ namespace LCM.Game {
         public int Layer { get; }
         public Vector2 Position { get; }
         public readonly Direction2 Direction;
-        public WirePoint Connection;
+        public Wire Wire;
+        public Tile Tile;
+
+        private LogicState logicState = LogicState.Undefined;
+        public LogicState LogicState {
+            get => this.logicState;
+            set {
+                if (this.logicState == value) {
+                    return;
+                }
+                this.logicState = value;
+                if (this.Wire != null) {
+                    this.Wire.LogicState = value;
+                }
+            }
+        }
 
         public RectangleF InteractableArea { get; }
 
-        public Connector(Point tilePos, Vector2 position, Direction2 direction) {
-            this.Position = tilePos.ToVector2() + position;
+        public Connector(Tile tile, Vector2 position, Direction2 direction) {
+            this.Tile = tile;
+            this.Position = tile.Position.ToVector2() + position;
             this.Direction = direction;
             Vector2 size = new Vector2(1 / 6f);
             this.InteractableArea = new RectangleF(this.Position - size, size * 2);
             this.Layer = 10;
-        }
-
-        public void Draw(SpriteBatch sb, GameTime gameTime) {
-            sb.TiledDrawLine(this.Position, this.Position + this.Direction.Offset().ToVector2()/2f, Color.Black, 6);
-            sb.TiledDrawCircle(this.Position, 1/12f, 10, Color.Aqua, 10);
         }
 
         public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
@@ -35,7 +46,7 @@ namespace LCM.Game {
         }
 
         public bool CanInteract(InteractType type) {
-            return this.Connection == null;
+            return this.Wire == null;
         }
 
         public void Interact(InteractionManager manager, InteractType type) {
@@ -59,12 +70,17 @@ namespace LCM.Game {
                         Wire wire = LevelManager.CreateWire(manager.SelectedConnector, this);
 
 
-                        manager.SelectedConnector.Connection = wire.Point1;
-                        this.Connection = wire.Point2;
+                        manager.SelectedConnector.Wire = wire;
+                        this.Wire = wire;
                     }
                     break;
             }
         }
+
+        public static implicit operator LogicState(Connector connector) {
+            return connector.LogicState;
+        }
+
         public override string ToString() {
             return this.Position.ToString();
         }

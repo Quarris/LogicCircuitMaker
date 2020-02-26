@@ -20,16 +20,8 @@ namespace LCM.Game {
         public Axis Axis { get; }
 
         private RectangleF interactableArea;
-        public RectangleF InteractableArea {
-            get => this.interactableArea;
-            set {
-                this.interactableArea = value;
-                this.drawRect = Helper.RectFromCorners((Vector2) value.TopLeft * Constants.PixelsPerUnit, (Vector2) value.BottomRight * Constants.PixelsPerUnit);
-            }
-        }
+        public RectangleF InteractableArea => this.interactableArea;
 
-        private RectangleF drawRect;
-        private RectangleF DrawRect => this.drawRect;
 
         public WireSegment(Wire wire, WirePoint point1, WirePoint point2) {
             this.Wire = wire;
@@ -72,7 +64,15 @@ namespace LCM.Game {
         }
 
         public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
-            RectangleF rectangle = MlemRect.FromCorners(this.Point1.Position.Translate(-1/12f, -1/12f), this.Point2.Position.Translate(1/12f, 1/12f)).ToExtended();
+            RectangleF rectangle = this.interactableArea;
+            if (this.Axis == Axis.Y) {
+                rectangle.X += 0.1f;
+                rectangle.Width -= 0.2f;
+            } else if (this.Axis == Axis.X) {
+                rectangle.Y += 0.1f;
+                rectangle.Height -= 0.2f;
+            }
+
             sb.TiledDrawRectangle(rectangle, Color.Black, 4);
         }
 
@@ -87,6 +87,8 @@ namespace LCM.Game {
         public void Interact(InteractionManager manager, InteractType type) {
             switch (type) {
                 case InteractType.RClickPress:
+                    this.Wire.Connector1.Wire = null;
+                    this.Wire.Connector2.Wire = null;
                     LevelManager.RemoveWire(this.Wire);
                     break;
                 case InteractType.Drag:

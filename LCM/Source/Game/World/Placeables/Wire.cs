@@ -12,13 +12,28 @@ namespace LCM.Game {
         public readonly Connector Connector1;
         public readonly Connector Connector2;
 
-        public LogicState state = LogicState.Invalid;
+        private LogicState logicState = LogicState.Undefined;
+        public LogicState LogicState {
+            get => this.logicState;
+            set {
+                if (this.logicState == value) {
+                    return;
+                }
+                this.logicState = value;
+                if (this.Connector1 != null) {
+                    this.Connector1.LogicState = value;
+                }
+                if (this.Connector2 != null) {
+                    this.Connector2.LogicState = value;
+                }
+            }
+        }
 
         public WirePoint Point1 => this.Segments.First().Point1;
         public WirePoint Point2 => this.Segments.Last().Point2;
         public readonly IList<WireSegment> Segments;
 
-        public Color Color => this.state == LogicState.Invalid ? Color.DimGray : this.state == LogicState.Off ? Color.DarkRed : Color.Red;
+        public Color Color => this.LogicState == LogicState.Undefined ? Color.DimGray : this.LogicState == LogicState.Off ? Color.DarkRed : Color.Red;
 
         public Wire(Connector start, Connector end, IList<Vector2> points) {
             this.Connector1 = start;

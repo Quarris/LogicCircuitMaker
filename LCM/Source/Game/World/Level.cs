@@ -1,37 +1,35 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MLEM.Cameras;
 using MLEM.Extended.Extensions;
 using MLEM.Extensions;
-using MLEM.Startup;
 using MonoGame.Extended;
 using MonoGame.Extended.Collections;
 
 namespace LCM.Game {
     public class Level {
-        public readonly ObservableCollection<Tile> Tiles;
-        public readonly ISet<IInteractable> Interactables;
-        public readonly ObservableCollection<Wire> Wires;
+        public readonly ObservableCollection<Tile> Tiles = new ObservableCollection<Tile>();
+        public readonly ISet<IInteractable> Interactables = new HashSet<IInteractable>();
+        public readonly ObservableCollection<Wire> Wires = new ObservableCollection<Wire>();
+
+        public readonly LogicSimulator LogicSimulator;
 
         public Level() {
-            this.Tiles = new ObservableCollection<Tile>();
-            this.Interactables = new HashSet<IInteractable>();
-            this.Wires = new ObservableCollection<Wire>();
-
+            this.LogicSimulator = new LogicSimulator(this);
             this.Tiles.ItemAdded += (sender, args) => {
                 Tile tile = args.Item;
                 this.Interactables.Add(tile);
-                foreach (Connector connector in tile.Connectors.Values) {
+                foreach (Connector connector in tile.Connectors.Select(c => c.Value)) {
                     this.Interactables.Add(connector);
                 }
             };
             this.Tiles.ItemRemoved += (sender, args) => {
                 Tile tile = args.Item;
                 this.Interactables.Remove(tile);
-                foreach (Connector connector in tile.Connectors.Values) {
+                foreach (Connector connector in tile.Connectors.Select(c => c.Value)) {
                     this.Interactables.Remove(connector);
                 }
             };
@@ -57,6 +55,7 @@ namespace LCM.Game {
 
         public void Update(GameTime gameTime) {
             GameState state = LCMGame.Inst.GameState;
+            this.LogicSimulator.Update(gameTime);
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {

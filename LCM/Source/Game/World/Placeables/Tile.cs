@@ -5,37 +5,55 @@ using LCM.Extensions;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MLEM.Textures;
+using MLEM.Misc;
 using MonoGame.Extended;
+using RectangleF = MonoGame.Extended.RectangleF;
 
 namespace LCM.Game {
     public class Tile : IInteractable {
         public int Layer { get; }
-        public Point Position { get; private set; }
+        public Point Position { get; }
         public Size Size => this.Component.Size;
         public Rectangle Area => new Rectangle(this.Position, this.Size);
 
         public readonly Component Component;
-        public readonly Dictionary<string, Connector> Connectors;
+        public readonly Dictionary<string, Connector> Inputs = new Dictionary<string, Connector>();
+        public readonly Dictionary<string, Connector> Outputs = new Dictionary<string, Connector>();
+        public readonly IEnumerable<KeyValuePair<string, Connector>> Connectors;
 
         public RectangleF InteractableArea { get; }
 
         public Tile(Point position, Component component) {
             this.Position = position;
             this.Component = component;
-            this.Connectors = new Dictionary<string, Connector>();
-            foreach (KeyValuePair<string, Func<Point, Connector>> pair in component.Inputs.Concat(component.Outputs)) {
-                this.Connectors.Add(pair.Key, pair.Value(position));
+            foreach (KeyValuePair<string, Func<Tile, Connector>> pair in component.Inputs) {
+                this.Inputs.Add(pair.Key, pair.Value(this));
             }
+            foreach (KeyValuePair<string, Func<Tile, Connector>> pair in component.Outputs) {
+                this.Outputs.Add(pair.Key, pair.Value(this));
+            }
+            this.Connectors = this.Inputs.Concat(this.Outputs);
 
             this.Layer = 0;
 
             this.InteractableArea = new RectangleF(position, this.Size.ToSize2());
         }
 
+        public bool Operate() {
+            if (this.Component.CanOperate(this)) {
+                this.Component.Operate(this);
+                return true;
+            }
+
+            return false;
+        }
+
         public void Draw(SpriteBatch sb, GameTime gameTime) {
             sb.TiledDraw(this.Component.GetTexture(), this.Position.ToVector2(), Constants.ComponentColor);
-            this.DrawConnectors(sb, gameTime);
+            foreach (KeyValuePair<string, Connector> connector in this.Connectors) {
+                sb.TiledDrawLine(connector.Value.Position, connector.Value.Position + connector.Value.Direction.Offset().ToVector2()/2f, Color.Black, 6);
+                sb.TiledDrawCircle(connector.Value.Position, 1/12f, 10, Color.Aqua, 10);
+            }
         }
 
         public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
@@ -52,10 +70,14 @@ namespace LCM.Game {
             }
         }
 
-        private void DrawConnectors(SpriteBatch sb, GameTime gameTime) {
-            foreach (KeyValuePair<string, Connector> connector in this.Connectors) {
-                connector.Value.Draw(sb, gameTime);
+        public void Reset() {
+            foreach (Connector connector in this.Connectors.Select(kv => kv.Value)) {
+                connector.LogicState = LogicState.Undefined;
             }
+        }
+
+        public override string ToString() {
+            return $"{this.Component.Name}{this.Position}";
         }
     }
 }

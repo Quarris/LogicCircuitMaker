@@ -1,6 +1,9 @@
+using System;
+
 namespace LCM.Game {
+    [Flags]
     public enum LogicState {
-        Invalid = -1,
+        Undefined = -1,
         Off = 0,
         On = 1
     }
