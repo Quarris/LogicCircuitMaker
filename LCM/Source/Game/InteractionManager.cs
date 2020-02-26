@@ -58,24 +58,13 @@ namespace LCM.Game {
                 this.IsWireSelected = !this.IsWireSelected;
             }
 
-            if (Input.IsKeyPressed(Keys.D1)) {
-                this.SelectedComponent = 0;
-            }
-
-            if (Input.IsKeyPressed(Keys.D2)) {
-                this.SelectedComponent = 1;
-            }
-
-            if (Input.IsKeyPressed(Keys.D3)) {
-                this.SelectedComponent = 2;
-            }
-
-            if (Input.IsKeyPressed(Keys.OemMinus)) {
-                this.SelectedComponent = 3;
-            }
-
-            if (Input.IsKeyPressed(Keys.OemPlus)) {
-                this.SelectedComponent = 4;
+            for (int i = (int) Keys.D1; i < (int) Keys.D9; i++) {
+                if (Input.IsKeyPressed((Keys) i)) {
+                    int index = i - (int) Keys.D1;
+                    if (index >= 0 && index < Components.ComponentList.Count) {
+                        this.SelectedComponent = i - (int) Keys.D1;
+                    }
+                }
             }
 
             /** Scroll **/
@@ -156,7 +145,7 @@ namespace LCM.Game {
             } else if (this.HoveredItem == null) { // Render tile preview
                 Component component = Components.ComponentList[this.SelectedComponent];
                 if (!LevelManager.Level.IsAreaOccupied(MouseTilePosition.FloorToPoint(), component.Size)) {
-                    sb.Draw(component.GetTexture(), this.MouseTilePosition.Floor() * Constants.PixelsPerUnit, Constants.ComponentColor);
+                    sb.Draw(component.GetTexture(LCMGame.Inst.TextureMap), this.MouseTilePosition.Floor() * Constants.PixelsPerUnit, Color.Multiply(Constants.ComponentColor, 0.5f));
                 }
             }
         }
