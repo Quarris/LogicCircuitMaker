@@ -87,14 +87,14 @@ namespace LCM.Game {
 
     public class Output : Connector {
 
+        private readonly Instruction instructions;
 
-
-        public Output(Tile tile, Vector2 position, Direction2 direction, string Op) : base(tile, position, direction) {
-
+        public Output(Tile tile, Vector2 position, Direction2 direction, Instruction instructions) : base(tile, position, direction) {
+            this.instructions = instructions;
         }
 
-        public void Operate() {
-
+        public void Operate(Tile tile) {
+            this.LogicState = this.instructions.Operate(tile);
         }
     }
 }

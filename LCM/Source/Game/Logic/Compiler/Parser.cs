@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 
 namespace LCM.Game {
-    public class Parser {
+    public static class Parser {
         public static Token Parse(string input) {
             string toParse = input.Replace(" ", "");
             if (!toParse.Any()) {

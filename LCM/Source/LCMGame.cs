@@ -27,7 +27,7 @@ namespace LCM {
             base.LoadContent();
             this.sb = new SpriteBatch(this.GraphicsDevice);
             this.Content.AddJsonConverter(new SizeJsonConverter());
-            this.Content.AddJsonConverter(new TextureJsonConverter());
+            this.Content.AddJsonConverter(new TokenJsonConverter());
             LCM.Game.Components.LoadComponents(this.Content);
             this.Font = this.Content.Load<SpriteFont>("Fonts/Default");
             this.TextureMap = new UniformTextureAtlas(this.Content.Load<Texture2D>("Textures/TextureMap"), 8, 8);

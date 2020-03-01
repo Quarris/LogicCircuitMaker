@@ -1,0 +1,18 @@
+{
+	"Name": "NOT Gate",
+	"Size": "1 1",
+	"Inputs": {
+		"In": {
+			"Position": "0 0.5",
+			"Direction": "Left"
+		}
+	},
+	"Outputs": {
+		"Out": {
+			"Position": "1 0.5",
+			"Direction": "Right",
+			"Function": "!In"
+		}
+	}
+
+}

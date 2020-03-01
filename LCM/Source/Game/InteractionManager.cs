@@ -62,6 +62,7 @@ namespace LCM.Game {
                 if (Input.IsKeyPressed((Keys) i)) {
                     int index = i - (int) Keys.D1;
                     if (index >= 0 && index < Components.ComponentList.Count) {
+                        Console.WriteLine("Selecting component " + Components.ComponentList.Keys.ToArray()[i-(int)Keys.D1]);
                         this.SelectedComponent = i - (int) Keys.D1;
                     }
                 }
@@ -82,7 +83,7 @@ namespace LCM.Game {
                 if (this.HoveredItem != null) {
                     this.HoveredItem.Interact(this, InteractType.LClickPress);
                 } else {
-                    //LevelManager.TryAddTile(MouseTilePosition.FloorToPoint(), new Tile(this.MouseTilePosition.FloorToPoint(), ));
+                    LevelManager.TryAddTile(MouseTilePosition.FloorToPoint(), new Tile(this.MouseTilePosition.FloorToPoint(), Components.ComponentList.Values.ToArray()[this.SelectedComponent]));
                 }
             }
 
@@ -143,12 +144,10 @@ namespace LCM.Game {
                     sb.DrawLine(points[i] * Constants.PixelsPerUnit, points[i+1] * Constants.PixelsPerUnit, Color.Red, 6);
                 }
             } else if (this.HoveredItem == null) { // Render tile preview
-                /*
-                Component component = null;//Components.ComponentList[this.SelectedComponent];
+                LogicTemplate component = Components.ComponentList.Values.ToArray()[this.SelectedComponent];
                 if (!LevelManager.Level.IsAreaOccupied(MouseTilePosition.FloorToPoint(), component.Size)) {
-                    sb.Draw(component.GetTexture(LCMGame.Inst.TextureMap), this.MouseTilePosition.Floor() * Constants.PixelsPerUnit, Color.Multiply(Constants.ComponentColor, 0.5f));
+                    sb.Draw(component.Texture, this.MouseTilePosition.Floor() * Constants.PixelsPerUnit, Color.Multiply(Constants.ComponentColor, 0.5f));
                 }
-                */
             }
         }
 

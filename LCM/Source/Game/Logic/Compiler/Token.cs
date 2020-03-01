@@ -28,6 +28,27 @@ namespace LCM.Game {
             return this.Value.Equals(token.Value) && this.Left.Equals(token.Left) && this.Right.Equals(token.Right);
         }
 
+        public string AsString() {
+            return this.BuildAsString().ToString();
+        }
+
+        private StringBuilder BuildAsString() {
+            StringBuilder builder = new StringBuilder();
+            if (this.Type == TokenType.Symbol) {
+                builder.Append(this.Value);
+            }
+
+            if (this.Type == TokenType.Expression) {
+                if (this.Value.Equals("!")) {
+                    return builder.Append(this.Value).Append(this.Left.BuildAsString());
+                }
+
+                return builder.Append("(").Append(this.Left.BuildAsString()).Append(this.Value).Append(this.Right.BuildAsString()).Append(")");
+            }
+
+            return builder.Append(this.Left.BuildAsString()).Append(this.Value).Append(this.Right.BuildAsString());
+        }
+
         public override string ToString() {
             return "\n" + PrintToken(this, 0);
         }

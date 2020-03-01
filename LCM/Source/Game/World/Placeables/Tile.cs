@@ -33,7 +33,7 @@ namespace LCM.Game {
             }
 
             foreach (var tuple in component.Outputs) {
-                this.Outputs.Add(tuple.Key, new Output(this, tuple.Value.Position, tuple.Value.Direction, tuple.Value.Op));
+                this.Outputs.Add(tuple.Key, new Output(this, tuple.Value.Position, tuple.Value.Direction, Compiler.Compile(component.Inputs.Keys, tuple.Value.Function)));
             }
 
             this.Layer = 0;
@@ -42,9 +42,15 @@ namespace LCM.Game {
         }
 
         public bool Operate() {
+            bool requeue = false;
+            foreach (Output output in this.Outputs.Values) {
+                output.Operate(this);
+                if (output.LogicState == LogicState.Undefined) {
+                    requeue = true;
+                }
+            }
 
-
-            return false;
+            return requeue;
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {

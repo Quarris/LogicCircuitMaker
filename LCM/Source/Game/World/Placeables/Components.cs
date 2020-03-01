@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using LCM.Utilities;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using MLEM.Data;
+using MLEM.Startup;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -17,9 +19,10 @@ namespace LCM.Game {
         public static void LoadComponents(ContentManager content) {
             DirectoryInfo directory = new DirectoryInfo(ComponentDir);
             foreach (FileInfo file in directory.EnumerateFiles()) {
-                LogicTemplate temp = content.LoadJson<LogicTemplate>("Components/" + file.Name, string.Empty);
-                Console.WriteLine(temp.Texture);
-                ComponentList.Add(file.Name, temp);
+                LogicTemplate template = content.LoadJson<LogicTemplate>("Components/" + file.Name, string.Empty);
+                Console.WriteLine(template.Outputs.Values.ToArray()[0].Function);
+                template.Texture = MlemGame.LoadContent<Texture2D>("Textures/Components/" + file.Name.Replace(".json", ""));
+                ComponentList.Add(file.Name, template);
             }
         }
     }
