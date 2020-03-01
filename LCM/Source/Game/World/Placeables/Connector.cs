@@ -1,9 +1,8 @@
 using System;
+using System.Collections.Generic;
 using LCM.Extensions;
-using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MLEM.Extensions;
 using MLEM.Misc;
 using MonoGame.Extended;
 using RectangleF = MonoGame.Extended.RectangleF;
@@ -11,10 +10,12 @@ using RectangleF = MonoGame.Extended.RectangleF;
 namespace LCM.Game {
     public class Connector : IInteractable {
         public int Layer { get; }
+        public RectangleF InteractableArea { get; }
+
         public Vector2 Position { get; }
         public readonly Direction2 Direction;
+        public readonly Tile Tile;
         public Wire Wire;
-        public Tile Tile;
 
         private LogicState logicState = LogicState.Undefined;
         public LogicState LogicState {
@@ -29,8 +30,6 @@ namespace LCM.Game {
                 }
             }
         }
-
-        public RectangleF InteractableArea { get; }
 
         public Connector(Tile tile, Vector2 position, Direction2 direction) {
             this.Tile = tile;
@@ -83,6 +82,19 @@ namespace LCM.Game {
 
         public override string ToString() {
             return this.Position.ToString();
+        }
+    }
+
+    public class Output : Connector {
+
+
+
+        public Output(Tile tile, Vector2 position, Direction2 direction, string Op) : base(tile, position, direction) {
+
+        }
+
+        public void Operate() {
+
         }
     }
 }

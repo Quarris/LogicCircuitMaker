@@ -6,7 +6,6 @@ using Newtonsoft.Json.Serialization;
 
 namespace LCM.Game {
     public class Component {
-
         public string RegistryName;
         public string DisplayName;
         public Size Size;
@@ -28,6 +27,7 @@ namespace LCM.Game {
         }
 
         public void Operate(Tile tile) {
+
         }
 
         public TextureRegion GetTexture(UniformTextureAtlas atlas) {

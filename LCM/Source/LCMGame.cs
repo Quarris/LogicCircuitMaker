@@ -1,7 +1,9 @@
-﻿using LCM.Game;
+﻿using System;
+using LCM.Game;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MLEM.Data;
 using MLEM.Startup;
 using MLEM.Textures;
 
@@ -23,9 +25,10 @@ namespace LCM {
 
         protected override void LoadContent() {
             base.LoadContent();
-            JsonUtils.Init();
             this.sb = new SpriteBatch(this.GraphicsDevice);
-            LCM.Game.Components.LoadComponents();
+            this.Content.AddJsonConverter(new SizeJsonConverter());
+            this.Content.AddJsonConverter(new TextureJsonConverter());
+            LCM.Game.Components.LoadComponents(this.Content);
             this.Font = this.Content.Load<SpriteFont>("Fonts/Default");
             this.TextureMap = new UniformTextureAtlas(this.Content.Load<Texture2D>("Textures/TextureMap"), 8, 8);
         }

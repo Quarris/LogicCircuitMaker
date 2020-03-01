@@ -129,7 +129,7 @@ namespace LCM.Game {
                 if (this.HoveredItem is Tile tile) {
                     sb.DrawCenteredString(
                         LCMGame.Inst.Font,
-                        tile.Component.DisplayName,
+                        tile.Component.Name,
                         tile.Position.ToVector2() * Constants.PixelsPerUnit + new Vector2(tile.Size.Width / 2f, -1) * Constants.PixelsPerUnit,
                         0.35f,
                         Color.Black

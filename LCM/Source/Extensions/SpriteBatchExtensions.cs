@@ -8,7 +8,7 @@ using MlemRect = MLEM.Misc.RectangleF;
 
 namespace LCM.Extensions {
     public static class SpriteBatchExtensions {
-        public static void TiledDraw(this SpriteBatch batch, TextureRegion texture, Vector2 position, Color color) {
+        public static void TiledDraw(this SpriteBatch batch, Texture2D texture, Vector2 position, Color color) {
             batch.Draw(texture, position * Constants.PixelsPerUnit, color);
         }
 
