@@ -31,13 +31,12 @@ namespace LCM.Game {
             foreach (var tuple in component.Inputs) {
                 this.Inputs.Add(tuple.Key, new Connector(this, tuple.Value.Position, tuple.Value.Direction));
             }
-
             foreach (var tuple in component.Outputs) {
                 this.Outputs.Add(tuple.Key, new Output(this, tuple.Value.Position, tuple.Value.Direction, Compiler.Compile(component.Inputs.Keys, tuple.Value.Function)));
             }
+            this.Connectors = this.Inputs.Concat(this.Outputs.Select(kv => new KeyValuePair<string, Connector>(kv.Key, kv.Value)));
 
             this.Layer = 0;
-
             this.InteractableArea = new RectangleF(position, this.Size.ToSize2());
         }
 
@@ -56,8 +55,8 @@ namespace LCM.Game {
         public void Draw(SpriteBatch sb, GameTime gameTime) {
             sb.TiledDraw(this.Component.Texture, this.Position.ToVector2(), Constants.ComponentColor);
             foreach (KeyValuePair<string, Connector> connector in this.Connectors) {
-                sb.TiledDrawLine(connector.Value.Position, connector.Value.Position + connector.Value.Direction.Offset().ToVector2()/2f, Color.Black, 6);
-                sb.TiledDrawCircle(connector.Value.Position, 1/12f, 10, Color.Aqua, 10);
+                sb.TiledDrawLine(connector.Value.Position, connector.Value.Position + connector.Value.Direction.Offset().ToVector2() / 2f, Color.Black, 6);
+                sb.TiledDrawCircle(connector.Value.Position, 1 / 12f, 10, Color.Aqua, 10);
             }
         }
 

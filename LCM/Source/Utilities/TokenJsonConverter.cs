@@ -10,8 +10,8 @@ namespace LCM.Utilities {
         }
 
         public override Token ReadJson(JsonReader reader, Type objectType, Token existingValue, bool hasExistingValue, JsonSerializer serializer) {
-            Console.WriteLine("Parsing Token");
-            string str = reader.ReadAsString();
+            Console.WriteLine("Parsing Json Token");
+            string str = reader.Value.ToString();
             Console.WriteLine(str);
             return Parser.Parse(str);
         }

@@ -46,6 +46,7 @@ namespace LCM.Game {
         public readonly Instruction Next;
 
         public Not(Instruction next) {
+            this.Next = next;
         }
 
         public override LogicState Operate(Tile tile) {

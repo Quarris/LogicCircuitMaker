@@ -217,7 +217,7 @@ namespace LCM.Test {
                 Parser.Parse(input);
                 return false;
             }
-            catch (ParserException e) {
+            catch (ParserException) {
                 return true;
             }
         }

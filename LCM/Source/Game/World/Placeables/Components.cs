@@ -20,7 +20,7 @@ namespace LCM.Game {
             DirectoryInfo directory = new DirectoryInfo(ComponentDir);
             foreach (FileInfo file in directory.EnumerateFiles()) {
                 LogicTemplate template = content.LoadJson<LogicTemplate>("Components/" + file.Name, string.Empty);
-                Console.WriteLine(template.Outputs.Values.ToArray()[0].Function);
+                Console.WriteLine(template.Inputs.Values.ToArray()[0].Position);
                 template.Texture = MlemGame.LoadContent<Texture2D>("Textures/Components/" + file.Name.Replace(".json", ""));
                 ComponentList.Add(file.Name, template);
             }
