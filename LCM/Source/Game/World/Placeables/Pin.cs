@@ -15,9 +15,9 @@ namespace LCM.Game {
             this.IsInput = isInput;
 
             if (isInput) {
-                this.Outputs.Add("Output", new Output(this, new Vector2(1, 0.5f), Direction2.Right, null));
+                this.Outputs.Add("Output", new Output(this, new Vector2(1, 0.5f), Direction2.Right, 0.3f, null));
             } else {
-                this.Inputs.Add("Input", new Connector(this, new Vector2(0, 0.5f), Direction2.Left));
+                this.Inputs.Add("Input", new Connector(this, new Vector2(0, 0.5f), Direction2.Left, 0.3f));
             }
         }
         public override bool Operate() {

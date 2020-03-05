@@ -57,5 +57,15 @@ namespace LCM.Game {
                 }
             }
         }
+
+        public void OnRemoved() {
+            if (this.Connector1 != null) {
+                this.Connector1.Wire = null;
+            }
+
+            if (this.Connector2 != null) {
+                this.Connector2.Wire = null;
+            }
+        }
     }
 }

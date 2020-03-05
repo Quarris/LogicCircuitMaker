@@ -45,20 +45,6 @@ namespace LCM.Game {
             return requeue;
         }
 
-        public void Draw(SpriteBatch sb, GameTime gameTime) {
-            sb.TiledDraw(this.GetTexture(), this.Position.ToVector2(), Constants.ComponentColor);
-            foreach (KeyValuePair<string, Connector> connector in this.Connectors) {
-                sb.TiledDrawLine(connector.Value.Position, connector.Value.Position + connector.Value.Direction.Offset().ToVector2() / 2f, Color.Black, 6);
-                sb.TiledDrawCircle(connector.Value.Position, 1 / 12f, 10, connector.Value.LogicState.Color(), 10);
-            }
-        }
-
-        public virtual void DrawOutline(SpriteBatch sb, GameTime gameTime) {
-            sb.TiledDraw(this.GetTexture(), this.Position.ToVector2(), Color.Multiply(Constants.ComponentColor, 1.5f));
-        }
-
-        public abstract Texture2D GetTexture();
-
         public virtual bool CanInteract(InteractType type) {
             return true;
         }
@@ -69,17 +55,30 @@ namespace LCM.Game {
             }
         }
 
-        public virtual void Reset() {
+        public void Reset() {
             foreach (Connector connector in this.Connectors.Select(kv => kv.Value)) {
                 connector.LogicState = LogicState.Undefined;
             }
         }
 
-        public override string ToString() {
-            return $"{this.Name}{this.Position}";
+        // Main Draw Method
+        public void Draw(SpriteBatch sb, GameTime gameTime) {
+            // Draw Tile
+            sb.TiledDraw(this.GetTexture(), this.Position.ToVector2(), Constants.ComponentColor);
+
+            // Draw Connectors
+            foreach (KeyValuePair<string, Connector> pair in this.Connectors) {
+                Connector connector = pair.Value;
+                sb.TiledDrawLine(connector.Position, connector.OffsetPosition, connector.LogicState.Color(), 6);
+                sb.TiledDrawCircle(connector.OffsetPosition, 1 / 12f, 10, connector.LogicState.Color(), 10);
+            }
         }
 
-        public virtual void DrawName(SpriteBatch sb, SpriteFont font, float scale, Color color) {
+        public virtual void DrawOutline(SpriteBatch sb, GameTime gameTime) {
+            sb.TiledDraw(this.GetTexture(), this.Position.ToVector2(), Color.Multiply(Constants.ComponentColor, 1.5f));
+        }
+
+        public void DrawName(SpriteBatch sb, SpriteFont font, float scale, Color color) {
             sb.DrawCenteredString(
                 font,
                 this.Name,
@@ -87,6 +86,12 @@ namespace LCM.Game {
                 scale,
                 color
             );
+        }
+
+        public abstract Texture2D GetTexture();
+
+        public override string ToString() {
+            return $"{this.Name}{this.Position}";
         }
     }
 }

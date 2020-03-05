@@ -85,7 +85,7 @@ namespace LCM.Game {
                 Camera.Zoom(-0.1f, Input.MousePosition.ToVector2());
             }
 
-            /** Buttons **/
+            /** Mouse **/
             if (Input.IsMouseButtonPressed(MouseButton.Left)) {
                 this.ClickedPosition = this.MouseTilePosition;
                 if (this.HoveredItem != null) {
@@ -161,7 +161,7 @@ namespace LCM.Game {
                     texture = Pin.texture;
                     size = new Size(1, 1);
                 } else {
-                    LogicTemplate component = Components.ComponentList.Values.ToArray()[this.SelectedComponent];
+                    Component component = Components.ComponentList.Values.ToArray()[this.SelectedComponent];
                     texture = component.Texture;
                     size = component.Size;
                 }

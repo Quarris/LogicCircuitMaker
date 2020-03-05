@@ -31,6 +31,7 @@ namespace LCM.Game {
                 this.Interactables.Remove(tile);
                 foreach (Connector connector in tile.Connectors.Select(c => c.Value)) {
                     this.Interactables.Remove(connector);
+                    connector.OnRemoved();
                 }
             };
 

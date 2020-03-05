@@ -5,7 +5,7 @@ using MLEM.Misc;
 using MonoGame.Extended;
 
 namespace LCM.Game {
-    public class LogicTemplate {
+    public class Component {
         public string Name;
         public Size Size;
         public Dictionary<string, InputTemplate> Inputs;
@@ -17,6 +17,7 @@ namespace LCM.Game {
         public Vector2 Position;
         public Direction2 Direction;
         public bool Optional = false;
+        public float Length = 0.3f;
     }
 
     public class OutputTemplate : InputTemplate {

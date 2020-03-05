@@ -14,17 +14,17 @@ namespace LCM.Game {
     [SuppressMessage("ReSharper", "SuggestVarOrType_Elsewhere")]
     public class ComponentTile : Tile {
         public override string Name => this.Component.Name;
-        public readonly LogicTemplate Component;
+        public readonly Component Component;
 
-        public ComponentTile(Point position, LogicTemplate component) : base(position, component.Size) {
+        public ComponentTile(Point position, Component component) : base(position, component.Size) {
             this.Component = component;
 
             foreach (var tuple in component.Inputs) {
-                this.Inputs.Add(tuple.Key, new Connector(this, tuple.Value.Position, tuple.Value.Direction));
+                this.Inputs.Add(tuple.Key, new Connector(this, tuple.Value.Position, tuple.Value.Direction, tuple.Value.Length));
             }
 
             foreach (var tuple in component.Outputs) {
-                this.Outputs.Add(tuple.Key, new Output(this, tuple.Value.Position, tuple.Value.Direction, Compiler.Compile(component.Inputs.Keys, tuple.Value.Function)));
+                this.Outputs.Add(tuple.Key, new Output(this, tuple.Value.Position, tuple.Value.Direction, tuple.Value.Length, Compiler.Compile(component.Inputs.Keys, tuple.Value.Function)));
             }
         }
 

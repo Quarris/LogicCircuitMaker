@@ -11,12 +11,12 @@ namespace LCM.Game {
     public static class Components {
 
         private static readonly string ComponentDir = Path.Combine(LCMGame.Inst.Content.RootDirectory, "Components");
-        public static readonly Dictionary<string, LogicTemplate> ComponentList = new Dictionary<string, LogicTemplate>();
+        public static readonly Dictionary<string, Component> ComponentList = new Dictionary<string, Component>();
 
         public static void LoadComponents(ContentManager content) {
             DirectoryInfo directory = new DirectoryInfo(ComponentDir);
             foreach (FileInfo file in directory.EnumerateFiles()) {
-                LogicTemplate template = content.LoadJson<LogicTemplate>("Components/" + file.Name, string.Empty);
+                Component template = content.LoadJson<Component>("Components/" + file.Name, string.Empty);
                 template.Texture = MlemGame.LoadContent<Texture2D>("Textures/Components/" + file.Name.Replace(".json", ""));
                 ComponentList.Add(file.Name, template);
             }
@@ -24,7 +24,7 @@ namespace LCM.Game {
             Console.WriteLine($"Loaded { ComponentList.Count } Components.");
         }
 
-        public static LogicTemplate GetComponentByIndex(int index) {
+        public static Component GetComponentByIndex(int index) {
             if (index < 0 || index > ComponentList.Count) {
                 throw new IndexOutOfRangeException($"Component index out of range {index} for range 0-{ComponentList.Count}");
             }
