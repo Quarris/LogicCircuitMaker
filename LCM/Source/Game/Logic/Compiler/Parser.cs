@@ -123,7 +123,6 @@ namespace LCM.Game {
         }
 
         private static Token FindRightMostOperation(Token token) {
-            Console.WriteLine($"Right: {token.Right}");
             if (token.Right == null) return token;
             while (token.Right != null && token.Right.Type == TokenType.Operation) {
                 token = token.Right;

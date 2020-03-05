@@ -83,7 +83,7 @@ namespace LCM.Game {
                 if (this.HoveredItem != null) {
                     this.HoveredItem.Interact(this, InteractType.LClickPress);
                 } else {
-                    LevelManager.TryAddTile(MouseTilePosition.FloorToPoint(), new Tile(this.MouseTilePosition.FloorToPoint(), Components.ComponentList.Values.ToArray()[this.SelectedComponent]));
+                    LevelManager.TryAddTile(MouseTilePosition.FloorToPoint(), new ComponentTile(this.MouseTilePosition.FloorToPoint(), Components.ComponentList.Values.ToArray()[this.SelectedComponent]));
                 }
             }
 
@@ -128,13 +128,7 @@ namespace LCM.Game {
             if (this.HoveredItem != null && this.HoveredItem.CanInteract()) {
                 this.HoveredItem.DrawOutline(sb, gameTime);
                 if (this.HoveredItem is Tile tile) {
-                    sb.DrawCenteredString(
-                        LCMGame.Inst.Font,
-                        tile.Component.Name,
-                        tile.Position.ToVector2() * Constants.PixelsPerUnit + new Vector2(tile.Size.Width / 2f, -1) * Constants.PixelsPerUnit,
-                        0.35f,
-                        Color.Black
-                    );
+                    tile.DrawName(sb, LCMGame.Inst.Font, 0.35f, Color.Black);
                 }
             }
 
