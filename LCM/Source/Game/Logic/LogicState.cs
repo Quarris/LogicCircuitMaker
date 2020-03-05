@@ -17,8 +17,8 @@ namespace LCM.Game {
                 case LogicState.On: return Constants.OnLogicStateColor;
                 case LogicState.Off: return Constants.OffLogicStateColor;
                 default: {
-                    Console.WriteLine("Undefined Color");
-                    return Microsoft.Xna.Framework.Color.Black;
+                    Console.WriteLine($"Undefined Color for state {state}");
+                    return Microsoft.Xna.Framework.Color.Pink;
                 }
             }
         }
