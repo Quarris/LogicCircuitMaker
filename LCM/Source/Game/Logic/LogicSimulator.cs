@@ -22,7 +22,6 @@ namespace LCM.Game {
             if (MlemGame.Input.IsKeyPressed(Keys.Space)) {
                 this.Step();
                 this.step++;
-                Console.WriteLine(String.Join(" ", this.queue));
             }
 
             if (MlemGame.Input.IsKeyPressed(Keys.R)) {
@@ -36,9 +35,10 @@ namespace LCM.Game {
             }
             if (this.queue.Count != 0) {
                 bool deadlock = true;
-                for (int i = 0; i < this.queue.Count; i++) {
+                int count = this.queue.Count;
+                for (int i = 0; i < count; i++) {
                     this.workedOn = this.queue.Dequeue();
-                    if (!this.workedOn.Operate()) {
+                    if (this.workedOn.Operate()) {
                         this.queue.Enqueue(this.workedOn);
                     } else {
                         deadlock = false;
@@ -58,7 +58,9 @@ namespace LCM.Game {
                     .Select(conn => conn.Wire.Connector1 == conn ? conn.Wire.Connector2.Tile : conn.Wire.Connector1.Tile);
 
                 foreach (Tile tile in tiles) {
-                    this.queue.Enqueue(tile);
+                    if (!this.queue.Contains(tile)) {
+                        this.queue.Enqueue(tile);
+                    }
                 }
             }
 
@@ -73,11 +75,10 @@ namespace LCM.Game {
             foreach (Tile tile in this.level.Tiles) {
                 tile.Reset();
             }
-            // TODO Reset tiles
         }
 
         private void CollectInputs() {
-            foreach (Tile tile in this.level.Tiles) {
+            foreach (Tile tile in this.level.Tiles.Where(tile => tile is Pin pin && pin.IsInput)) {
                 this.queue.Enqueue(tile);
             }
         }

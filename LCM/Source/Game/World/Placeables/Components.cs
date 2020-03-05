@@ -2,13 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using LCM.Utilities;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MLEM.Data;
 using MLEM.Startup;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace LCM.Game {
     public static class Components {
@@ -23,6 +20,16 @@ namespace LCM.Game {
                 template.Texture = MlemGame.LoadContent<Texture2D>("Textures/Components/" + file.Name.Replace(".json", ""));
                 ComponentList.Add(file.Name, template);
             }
+
+            Console.WriteLine($"Loaded { ComponentList.Count } Components.");
+        }
+
+        public static LogicTemplate GetComponentByIndex(int index) {
+            if (index < 0 || index > ComponentList.Count) {
+                throw new IndexOutOfRangeException($"Component index out of range {index} for range 0-{ComponentList.Count}");
+            }
+
+            return ComponentList.Values.ToArray()[index];
         }
     }
 }

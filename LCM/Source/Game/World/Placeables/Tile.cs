@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LCM.Extensions;
@@ -44,11 +45,11 @@ namespace LCM.Game {
             return requeue;
         }
 
-        public virtual void Draw(SpriteBatch sb, GameTime gameTime) {
+        public void Draw(SpriteBatch sb, GameTime gameTime) {
             sb.TiledDraw(this.GetTexture(), this.Position.ToVector2(), Constants.ComponentColor);
             foreach (KeyValuePair<string, Connector> connector in this.Connectors) {
                 sb.TiledDrawLine(connector.Value.Position, connector.Value.Position + connector.Value.Direction.Offset().ToVector2() / 2f, Color.Black, 6);
-                sb.TiledDrawCircle(connector.Value.Position, 1 / 12f, 10, Color.Aqua, 10);
+                sb.TiledDrawCircle(connector.Value.Position, 1 / 12f, 10, connector.Value.LogicState.Color(), 10);
             }
         }
 
@@ -75,7 +76,7 @@ namespace LCM.Game {
         }
 
         public override string ToString() {
-            return $"Tile{this.Position}";
+            return $"{this.Name}{this.Position}";
         }
 
         public virtual void DrawName(SpriteBatch sb, SpriteFont font, float scale, Color color) {

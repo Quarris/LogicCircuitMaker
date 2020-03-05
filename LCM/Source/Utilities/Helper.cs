@@ -68,5 +68,18 @@ namespace LCM.Utilities {
 
             return points;
         }
+
+        // -1, 0, 3
+        public static int Wrap(int value, int min, int max) {
+            if (value >= min && value <= max) {
+                return value;
+            }
+
+            return min + Mod(value - min, max - min + 1);
+        }
+
+        private static int Mod(int a, int b) {
+            return (a < 0) ? (a % b + b) : (a % b);
+        }
     }
 }

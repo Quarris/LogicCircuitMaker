@@ -41,7 +41,7 @@ namespace LCM.Game {
         }
 
         public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
-            sb.TiledDrawCircle(this.Position, 1/12f, 10, Color.Aqua, 3);
+            sb.TiledDrawCircle(this.Position, 1/12f, 10, Color.Black, 3);
         }
 
         public bool CanInteract(InteractType type) {

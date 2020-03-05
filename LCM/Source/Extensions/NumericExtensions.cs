@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using MLEM.Extensions;
 using MLEM.Misc;
@@ -30,6 +31,25 @@ namespace LCM.Extensions {
 
         public static Size2 ToSize2(this Size size) {
             return new Size2(size.Width, size.Height);
+        }
+
+        public static Direction2 Right(this Direction2 dir) {
+            if (dir == Direction2.None) {
+                return dir;
+            }
+            Direction2 right = (Direction2)(((int)dir + 1)%4);
+            if (dir > Direction2.Left) right += 4;
+            return right;
+        }
+
+        public static Direction2 Left(this Direction2 dir) {
+            if (dir == Direction2.None) {
+                return dir;
+            }
+
+            Direction2 left = (Direction2) Helper.Wrap((int)dir % 4 - 1, 0, 3);
+            if (dir > Direction2.Left) left += 4;
+            return left;
         }
 
         public static Direction2 CardinalTo(this Vector2 origin, Vector2 position) {

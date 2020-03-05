@@ -7,6 +7,10 @@ namespace LCM.Utilities {
         public static readonly Color LineColor = new Color(173, 225, 244);
         public static readonly Color BackgroundColor = Color.White;
         public static readonly Color ComponentColor = Color.Black;
+
+        public static readonly Color OnLogicStateColor = Color.Green;
+        public static readonly Color OffLogicStateColor = Color.Red;
+        public static readonly Color UndefinedLogicStateColor = Color.Gray;
     }
     // Dark Theme
     // Line - 207, 117, 32

@@ -68,6 +68,14 @@ namespace LCM.Game {
                 }
             }
 
+            if (Input.IsKeyPressed(Keys.OemMinus)) {
+                this.SelectedComponent = -1;
+            }
+
+            if (Input.IsKeyPressed(Keys.OemPlus)) {
+                this.SelectedComponent = -2;
+            }
+
             /** Scroll **/
             int scrollDelta = Input.ScrollWheel - Input.LastScrollWheel;
 
@@ -83,7 +91,14 @@ namespace LCM.Game {
                 if (this.HoveredItem != null) {
                     this.HoveredItem.Interact(this, InteractType.LClickPress);
                 } else {
-                    LevelManager.TryAddTile(MouseTilePosition.FloorToPoint(), new ComponentTile(this.MouseTilePosition.FloorToPoint(), Components.ComponentList.Values.ToArray()[this.SelectedComponent]));
+                    Point pos = MouseTilePosition.FloorToPoint();
+                    Tile tile;
+                    if (this.SelectedComponent < 0) {
+                        tile = new Pin(pos, this.SelectedComponent == -1);
+                    } else {
+                        tile = new ComponentTile(pos, Components.GetComponentByIndex(this.SelectedComponent));
+                    }
+                    LevelManager.TryAddTile(pos, tile);
                 }
             }
 
@@ -138,9 +153,20 @@ namespace LCM.Game {
                     sb.DrawLine(points[i] * Constants.PixelsPerUnit, points[i+1] * Constants.PixelsPerUnit, Color.Red, 6);
                 }
             } else if (this.HoveredItem == null) { // Render tile preview
-                LogicTemplate component = Components.ComponentList.Values.ToArray()[this.SelectedComponent];
-                if (!LevelManager.Level.IsAreaOccupied(MouseTilePosition.FloorToPoint(), component.Size)) {
-                    sb.Draw(component.Texture, this.MouseTilePosition.Floor() * Constants.PixelsPerUnit, Color.Multiply(Constants.ComponentColor, 0.5f));
+                Texture2D texture;
+                Size size;
+                Point pos = this.MouseTilePosition.FloorToPoint();
+
+                if (this.SelectedComponent < 0) {
+                    texture = Pin.texture;
+                    size = new Size(1, 1);
+                } else {
+                    LogicTemplate component = Components.ComponentList.Values.ToArray()[this.SelectedComponent];
+                    texture = component.Texture;
+                    size = component.Size;
+                }
+                if (!LevelManager.Level.IsAreaOccupied(pos, size)) {
+                    sb.Draw(texture, pos.ToVector2() * Constants.PixelsPerUnit, Color.Multiply(Constants.ComponentColor, 0.5f));
                 }
             }
         }

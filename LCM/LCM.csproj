@@ -8,7 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="Contentless" Version="2.0.6" />
-        <PackageReference Include="MLEM.Data" Version="1.0.0-44" />
+        <PackageReference Include="MLEM.Data" Version="1.0.0-50" />
         <PackageReference Include="MLEM.Startup" Version="3.1.0" />
         <PackageReference Include="MLEM.Ui" Version="3.2.0" />
         <PackageReference Include="MonoGame.Content.Builder" Version="3.7.0.9" />

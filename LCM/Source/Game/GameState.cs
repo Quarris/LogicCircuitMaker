@@ -1,11 +1,10 @@
+
 using LCM.Extensions;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MLEM.Cameras;
 using MLEM.Input;
-using MonoGame.Extended;
-using MonoGame.Extended.BitmapFonts;
 
 namespace LCM.Game {
     public class GameState {

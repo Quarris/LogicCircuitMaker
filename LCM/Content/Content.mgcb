@@ -107,3 +107,8 @@
 #begin Components/xor_gate.json
 /copy:Components/xor_gate.json
 
+#begin Textures/Components/pin.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Components/pin.png
+

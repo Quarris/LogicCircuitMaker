@@ -7,7 +7,6 @@ using MLEM.Textures;
 
 namespace LCM.Game {
     public class Wire {
-        public static readonly TextureRegion Texture = LCMGame.Inst.TextureMap[0, 2];
 
         public readonly Connector Connector1;
         public readonly Connector Connector2;
@@ -33,8 +32,6 @@ namespace LCM.Game {
         public WirePoint Point2 => this.Segments.Last().Point2;
         public readonly IList<WireSegment> Segments;
 
-        public Color Color => this.LogicState == LogicState.Undefined ? Color.DimGray : this.LogicState == LogicState.Off ? Color.DarkRed : Color.Red;
-
         public Wire(Connector start, Connector end, IList<Vector2> points) {
             this.Connector1 = start;
             this.Connector2 = end;
@@ -51,12 +48,12 @@ namespace LCM.Game {
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
             foreach (WireSegment segment in this.Segments) {
-                sb.TiledDrawLine(segment.Point1.Position, segment.Point2.Position, this.Color, 6);
+                sb.TiledDrawLine(segment.Point1.Position, segment.Point2.Position, this.logicState.Color(), 6);
             }
 
             foreach (WireSegment segment in this.Segments) {
                 if (segment.Point1 != this.Point1) {
-                    sb.TiledDrawCircle(segment.Point1.Position, 1/12f, 10, Color.Aqua, 10);
+                    sb.TiledDrawCircle(segment.Point1.Position, 1/12f, 10, Color.Multiply(this.logicState.Color(), 0.9f), 10);
                 }
             }
         }
