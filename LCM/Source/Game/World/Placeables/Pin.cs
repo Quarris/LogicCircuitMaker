@@ -1,4 +1,5 @@
 using System;
+using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MLEM.Misc;
@@ -20,9 +21,10 @@ namespace LCM.Game {
                 this.Inputs.Add("Input", new Connector(this, new Vector2(0, 0.5f), Direction2.Left, 0.3f));
             }
         }
+
         public override bool Operate() {
             if (this.IsInput) {
-                this.Outputs["Output"].LogicState = (LogicState) new Random().Next(2);
+                this.Outputs["Output"].LogicState = (LogicState) Helper.Random.Next(2);
             } else {
                 Console.WriteLine($"Pin at {Position} finished with state {this.Inputs["Input"].LogicState.ToString()}");
             }

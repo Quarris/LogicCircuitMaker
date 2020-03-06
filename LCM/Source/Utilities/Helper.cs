@@ -6,7 +6,10 @@ using MLEM.Misc;
 using RectangleF = MonoGame.Extended.RectangleF;
 
 namespace LCM.Utilities {
-    public class Helper {
+    public static class Helper {
+
+        public static readonly Random Random = new Random();
+
         public static RectangleF RectFromCorners(Vector2 corner1, Vector2 corner2) {
             float minX = Math.Min(corner1.X, corner2.X);
             float minY = Math.Min(corner1.Y, corner2.Y);

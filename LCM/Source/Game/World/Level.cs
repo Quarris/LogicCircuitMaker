@@ -120,6 +120,7 @@ namespace LCM.Game {
         }
 
         public void RemoveWire(Wire wire) {
+            wire.OnRemoved();
             this.Wires.Remove(wire);
         }
     }

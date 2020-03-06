@@ -20,16 +20,16 @@ namespace LCM.Game {
             // If the wire changes state,
             // update the states of the connectors it is attached to.
             set {
-                if (this.logicState==value) {
+                if (this.logicState == value) {
                     return;
                 }
 
                 this.logicState = value;
-                if (this.Start!=null) {
+                if (this.Start != null) {
                     this.Start.LogicState = value;
                 }
 
-                if (this.End!=null) {
+                if (this.End != null) {
                     this.End.LogicState = value;
                 }
             }
@@ -63,8 +63,30 @@ namespace LCM.Game {
                 }
             }
 
-            const float size = Constants.PointRadius*2;
-            this.InteractableArea = new RectangleF(minX-size, minY-size, maxX-minX+2*size, maxY-minY+2*size);
+            const float size = Constants.PointRadius * 2;
+            this.InteractableArea = new RectangleF(minX - size, minY - size, maxX - minX + 2 * size, maxY - minY + 2 * size);
+        }
+
+        public void OnRemoved() {
+            if (this.Start != null) {
+                this.Start.Wire = null;
+            }
+
+            if (this.End != null) {
+                this.End.Wire = null;
+            }
+        }
+
+        public bool CanInteract(InteractionManager manager, Vector2 position, InteractType type = InteractType.Any) {
+            return IsHoveredOver(position);
+        }
+
+        public void Interact(InteractionManager manager, Vector2 position, InteractType type) {
+            if (IsHoveredOver(position)) {
+                if (type == InteractType.RClickPress) {
+                    LevelManager.RemoveWire(this);
+                }
+            }
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
@@ -74,59 +96,49 @@ namespace LCM.Game {
                         10);
                 }
 
-                sb.TiledDrawLine(this.WirePoints[i-1], this.WirePoints[i],this.logicState.Color(), Constants.WireWidth);
-            }
-        }
-
-        public void OnRemoved() {
-            if (this.Start!=null) {
-                this.Start.Wire = null;
-            }
-
-            if (this.End!=null) {
-                this.End.Wire = null;
+                sb.TiledDrawLine(this.WirePoints[i - 1], this.WirePoints[i], this.logicState.Color(), Constants.WireWidth);
             }
         }
 
         public void DrawOutline(SpriteBatch sb, GameTime gameTime, Vector2 position) {
-            for (int i = 0; i < this.WirePoints.Count; i++) {
-                if (this.WirePoints[i].EqualsWithTolerence(position, Constants.PointRadius*2)) {
-                    sb.TiledDrawCircle(this.WirePoints[i], Constants.PointRadius, 10, Color.Black, 3);
-                    return;
-                }
-
-                if (i < this.WirePoints.Count-1) {
-                    RectangleF line = Helper.RectFromCorners(this.WirePoints[i], this.WirePoints[i+1]);
-                    const float inflate = Constants.WireWidth/Constants.PixelsPerUnit;
-                    line.Inflate(inflate, inflate);
-                    if (line.Contains(position)) {
-                        sb.TiledDrawRectangle(line, Color.Black, 3);
-                        return;
-                    }
+            Vector2? point = GetHoveredPoint(position);
+            if (point != null) {
+                sb.TiledDrawCircle(point.Value, Constants.PointRadius, 10, Color.Black, 3);
+            } else {
+                RectangleF? line = GetHoveredLine(position);
+                if (line != null) {
+                    sb.TiledDrawRectangle(line.Value, Color.Black, 3);
                 }
             }
         }
 
-        public bool CanInteract(InteractionManager manager, Vector2 position, InteractType type = InteractType.Any) {
-            for (int i = 0; i < this.WirePoints.Count; i++) {
-                if (this.WirePoints[i].EqualsWithTolerence(position, Constants.PointRadius*2)) {
-                    return true;
-                }
+        public bool IsHoveredOver(Vector2 position) {
+            return GetHoveredPoint(position) != null || GetHoveredLine(position) != null;
+        }
 
-                if (i < this.WirePoints.Count-1) {
-                    RectangleF line = Helper.RectFromCorners(this.WirePoints[i], this.WirePoints[i+1]);
-                    const float inflate = Constants.WireWidth*3/Constants.PixelsPerUnit;
+        private Vector2? GetHoveredPoint(Vector2 position) {
+            for (int i = 0; i < this.WirePoints.Count; i++) {
+                if (this.WirePoints[i].EqualsWithTolerence(position, Constants.PointRadius * 2)) {
+                    return this.WirePoints[i];
+                }
+            }
+
+            return null;
+        }
+
+        private RectangleF? GetHoveredLine(Vector2 position) {
+            for (int i = 0; i < this.WirePoints.Count; i++) {
+                if (i < this.WirePoints.Count - 1) {
+                    RectangleF line = Helper.RectFromCorners(this.WirePoints[i], this.WirePoints[i + 1]);
+                    const float inflate = Constants.WireWidth / Constants.PixelsPerUnit;
                     line.Inflate(inflate, inflate);
                     if (line.Contains(position)) {
-                        return true;
+                        return line;
                     }
                 }
             }
 
-            return false;
-        }
-
-        public void Interact(InteractionManager manager, Vector2 position, InteractType type) {
+            return null;
         }
     }
 }
