@@ -9,13 +9,14 @@ using MLEM.Startup;
 namespace LCM.Game {
     public class LogicSimulator {
 
-        private Level level;
+        private readonly Level level;
         private readonly Queue<Tile> queue = new Queue<Tile>();
+        private readonly List<Tile> workedOn;
         private int step;
-        private Tile workedOn;
 
         public LogicSimulator(Level level) {
             this.level = level;
+            this.workedOn = new List<Tile>();
         }
 
         public void Update(GameTime gameTime) {
@@ -37,12 +38,10 @@ namespace LCM.Game {
                 bool deadlock = true;
                 int count = this.queue.Count;
                 for (int i = 0; i < count; i++) {
-                    this.workedOn = this.queue.Dequeue();
-                    if (this.workedOn.Operate()) {
-                        this.queue.Enqueue(this.workedOn);
-                    } else {
+                    Tile tile = this.queue.Dequeue();
+                    if (!tile.Operate()) {
+                        this.workedOn.Add(tile);
                         deadlock = false;
-                        break;
                     }
                 }
 
@@ -51,17 +50,22 @@ namespace LCM.Game {
                     return;
                 }
 
-                IEnumerable<Tile> tiles = this.workedOn.Outputs
-                    .Where(kv => kv.Value.LogicState != LogicState.Undefined)
-                    .Select(kv => kv.Value)
-                    .Where(conn => conn.Wire != null)
-                    .Select(conn => conn.Wire.Connector1 == conn ? conn.Wire.Connector2.Tile : conn.Wire.Connector1.Tile);
+                foreach (Tile lastTile in this.workedOn) {
+                    IEnumerable<Tile> tiles = lastTile.Outputs
+                        .Where(kv => kv.Value.LogicState != LogicState.Undefined)
+                        .Select(kv => kv.Value)
+                        .Where(conn => conn.Wire != null)
+                        .Select(conn => conn.Wire.Connector1 == conn ? conn.Wire.Connector2.Tile : conn.Wire.Connector1.Tile);
 
-                foreach (Tile tile in tiles) {
-                    if (!this.queue.Contains(tile)) {
-                        this.queue.Enqueue(tile);
+                    foreach (Tile tile in tiles) {
+                        if (!this.queue.Contains(tile)) {
+                            this.queue.Enqueue(tile);
+                        }
                     }
                 }
+                this.workedOn.Clear();
+
+                Console.WriteLine(string.Join(" ", this.queue));
             }
 
             if (this.queue.Count == 0) {

@@ -18,7 +18,7 @@ namespace LCM.Game {
             this.Level = new Level();
             this.Camera = new Camera(LCMGame.Inst.GraphicsDevice) {
                 AutoScaleWithScreen = true,
-                MinScale = 32.0f/Constants.PixelsPerUnit,
+                MinScale = 48.0f/Constants.PixelsPerUnit,
                 MaxScale = 64.0f/Constants.PixelsPerUnit,
                 Scale = 24.0f/Constants.PixelsPerUnit
             };

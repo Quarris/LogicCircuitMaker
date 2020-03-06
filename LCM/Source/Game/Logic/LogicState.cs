@@ -10,7 +10,7 @@ namespace LCM.Game {
         On = 1
     }
 
-    public static class LogicStateExtension {
+    public static class LogicStateHelper {
         public static Color Color(this LogicState state) {
             switch (state) {
                 case LogicState.Undefined: return Constants.UndefinedLogicStateColor;
@@ -22,5 +22,38 @@ namespace LCM.Game {
                 }
             }
         }
+
+        public static LogicState And(this LogicState state, LogicState other) {
+            if (state == LogicState.Undefined || other == LogicState.Undefined) {
+                return LogicState.Undefined;
+            }
+
+            return state & other;
+        }
+
+        public static LogicState Or(this LogicState state, LogicState other) {
+            if (state == LogicState.Undefined || other == LogicState.Undefined) {
+                return LogicState.Undefined;
+            }
+
+            return state | other;
+        }
+
+        public static LogicState Xor(this LogicState state, LogicState other) {
+            if (state == LogicState.Undefined || other == LogicState.Undefined) {
+                return LogicState.Undefined;
+            }
+
+            return state ^ other;
+        }
+
+        public static LogicState Not(this LogicState state) {
+            if (state == LogicState.Undefined) {
+                return LogicState.Undefined;
+            }
+
+            return 1-state;
+        }
+
     }
 }

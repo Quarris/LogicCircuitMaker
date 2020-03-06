@@ -12,7 +12,7 @@ namespace LCM.Game {
         }
 
         public override LogicState Operate(Tile tile) {
-            return this.Left.Operate(tile) & this.Right.Operate(tile);
+            return this.Left.Operate(tile).And(this.Right.Operate(tile));
         }
     }
 
@@ -25,7 +25,7 @@ namespace LCM.Game {
         }
 
         public override LogicState Operate(Tile tile) {
-            return this.Left.Operate(tile) | this.Right.Operate(tile);
+            return this.Left.Operate(tile).Or(this.Right.Operate(tile));
         }
     }
 
@@ -38,7 +38,7 @@ namespace LCM.Game {
         }
 
         public override LogicState Operate(Tile tile) {
-            return this.Left.Operate(tile) ^ this.Right.Operate(tile);
+            return this.Left.Operate(tile).Xor(this.Right.Operate(tile));
         }
     }
 
@@ -50,7 +50,7 @@ namespace LCM.Game {
         }
 
         public override LogicState Operate(Tile tile) {
-            return 1 - this.Next.Operate(tile);
+            return this.Next.Operate(tile).Not();
         }
     }
 
