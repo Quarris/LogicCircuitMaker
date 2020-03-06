@@ -27,18 +27,18 @@ namespace LCM.Game {
                     Constants.PixelsPerUnit * this.InteractableArea.Width / 2f), 10, Color.Aqua, 5);
         }
 
-        public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
+        public void DrawOutline(SpriteBatch sb, GameTime gameTime, Vector2 position) {
             sb.DrawCircle(
                 new CircleF(this.Position * Constants.PixelsPerUnit, Constants.PixelsPerUnit * this.InteractableArea.Width / 2f),
                 10, Color.Black, 2.5f
             );
         }
 
-        public bool CanInteract(InteractType type) {
+        public bool CanInteract(InteractionManager manager, Vector2 position, InteractType type) {
             return true;
         }
 
-        public void Interact(InteractionManager manager, InteractType type) {
+        public void Interact(InteractionManager manager, Vector2 position, InteractType type) {
         }
 
         public override string ToString() {

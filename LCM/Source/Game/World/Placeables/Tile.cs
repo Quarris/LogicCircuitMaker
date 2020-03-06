@@ -45,11 +45,11 @@ namespace LCM.Game {
             return requeue;
         }
 
-        public virtual bool CanInteract(InteractType type) {
+        public virtual bool CanInteract(InteractionManager manager, Vector2 position, InteractType type) {
             return true;
         }
 
-        public virtual void Interact(InteractionManager manager, InteractType type) {
+        public virtual void Interact(InteractionManager manager, Vector2 position, InteractType type) {
             if (type == InteractType.RClickPress) {
                 LevelManager.RemoveTile(this.Position);
             }
@@ -74,7 +74,7 @@ namespace LCM.Game {
             }
         }
 
-        public virtual void DrawOutline(SpriteBatch sb, GameTime gameTime) {
+        public virtual void DrawOutline(SpriteBatch sb, GameTime gameTime, Vector2 position) {
             sb.TiledDraw(this.GetTexture(), this.Position.ToVector2(), Color.Multiply(Constants.ComponentColor, 1.5f));
         }
 

@@ -89,7 +89,7 @@ namespace LCM.Game {
             if (Input.IsMouseButtonPressed(MouseButton.Left)) {
                 this.ClickedPosition = this.MouseTilePosition;
                 if (this.HoveredItem != null) {
-                    this.HoveredItem.Interact(this, InteractType.LClickPress);
+                    this.HoveredItem.Interact(this, this.MouseTilePosition, InteractType.LClickPress);
                 } else {
                     Point pos = MouseTilePosition.FloorToPoint();
                     Tile tile;
@@ -103,7 +103,7 @@ namespace LCM.Game {
             }
 
             if (Input.IsMouseButtonReleased(MouseButton.Left)) {
-                this.HoveredItem?.Interact(this, InteractType.LClickRelease);
+                this.HoveredItem?.Interact(this, this.MouseTilePosition, InteractType.LClickRelease);
                 this.IsSelecting = false;
                 if (this.DraggingContext.Button == MouseButton.Left) {
                     this.DraggingContext.Deactivate();
@@ -112,36 +112,36 @@ namespace LCM.Game {
 
             if (Input.IsMouseButtonPressed(MouseButton.Right)) {
                 this.ClickedPosition = this.MouseTilePosition;
-                this.HoveredItem?.Interact(this, InteractType.RClickPress);
+                this.HoveredItem?.Interact(this, this.MouseTilePosition, InteractType.RClickPress);
             }
 
             if (Input.IsMouseButtonReleased(MouseButton.Right)) {
-                this.HoveredItem?.Interact(this, InteractType.RClickRelease);
+                this.HoveredItem?.Interact(this, this.MouseTilePosition, InteractType.RClickRelease);
                 if (this.DraggingContext.Button == MouseButton.Right) {
                     this.DraggingContext.Deactivate();
                 }
             }
 
             if (Input.IsMouseButtonPressed(MouseButton.Middle)) {
-                this.HoveredItem?.Interact(this, InteractType.MClickPress);
+                this.HoveredItem?.Interact(this, this.MouseTilePosition, InteractType.MClickPress);
             }
 
             if (Input.IsMouseButtonReleased(MouseButton.Middle)) {
-                this.HoveredItem?.Interact(this, InteractType.MClickRelease);
+                this.HoveredItem?.Interact(this, this.MouseTilePosition, InteractType.MClickRelease);
                 if (this.DraggingContext.Button == MouseButton.Middle) {
                     this.DraggingContext.Deactivate();
                 }
             }
 
             this.SetDraggingContext();
-            if (this.DraggingContext.IsActive && this.DraggingContext.Item != null && this.DraggingContext.Item.CanInteract(InteractType.Drag)) {
-                this.DraggingContext.Item.Interact(this, InteractType.Drag);
+            if (this.DraggingContext.IsActive && this.DraggingContext.Item != null && this.DraggingContext.Item.CanInteract(this, this.MouseTilePosition, InteractType.Drag)) {
+                this.DraggingContext.Item.Interact(this, this.MouseTilePosition, InteractType.Drag);
             }
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
-            if (this.HoveredItem != null && this.HoveredItem.CanInteract()) {
-                this.HoveredItem.DrawOutline(sb, gameTime);
+            if (this.HoveredItem != null && this.HoveredItem.CanInteract(this, this.MouseTilePosition)) {
+                this.HoveredItem.DrawOutline(sb, gameTime, this.MouseTilePosition);
                 if (this.HoveredItem is Tile tile) {
                     tile.DrawName(sb, LCMGame.Inst.Font, 0.35f, Color.Black);
                 }

@@ -41,7 +41,7 @@ namespace LCM.Utilities {
             return new Vector2(x, y);
         }
 
-        public static IList<Vector2> GetWirePointPositions(Vector2 start, Vector2 end, bool clamp = true, bool straight = false) {
+        public static List<Vector2> GetWirePointPositions(Vector2 start, Vector2 end, bool clamp = true, bool straight = false) {
             List<Vector2> points = new List<Vector2>();
             if (straight) {
                 points.Add(start);

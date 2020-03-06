@@ -37,20 +37,12 @@ namespace LCM.Game {
 
             this.Wires.ItemAdded += (sender, args) => {
                 Wire wire = args.Item;
-                foreach (WireSegment segment in wire.Segments) {
-                    this.Interactables.Add(segment);
-                    this.Interactables.Add(segment.Point1);
-                    this.Interactables.Add(segment.Point2);
-                }
+                this.Interactables.Add(wire);
             };
 
             this.Wires.ItemRemoved += (sender, args) => {
                 Wire wire = args.Item;
-                foreach (WireSegment segment in wire.Segments) {
-                    this.Interactables.Remove(segment);
-                    this.Interactables.Remove(segment.Point1);
-                    this.Interactables.Remove(segment.Point2);
-                }
+                this.Interactables.Remove(wire);
             };
         }
 

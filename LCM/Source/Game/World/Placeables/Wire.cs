@@ -1,71 +1,132 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using LCM.Extensions;
+using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MLEM.Textures;
+using MonoGame.Extended;
 
 namespace LCM.Game {
-    public class Wire {
+    public class Wire : IInteractable {
+        public int Layer => 20;
+        public RectangleF InteractableArea { get; }
 
-        public readonly Connector Connector1;
-        public readonly Connector Connector2;
+        public readonly Connector Start;
+        public readonly Connector End;
 
         private LogicState logicState = LogicState.Undefined;
         public LogicState LogicState {
             get => this.logicState;
+            // If the wire changes state,
+            // update the states of the connectors it is attached to.
             set {
-                if (this.logicState == value) {
+                if (this.logicState==value) {
                     return;
                 }
+
                 this.logicState = value;
-                if (this.Connector1 != null) {
-                    this.Connector1.LogicState = value;
+                if (this.Start!=null) {
+                    this.Start.LogicState = value;
                 }
-                if (this.Connector2 != null) {
-                    this.Connector2.LogicState = value;
+
+                if (this.End!=null) {
+                    this.End.LogicState = value;
                 }
             }
         }
 
-        public WirePoint Point1 => this.Segments.First().Point1;
-        public WirePoint Point2 => this.Segments.Last().Point2;
-        public readonly IList<WireSegment> Segments;
+        public readonly List<Vector2> WirePoints;
 
-        public Wire(Connector start, Connector end, IList<Vector2> points) {
-            this.Connector1 = start;
-            this.Connector2 = end;
+        public Wire(Connector start, Connector end, List<Vector2> points) {
+            this.Start = start;
+            this.End = end;
+            this.WirePoints = points;
 
-            this.Segments = new List<WireSegment>();
+            this.WirePoints = points;
 
-            for (int i = 0; i < points.Count-1; i++) {
-                WirePoint startPoint = new WirePoint(points[i], i == 0 ? start : null);
-                WirePoint endPoint = new WirePoint(points[i+1], i == points.Count - 2 ? end : null);
+            float minX = float.MaxValue, minY = float.MaxValue, maxX = float.MinValue, maxY = float.MinValue;
+            foreach (Vector2 point in this.WirePoints) {
+                if (point.X <= minX) {
+                    minX = point.X;
+                }
 
-                this.Segments.Add(new WireSegment(this, startPoint, endPoint));
+                if (point.X >= maxX) {
+                    maxX = point.X;
+                }
+
+                if (point.Y <= minY) {
+                    minY = point.Y;
+                }
+
+                if (point.Y >= maxY) {
+                    maxY = point.Y;
+                }
             }
+
+            const float size = Constants.PointRadius*2;
+            this.InteractableArea = new RectangleF(minX-size, minY-size, maxX-minX+2*size, maxY-minY+2*size);
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
-            foreach (WireSegment segment in this.Segments) {
-                sb.TiledDrawLine(segment.Point1.Position, segment.Point2.Position, this.logicState.Color(), 6);
-            }
-
-            foreach (WireSegment segment in this.Segments) {
-                if (segment.Point1 != this.Point1) {
-                    sb.TiledDrawCircle(segment.Point1.Position, 1/12f, 10, Color.Multiply(this.logicState.Color(), 0.9f), 10);
+            for (int i = 1; i < this.WirePoints.Count; i++) {
+                if (i < this.WirePoints.Count) {
+                    sb.TiledDrawCircle(this.WirePoints[i], Constants.PointRadius, 10, Color.Multiply(this.logicState.Color(), 0.9f),
+                        10);
                 }
+
+                sb.TiledDrawLine(this.WirePoints[i-1], this.WirePoints[i],this.logicState.Color(), Constants.WireWidth);
             }
         }
 
         public void OnRemoved() {
-            if (this.Connector1 != null) {
-                this.Connector1.Wire = null;
+            if (this.Start!=null) {
+                this.Start.Wire = null;
             }
 
-            if (this.Connector2 != null) {
-                this.Connector2.Wire = null;
+            if (this.End!=null) {
+                this.End.Wire = null;
             }
+        }
+
+        public void DrawOutline(SpriteBatch sb, GameTime gameTime, Vector2 position) {
+            for (int i = 0; i < this.WirePoints.Count; i++) {
+                if (this.WirePoints[i].EqualsWithTolerence(position, Constants.PointRadius*2)) {
+                    sb.TiledDrawCircle(this.WirePoints[i], Constants.PointRadius, 10, Color.Black, 3);
+                    return;
+                }
+
+                if (i < this.WirePoints.Count-1) {
+                    RectangleF line = Helper.RectFromCorners(this.WirePoints[i], this.WirePoints[i+1]);
+                    const float inflate = Constants.WireWidth/Constants.PixelsPerUnit;
+                    line.Inflate(inflate, inflate);
+                    if (line.Contains(position)) {
+                        sb.TiledDrawRectangle(line, Color.Black, 3);
+                        return;
+                    }
+                }
+            }
+        }
+
+        public bool CanInteract(InteractionManager manager, Vector2 position, InteractType type = InteractType.Any) {
+            for (int i = 0; i < this.WirePoints.Count; i++) {
+                if (this.WirePoints[i].EqualsWithTolerence(position, Constants.PointRadius*2)) {
+                    return true;
+                }
+
+                if (i < this.WirePoints.Count-1) {
+                    RectangleF line = Helper.RectFromCorners(this.WirePoints[i], this.WirePoints[i+1]);
+                    const float inflate = Constants.WireWidth*3/Constants.PixelsPerUnit;
+                    line.Inflate(inflate, inflate);
+                    if (line.Contains(position)) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public void Interact(InteractionManager manager, Vector2 position, InteractType type) {
         }
     }
 }

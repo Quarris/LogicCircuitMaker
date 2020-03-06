@@ -42,15 +42,15 @@ namespace LCM.Game {
             this.Layer = 10;
         }
 
-        public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
+        public void DrawOutline(SpriteBatch sb, GameTime gameTime, Vector2 position) {
             sb.TiledDrawCircle(this.OffsetPosition, 1/12f, 10, Color.Black, 3);
         }
 
-        public bool CanInteract(InteractType type) {
+        public bool CanInteract(InteractionManager manager, Vector2 position, InteractType type) {
             return this.Wire == null;
         }
 
-        public void Interact(InteractionManager manager, InteractType type) {
+        public void Interact(InteractionManager manager, Vector2 position, InteractType type) {
             switch (type) {
                 case InteractType.LClickPress:
                     manager.IsSelecting = true;

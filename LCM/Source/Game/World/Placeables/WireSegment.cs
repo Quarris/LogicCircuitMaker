@@ -63,7 +63,7 @@ namespace LCM.Game {
             }
         }
 
-        public void DrawOutline(SpriteBatch sb, GameTime gameTime) {
+        public void DrawOutline(SpriteBatch sb, GameTime gameTime, Vector2 position) {
             RectangleF rectangle = this.interactableArea;
             if (this.Axis == Axis.Y) {
                 rectangle.X += 0.1f;
@@ -76,7 +76,7 @@ namespace LCM.Game {
             sb.TiledDrawRectangle(rectangle, Color.Black, 4);
         }
 
-        public bool CanInteract(InteractType type) {
+        public bool CanInteract(InteractionManager manager, Vector2 position, InteractType type) {
             if (type == InteractType.Drag) {
                 return this.Point1.Connection == null && this.Point2.Connection == null;
             }
@@ -84,11 +84,11 @@ namespace LCM.Game {
             return true;
         }
 
-        public void Interact(InteractionManager manager, InteractType type) {
+        public void Interact(InteractionManager manager, Vector2 position, InteractType type) {
             switch (type) {
                 case InteractType.RClickPress:
-                    this.Wire.Connector1.Wire = null;
-                    this.Wire.Connector2.Wire = null;
+                    this.Wire.Start.Wire = null;
+                    this.Wire.End.Wire = null;
                     LevelManager.RemoveWire(this.Wire);
                     break;
                 case InteractType.Drag:

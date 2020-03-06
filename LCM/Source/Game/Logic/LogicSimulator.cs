@@ -55,7 +55,7 @@ namespace LCM.Game {
                         .Where(kv => kv.Value.LogicState != LogicState.Undefined)
                         .Select(kv => kv.Value)
                         .Where(conn => conn.Wire != null)
-                        .Select(conn => conn.Wire.Connector1 == conn ? conn.Wire.Connector2.Tile : conn.Wire.Connector1.Tile);
+                        .Select(conn => conn.Wire.Start == conn ? conn.Wire.End.Tile : conn.Wire.Start.Tile);
 
                     foreach (Tile tile in tiles) {
                         if (!this.queue.Contains(tile)) {

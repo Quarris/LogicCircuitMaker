@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework;
 namespace LCM.Utilities {
     public static class Constants {
         public const int PixelsPerUnit = 128;
+        public const float PointRadius = 1/12f;
+        public const float WireWidth = 6f;
 
         public static readonly Color LineColor = new Color(173, 225, 244);
         public static readonly Color BackgroundColor = Color.White;
