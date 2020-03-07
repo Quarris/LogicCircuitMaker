@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using LCM.Extensions;
+using LCM.Game.Save;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,7 +21,7 @@ namespace LCM.Game {
             this.Component = component;
 
             foreach (var tuple in component.Inputs) {
-                this.Inputs.Add(tuple.Key, new Connector(this, tuple.Value.Position, tuple.Value.Direction, tuple.Value.Length));
+                this.Inputs.Add(tuple.Key, new Input(this, tuple.Value.Position, tuple.Value.Direction, tuple.Value.Length));
             }
 
             foreach (var tuple in component.Outputs) {
@@ -30,6 +31,13 @@ namespace LCM.Game {
 
         public override Texture2D GetTexture() {
             return this.Component.Texture;
+        }
+
+        public override SavedTile Save() {
+            return new SavedComponentTile {
+                Position = this.Position,
+                Component = Components.ComponentList.First(kv => kv.Value.Equals(this.Component)).Key
+            };
         }
 
         public override string ToString() {

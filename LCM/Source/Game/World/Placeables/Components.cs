@@ -17,8 +17,8 @@ namespace LCM.Game {
             DirectoryInfo directory = new DirectoryInfo(ComponentDir);
             foreach (FileInfo file in directory.EnumerateFiles()) {
                 Component template = content.LoadJson<Component>("Components/" + file.Name, string.Empty);
-                template.Texture = MlemGame.LoadContent<Texture2D>("Textures/Components/" + file.Name.Replace(".json", ""));
-                ComponentList.Add(file.Name, template);
+                template.Texture = MlemGame.LoadContent<Texture2D>("Textures/Components/" + file.Name.Replace(".json", string.Empty));
+                ComponentList.Add(file.Name.Replace(".json", string.Empty), template);
             }
 
             Console.WriteLine($"Loaded { ComponentList.Count } Components.");

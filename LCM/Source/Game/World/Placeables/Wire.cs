@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using LCM.Extensions;
+using LCM.Game.Save;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,8 +13,9 @@ namespace LCM.Game {
         public int Layer => 20;
         public RectangleF InteractableArea { get; }
 
-        public readonly Connector Start;
-        public readonly Connector End;
+        public readonly List<Vector2> WirePoints;
+        public readonly Output Start;
+        public readonly Input End;
 
         private LogicState logicState = LogicState.Undefined;
         public LogicState LogicState {
@@ -35,14 +38,13 @@ namespace LCM.Game {
             }
         }
 
-        public readonly List<Vector2> WirePoints;
-
-        public Wire(Connector start, Connector end, List<Vector2> points) {
+        public Wire(Output start, Input end, List<Vector2> points) {
             this.Start = start;
             this.End = end;
             this.WirePoints = points;
 
-            this.WirePoints = points;
+            this.Start.Wire = this;
+            this.End.Wire = this;
 
             float minX = float.MaxValue, minY = float.MaxValue, maxX = float.MinValue, maxY = float.MinValue;
             foreach (Vector2 point in this.WirePoints) {
@@ -139,6 +141,18 @@ namespace LCM.Game {
             }
 
             return null;
+        }
+
+        public SavedWire Save() {
+            return new SavedWire {
+                WirePoints = this.WirePoints,
+
+                StartTile = this.Start.Tile.Position,
+                StartConnector = this.Start.Tile.Outputs.First(kv => kv.Value.Equals(this.Start)).Key,
+
+                EndTile = this.End.Tile.Position,
+                EndConnector = this.End.Tile.Inputs.First(kv => kv.Value.Equals(this.End)).Key,
+            };
         }
     }
 }

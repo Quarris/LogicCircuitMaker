@@ -17,7 +17,7 @@ namespace LCM.Game {
             Level.RemoveTile(point);
         }
 
-        public static Wire CreateWire(Connector startConnector, Connector endConnector) {
+        public static Wire CreateWire(Output startConnector, Input endConnector) {
             Vector2 start = startConnector.InteractableArea.Center;
             Vector2 end = endConnector.InteractableArea.Center;
 
@@ -30,6 +30,10 @@ namespace LCM.Game {
 
         public static void RemoveWire(Wire wire) {
             Level.RemoveWire(wire);
+        }
+
+        public static void LoadLevel(Level level) {
+            GameState.Get.LoadLevel(level);
         }
     }
 }

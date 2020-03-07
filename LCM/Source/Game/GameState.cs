@@ -9,7 +9,7 @@ using MLEM.Input;
 namespace LCM.Game {
     public class GameState {
         public static GameState Get => LCMGame.Inst.GameState;
-        public Level Level { get; }
+        public Level Level { get; private set; }
         public Camera Camera { get; }
         private InputHandler Input => LCMGame.Input;
         private readonly InteractionManager interactionManager;
@@ -18,11 +18,11 @@ namespace LCM.Game {
             this.Level = new Level();
             this.Camera = new Camera(LCMGame.Inst.GraphicsDevice) {
                 AutoScaleWithScreen = true,
-                MinScale = 48.0f/Constants.PixelsPerUnit,
-                MaxScale = 64.0f/Constants.PixelsPerUnit,
-                Scale = 24.0f/Constants.PixelsPerUnit
+                MinScale = 48.0f / Constants.PixelsPerUnit,
+                MaxScale = 64.0f / Constants.PixelsPerUnit,
+                Scale = 24.0f / Constants.PixelsPerUnit,
+                LookingPosition = Vector2.Zero
             };
-            this.Camera.LookingPosition = Vector2.Zero;
             this.interactionManager = new InteractionManager(this);
         }
 
@@ -32,9 +32,6 @@ namespace LCM.Game {
 
             // Update Level Logic
             this.Level.Update(gameTime);
-
-            // Update Robot Position
-
         }
 
         public void Draw(GameTime gameTime, SpriteBatch sb) {
@@ -50,6 +47,10 @@ namespace LCM.Game {
 
             sb.DrawString(LCMGame.Inst.Font, $"{this.interactionManager.MouseTilePosition.FloorToPoint().X} : {this.interactionManager.MouseTilePosition.FloorToPoint().Y}", new Vector2(10, LCMGame.Inst.GraphicsDevice.Viewport.Height - LCMGame.Inst.Font.MeasureString("R").Y * 0.1f - 10), Color.Black, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0);
             sb.End();
+        }
+
+        public void LoadLevel(Level level) {
+            this.Level = level;
         }
     }
 }

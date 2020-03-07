@@ -1,4 +1,5 @@
 using System;
+using LCM.Game.Save;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,7 +19,7 @@ namespace LCM.Game {
             if (isInput) {
                 this.Outputs.Add("Output", new Output(this, new Vector2(1, 0.5f), Direction2.Right, 0.3f, null));
             } else {
-                this.Inputs.Add("Input", new Connector(this, new Vector2(0, 0.5f), Direction2.Left, 0.3f));
+                this.Inputs.Add("Input", new Input(this, new Vector2(0, 0.5f), Direction2.Left, 0.3f));
             }
         }
 
@@ -35,6 +36,13 @@ namespace LCM.Game {
         public override string Name => this.IsInput ? "Input" : "Output";
         public override Texture2D GetTexture() {
             return texture;
+        }
+
+        public override SavedTile Save() {
+            return new SavedPinTile {
+                Position = this.Position,
+                IsInput = this.IsInput
+            };
         }
     }
 }

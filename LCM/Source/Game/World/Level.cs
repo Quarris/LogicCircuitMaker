@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using LCM.Game.Save;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,13 +10,16 @@ using MLEM.Extended.Extensions;
 using MLEM.Extensions;
 using MonoGame.Extended;
 using MonoGame.Extended.Collections;
+using Newtonsoft.Json;
 
 namespace LCM.Game {
     public class Level {
         public readonly ObservableCollection<Tile> Tiles = new ObservableCollection<Tile>();
+        [JsonIgnore]
         public readonly ISet<IInteractable> Interactables = new HashSet<IInteractable>();
         public readonly ObservableCollection<Wire> Wires = new ObservableCollection<Wire>();
 
+        [JsonIgnore]
         public readonly LogicSimulator LogicSimulator;
 
         public Level() {
@@ -86,6 +91,7 @@ namespace LCM.Game {
                 return true;
             }
 
+            Console.WriteLine($"Couldn't add tile {tile} at {position}");
             return false;
         }
 
@@ -122,6 +128,13 @@ namespace LCM.Game {
         public void RemoveWire(Wire wire) {
             wire.OnRemoved();
             this.Wires.Remove(wire);
+        }
+
+        public SavedLevel Save() {
+            return new SavedLevel {
+                Tiles = this.Tiles.Select(tile => tile.Save()).ToList(),
+                Wires = this.Wires.Select(wire => wire.Save()).ToList()
+            };
         }
     }
 }

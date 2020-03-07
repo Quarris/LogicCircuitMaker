@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LCM.Extensions;
+using LCM.Game.Save;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,11 +15,12 @@ namespace LCM.Game {
     public abstract class Tile : IInteractable {
         public int Layer { get; }
         public Point Position { get; }
+
         public Size Size;
         public abstract string Name { get; }
         public Rectangle Area => new Rectangle(this.Position, this.Size);
 
-        public readonly Dictionary<string, Connector> Inputs = new Dictionary<string, Connector>();
+        public readonly Dictionary<string, Input> Inputs = new Dictionary<string, Input>();
         public readonly Dictionary<string, Output> Outputs = new Dictionary<string, Output>();
         public readonly IEnumerable<KeyValuePair<string, Connector>> Connectors;
 
@@ -27,7 +29,7 @@ namespace LCM.Game {
         public Tile(Point position, Size size) {
             this.Position = position;
             this.Size = size;
-            this.Connectors = this.Inputs.Concat(this.Outputs.Select(kv => new KeyValuePair<string, Connector>(kv.Key, kv.Value)));
+            this.Connectors = this.Inputs.Select(kv => new KeyValuePair<string, Connector>(kv.Key, kv.Value)).Concat(this.Outputs.Select(kv => new KeyValuePair<string, Connector>(kv.Key, kv.Value)));
 
             this.Layer = 0;
             this.InteractableArea = new RectangleF(position, this.Size.ToSize2());
@@ -89,6 +91,8 @@ namespace LCM.Game {
         }
 
         public abstract Texture2D GetTexture();
+
+        public abstract SavedTile Save();
 
         public override string ToString() {
             return $"{this.Name}{this.Position}";

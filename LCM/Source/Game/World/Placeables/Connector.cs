@@ -47,7 +47,7 @@ namespace LCM.Game {
         }
 
         public bool CanInteract(InteractionManager manager, Vector2 position, InteractType type) {
-            return this.Wire == null;
+            return this.Wire == null || manager.SelectedConnector?.GetType() == this.GetType();
         }
 
         public void Interact(InteractionManager manager, Vector2 position, InteractType type) {
@@ -68,11 +68,9 @@ namespace LCM.Game {
                             break;
                         }
 
-                        Wire wire = LevelManager.CreateWire(manager.SelectedConnector, this);
-
-
-                        manager.SelectedConnector.Wire = wire;
-                        this.Wire = wire;
+                        Output output = manager.SelectedConnector is Output outputConn ? outputConn : (Output) this;
+                        Input input = manager.SelectedConnector is Input inputConn ? inputConn : (Input) this;
+                        LevelManager.CreateWire(output, input);
                     }
                     break;
             }
@@ -89,7 +87,6 @@ namespace LCM.Game {
         public void OnRemoved() {
             if (this.Wire != null) {
                 LevelManager.RemoveWire(this.Wire);
-                this.Wire.OnRemoved();
             }
         }
     }
@@ -105,5 +102,9 @@ namespace LCM.Game {
         public void Operate(Tile tile) {
             this.LogicState = this.instructions.Operate(tile);
         }
+    }
+
+    public class Input : Connector {
+        public Input(Tile tile, Vector2 position, Direction2 direction, float length) : base(tile, position, direction, length) {}
     }
 }

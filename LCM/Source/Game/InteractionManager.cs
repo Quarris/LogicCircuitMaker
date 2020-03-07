@@ -1,17 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using LCM.Extensions;
+using LCM.Game.Save;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MLEM.Cameras;
+using MLEM.Data;
 using MLEM.Extensions;
 using MLEM.Input;
 using MLEM.Startup;
 using MLEM.Textures;
 using MonoGame.Extended;
+using Newtonsoft.Json;
 
 namespace LCM.Game {
     public class InteractionManager {
@@ -19,6 +23,8 @@ namespace LCM.Game {
         public Level Level => LCMGame.Inst.GameState.Level;
         public Camera Camera => LCMGame.Inst.GameState.Camera;
         public Vector2 MouseTilePosition => Camera.ToWorldPos(Input.MousePosition.ToVector2()) / Constants.PixelsPerUnit;
+
+        public string LastSave;
 
         public readonly DraggingContext DraggingContext = new DraggingContext();
         public Vector2 ClickedPosition;
@@ -38,6 +44,25 @@ namespace LCM.Game {
             this.HoveredItem = this.GetHoveredItem();
 
             /** Keys **/
+            if (Input.IsKeyPressed(Keys.F5)) {
+                JsonSerializer serializer = new JsonSerializer {
+                    TypeNameHandling = TypeNameHandling.Auto
+                };
+                StringWriter writer = new StringWriter();
+                serializer.Serialize(writer, this.Level.Save());
+                this.LastSave = writer.ToString();
+                Console.WriteLine($"Saved level to {this.LastSave}");
+            }
+
+            if (Input.IsKeyPressed(Keys.F6)) {
+                JsonSerializer serializer = new JsonSerializer {
+                    TypeNameHandling = TypeNameHandling.Auto
+                };
+                SavedLevel level = serializer.Deserialize<SavedLevel>(new JsonTextReader(new StringReader(this.LastSave)));
+                Console.WriteLine($"Loaded level from {this.LastSave}");
+                LevelManager.LoadLevel(level.Load());
+            }
+
             if (Input.IsDown(Keys.S)) {
                 Camera.Position += new Vector2(0, Constants.PixelsPerUnit / 16f * 10f);
             }
