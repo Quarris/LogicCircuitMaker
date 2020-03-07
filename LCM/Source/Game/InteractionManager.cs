@@ -63,6 +63,16 @@ namespace LCM.Game {
                 LevelManager.LoadLevel(level.Load());
             }
 
+            if (Input.IsKeyPressed(Keys.F9)) {
+                FileManager.SaveLevel(this.Level, "level", true);
+            }
+
+            if (Input.IsKeyPressed(Keys.F10)) {
+                if (FileManager.LoadLevel("level.json", out Level level)) {
+                    LevelManager.LoadLevel(level);
+                }
+            }
+
             if (Input.IsDown(Keys.S)) {
                 Camera.Position += new Vector2(0, Constants.PixelsPerUnit / 16f * 10f);
             }

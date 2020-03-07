@@ -1,4 +1,3 @@
-
 using LCM.Extensions;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
@@ -15,7 +14,6 @@ namespace LCM.Game {
         private readonly InteractionManager interactionManager;
 
         public GameState() {
-            this.Level = new Level();
             this.Camera = new Camera(LCMGame.Inst.GraphicsDevice) {
                 AutoScaleWithScreen = true,
                 MinScale = 48.0f / Constants.PixelsPerUnit,
@@ -41,7 +39,7 @@ namespace LCM.Game {
             this.interactionManager.Draw(sb, gameTime);
             sb.End();
 
-            sb.Begin(samplerState:SamplerState.PointClamp);
+            sb.Begin(samplerState: SamplerState.PointClamp);
             // Selected Gate
             //sb.DrawString(LCMGame.Inst.Font, Components.ComponentList[this.interactionManager.SelectedComponent].Name, new Vector2(10), Color.Black, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0);
 
@@ -51,6 +49,10 @@ namespace LCM.Game {
 
         public void LoadLevel(Level level) {
             this.Level = level;
+        }
+
+        public void LoadLevel(string fileName) {
+            this.LoadLevel(FileManager.LoadLevel(fileName, out Level level) ? level : new Level());
         }
     }
 }

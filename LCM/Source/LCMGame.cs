@@ -12,7 +12,6 @@ namespace LCM {
         public static LCMGame Inst { get; private set; }
         private SpriteBatch sb;
         public SpriteFont Font;
-        public UniformTextureAtlas TextureMap;
 
         public GameState GameState;
 
@@ -30,7 +29,7 @@ namespace LCM {
             this.Content.AddJsonConverter(new TokenJsonConverter());
             LCM.Game.Components.LoadComponents(this.Content);
             this.Font = this.Content.Load<SpriteFont>("Fonts/Default");
-            this.TextureMap = new UniformTextureAtlas(this.Content.Load<Texture2D>("Textures/TextureMap"), 8, 8);
+            this.GameState.LoadLevel("level.json");
         }
 
         protected override void DoUpdate(GameTime gameTime) {
