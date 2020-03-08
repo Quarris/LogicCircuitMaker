@@ -17,9 +17,9 @@ namespace LCM.Game {
             this.IsInput = isInput;
 
             if (isInput) {
-                this.Outputs.Add("Output", new Output(this, new Vector2(1, 0.5f), Direction2.Right, 0.3f, null));
+                this.Outputs.Add("Output", new Output(this, new Vector2(1, 0.5f), Direction2.Right, false, 0.3f, null));
             } else {
-                this.Inputs.Add("Input", new Input(this, new Vector2(0, 0.5f), Direction2.Left, 0.3f));
+                this.Inputs.Add("Input", new Input(this, new Vector2(0, 0.5f), Direction2.Left, false, 0.3f));
             }
         }
 
@@ -34,11 +34,12 @@ namespace LCM.Game {
         }
 
         public override string Name => this.IsInput ? "Input" : "Output";
-        public override Texture2D GetTexture() {
+
+        protected override Texture2D GetTexture() {
             return texture;
         }
 
-        public override SavedTile Save() {
+        protected override SavedTile SaveInternal() {
             return new SavedPinTile {
                 Position = this.Position,
                 IsInput = this.IsInput

@@ -79,7 +79,7 @@ namespace LCM.Game {
             }
         }
 
-        public bool CanInteract(InteractionManager manager, Vector2 position, InteractType type = InteractType.Any) {
+        public bool CanInteract(InteractionManager manager, Vector2 position, InteractType type = InteractType.Hover) {
             return IsHoveredOver(position);
         }
 

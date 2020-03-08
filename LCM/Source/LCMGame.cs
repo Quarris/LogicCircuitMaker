@@ -1,11 +1,10 @@
-﻿using System;
-using LCM.Game;
+﻿using LCM.Game;
+using LCM.Ui;
 using LCM.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MLEM.Data;
 using MLEM.Startup;
-using MLEM.Textures;
 
 namespace LCM {
     public class LCMGame : MlemGame {
@@ -14,10 +13,10 @@ namespace LCM {
         public SpriteFont Font;
 
         public GameState GameState;
+        public UiManager UiManager;
 
         protected override void Initialize() {
             Inst = this;
-            this.GameState = new GameState();
             this.IsMouseVisible = true;
             base.Initialize();
         }
@@ -29,7 +28,8 @@ namespace LCM {
             this.Content.AddJsonConverter(new TokenJsonConverter());
             LCM.Game.Components.LoadComponents(this.Content);
             this.Font = this.Content.Load<SpriteFont>("Fonts/Default");
-            this.GameState.LoadLevel("level.json");
+            this.GameState = new GameState();
+            this.UiManager = new UiManager(this.UiSystem, this.Content);
         }
 
         protected override void DoUpdate(GameTime gameTime) {

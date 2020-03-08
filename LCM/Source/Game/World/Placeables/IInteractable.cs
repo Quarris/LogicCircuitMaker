@@ -12,13 +12,13 @@ namespace LCM.Game {
 
         // TODO Add the position of the interaction. Allows to more precisely define the shape for non-rectangular gates
 
-        bool CanInteract(InteractionManager manager, Vector2 position, InteractType type = InteractType.Any);
+        bool CanInteract(InteractionManager manager, Vector2 position, InteractType type = InteractType.Hover);
 
         void Interact(InteractionManager manager, Vector2 position, InteractType type);
     }
 
     public enum InteractType {
-        Any,
+        Hover,
         LClickRelease,
         LClickPress,
         RClickRelease,

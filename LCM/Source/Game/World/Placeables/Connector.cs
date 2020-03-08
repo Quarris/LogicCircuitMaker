@@ -8,10 +8,16 @@ using RectangleF = MonoGame.Extended.RectangleF;
 namespace LCM.Game {
     public class Connector : IInteractable {
         public int Layer { get; }
-        public RectangleF InteractableArea { get; }
 
-        public Vector2 Position { get; }
+        private readonly RectangleF activeInteractableArea;
+        private readonly RectangleF inactiveInteractableArea;
+        public RectangleF InteractableArea => this.IsActive ? this.activeInteractableArea : this.inactiveInteractableArea;
+
         public Vector2 OffsetPosition;
+        public Vector2 InsetPosition;
+        public Vector2 Position => this.IsActive ? this.OffsetPosition : this.InsetPosition;
+        public readonly bool IsOptional;
+        public bool IsActive;
         public readonly Direction2 Direction;
         public float Length { get; }
         public readonly Tile Tile;
@@ -24,6 +30,7 @@ namespace LCM.Game {
                 if (this.logicState == value) {
                     return;
                 }
+
                 this.logicState = value;
                 if (this.Wire != null) {
                     this.Wire.LogicState = value;
@@ -31,19 +38,22 @@ namespace LCM.Game {
             }
         }
 
-        public Connector(Tile tile, Vector2 position, Direction2 direction, float length) {
+        protected Connector(Tile tile, Vector2 position, Direction2 direction, bool optional, float length) {
             this.Tile = tile;
-            this.Position = tile.Position.ToVector2() + position;
             this.Direction = direction;
+            this.IsOptional = optional;
+            this.IsActive = !optional;
             this.Length = length;
-            this.OffsetPosition = this.Position + this.Direction.Offset().ToVector2() * this.Length;
+            this.InsetPosition = tile.Position.ToVector2() + position;
+            this.OffsetPosition = this.InsetPosition + this.Direction.Offset().ToVector2() * this.Length;
             Vector2 size = new Vector2(1 / 6f);
-            this.InteractableArea = new RectangleF(this.OffsetPosition - size, size * 2);
+            this.inactiveInteractableArea = new RectangleF(this.InsetPosition - size, size * 2);
+            this.activeInteractableArea = new RectangleF(this.OffsetPosition - size, size * 2);
             this.Layer = 10;
         }
 
         public void DrawOutline(SpriteBatch sb, GameTime gameTime, Vector2 position) {
-            sb.TiledDrawCircle(this.OffsetPosition, 1/12f, 10, Color.Black, 3);
+            sb.TiledDrawCircle(this.Position, 1 / 12f, 10, Color.Black, 3);
         }
 
         public bool CanInteract(InteractionManager manager, Vector2 position, InteractType type) {
@@ -53,12 +63,15 @@ namespace LCM.Game {
         public void Interact(InteractionManager manager, Vector2 position, InteractType type) {
             switch (type) {
                 case InteractType.LClickPress:
-                    manager.IsSelecting = true;
-                    manager.SelectedConnector = this;
-                    manager.ClickedPosition = this.InteractableArea.Center;
+                    if (this.IsActive) {
+                        manager.IsSelecting = true;
+                        manager.SelectedConnector = this;
+                        manager.ClickedPosition = this.InteractableArea.Center;
+                    }
+
                     break;
                 case InteractType.LClickRelease:
-                    if (manager.IsSelecting) {
+                    if (this.IsActive && manager.IsSelecting) {
                         manager.IsSelecting = false;
 
                         Vector2 start = manager.ClickedPosition;
@@ -71,6 +84,12 @@ namespace LCM.Game {
                         Output output = manager.SelectedConnector is Output outputConn ? outputConn : (Output) this;
                         Input input = manager.SelectedConnector is Input inputConn ? inputConn : (Input) this;
                         LevelManager.CreateWire(output, input);
+                    }
+
+                    break;
+                case InteractType.MClickPress:
+                    if (this.IsOptional) {
+                        this.IsActive = !this.IsActive;
                     }
                     break;
             }
@@ -92,10 +111,9 @@ namespace LCM.Game {
     }
 
     public class Output : Connector {
-
         private readonly Instruction instructions;
 
-        public Output(Tile tile, Vector2 position, Direction2 direction, float length, Instruction instructions) : base(tile, position, direction, length) {
+        public Output(Tile tile, Vector2 position, Direction2 direction, bool optional, float length, Instruction instructions) : base(tile, position, direction, optional, length) {
             this.instructions = instructions;
         }
 
@@ -105,6 +123,7 @@ namespace LCM.Game {
     }
 
     public class Input : Connector {
-        public Input(Tile tile, Vector2 position, Direction2 direction, float length) : base(tile, position, direction, length) {}
+        public Input(Tile tile, Vector2 position, Direction2 direction, bool optional, float length) : base(tile, position, direction, optional, length) {
+        }
     }
 }

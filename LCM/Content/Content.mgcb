@@ -13,6 +13,21 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Components/and_gate.json
+/copy:Components/and_gate.json
+
+#begin Components/not_gate.json
+/copy:Components/not_gate.json
+
+#begin Components/or_gate.json
+/copy:Components/or_gate.json
+
+#begin Components/splitter.json
+/copy:Components/splitter.json
+
+#begin Components/xor_gate.json
+/copy:Components/xor_gate.json
+
 #begin Fonts/Default.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -56,6 +71,18 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Components/or_gate.png
 
+#begin Textures/Components/pin.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Components/pin.png
+
 #begin Textures/Components/splitter.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -80,35 +107,8 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Components/xor_gate.png
 
-#begin Textures/TextureMap.png
+#begin Textures/Ui/UiTextureMap.png
 /importer:TextureImporter
 /processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/TextureMap.png
-
-#begin Components/and_gate.json
-/copy:Components/and_gate.json
-
-#begin Components/not_gate.json
-/copy:Components/not_gate.json
-
-#begin Components/or_gate.json
-/copy:Components/or_gate.json
-
-#begin Components/splitter.json
-/copy:Components/splitter.json
-
-#begin Components/xor_gate.json
-/copy:Components/xor_gate.json
-
-#begin Textures/Components/pin.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/build:Textures/Components/pin.png
+/build:Textures/Ui/UiTextureMap.png
 

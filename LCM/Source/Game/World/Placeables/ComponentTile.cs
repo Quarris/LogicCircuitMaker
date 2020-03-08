@@ -20,20 +20,22 @@ namespace LCM.Game {
         public ComponentTile(Point position, Component component) : base(position, component.Size) {
             this.Component = component;
 
-            foreach (var tuple in component.Inputs) {
-                this.Inputs.Add(tuple.Key, new Input(this, tuple.Value.Position, tuple.Value.Direction, tuple.Value.Length));
+            foreach (KeyValuePair<string, InputTemplate> tuple in component.Inputs) {
+                InputTemplate template = tuple.Value;
+                this.Inputs.Add(tuple.Key, new Input(this, template.Position, template.Direction, template.Optional, template.Length));
             }
 
-            foreach (var tuple in component.Outputs) {
-                this.Outputs.Add(tuple.Key, new Output(this, tuple.Value.Position, tuple.Value.Direction, tuple.Value.Length, Compiler.Compile(component.Inputs.Keys, tuple.Value.Function)));
+            foreach (KeyValuePair<string, OutputTemplate> tuple in component.Outputs) {
+                OutputTemplate template = tuple.Value;
+                this.Outputs.Add(tuple.Key, new Output(this, template.Position, template.Direction, template.Optional, template.Length, Compiler.Compile(component.Inputs.Keys, template.Function)));
             }
         }
 
-        public override Texture2D GetTexture() {
+        protected override Texture2D GetTexture() {
             return this.Component.Texture;
         }
 
-        public override SavedTile Save() {
+        protected override SavedTile SaveInternal() {
             return new SavedComponentTile {
                 Position = this.Position,
                 Component = Components.ComponentList.First(kv => kv.Value.Equals(this.Component)).Key

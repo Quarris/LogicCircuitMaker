@@ -1,16 +1,28 @@
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace LCM.Game.Save {
     public abstract class SavedTile {
         public Point Position;
+        public readonly Dictionary<string, bool> ConnectorActiveStates = new Dictionary<string, bool>();
 
-        public abstract Tile Load();
+        public Tile Load() {
+            Tile tile = this.LoadInternal();
+            foreach (KeyValuePair<string, bool> state in this.ConnectorActiveStates) {
+                tile.Connectors.First(kv => kv.Key == state.Key).Value.IsActive = state.Value;
+            }
+
+            return tile;
+        }
+
+        protected abstract Tile LoadInternal();
     }
 
     public class SavedComponentTile : SavedTile {
         public string Component;
 
-        public override Tile Load() {
+        protected override Tile LoadInternal() {
             return new ComponentTile(this.Position, Components.ComponentList[this.Component]);
         }
     }
@@ -18,7 +30,7 @@ namespace LCM.Game.Save {
     public class SavedPinTile : SavedTile {
         public bool IsInput;
 
-        public override Tile Load() {
+        protected override Tile LoadInternal() {
             return new Pin(this.Position, this.IsInput);
         }
     }

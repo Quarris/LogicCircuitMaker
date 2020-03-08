@@ -49,30 +49,25 @@ namespace LCM.Utilities {
             if (straight) {
                 points.Add(start);
                 Direction2 cardinal = start.CardinalTo(end);
-                if (cardinal.GetAxis() == Axis.X) {    // If Horizontal
-                    points.Add(new Vector2(end.X, start.Y));
-                } else {    // If Vertical
-                    points.Add(new Vector2(start.X, end.Y));
-                }
+                points.Add(cardinal.GetAxis() == Axis.X ? new Vector2(end.X, start.Y) : new Vector2(start.X, end.Y));
             } else if (clamp) {
                 return GetWirePointPositions(ClampWire(start), ClampWire(end), false);
             } else {
-                Direction2 cardinal = start.CardinalTo(end);
-                int dx = Math.Abs(cardinal.Offset().X);
-                int dy = Math.Abs(cardinal.Offset().Y);
+                // Direction2 cardinal = start.CardinalTo(end);
+                // int dx = Math.Abs(cardinal.Offset().X);
+                // int dy = Math.Abs(cardinal.Offset().Y);
 
-                float mx = (1 - dx) * start.X + dx * end.X;
-                float my = (1 - dy) * start.Y + dy * end.Y;
+                // float mx = (1 - dx) * start.X + dx * end.X;
+                // float my = (1 - dy) * start.Y + dy * end.Y;
 
                 points.Add(start);
-                points.Add(new Vector2(mx, my));
+                points.Add(new Vector2(start.X, end.Y));
                 points.Add(end);
             }
 
             return points;
         }
 
-        // -1, 0, 3
         public static int Wrap(int value, int min, int max) {
             if (value >= min && value <= max) {
                 return value;

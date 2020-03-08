@@ -224,7 +224,7 @@ namespace LCM.Game {
 
         private IInteractable GetHoveredItem() {
             return this.Level?.Interactables
-                .Where(item => item.InteractableArea.Contains(this.MouseTilePosition))
+                .Where(item => item.InteractableArea.Contains(this.MouseTilePosition) && item.CanInteract(this, this.MouseTilePosition))
                 .OrderByDescending(item => item.Layer)
                 .FirstOrDefault();
         }

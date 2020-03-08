@@ -71,8 +71,8 @@ namespace LCM.Game {
             // Draw Connectors
             foreach (KeyValuePair<string, Connector> pair in this.Connectors) {
                 Connector connector = pair.Value;
-                sb.TiledDrawLine(connector.Position, connector.OffsetPosition, connector.LogicState.Color(), 6);
-                sb.TiledDrawCircle(connector.OffsetPosition, 1 / 12f, 10, connector.LogicState.Color(), 10);
+                sb.TiledDrawLine(connector.InsetPosition, connector.Position, connector.LogicState.Color(), 6);
+                sb.TiledDrawCircle(connector.Position, 1 / 12f, 10, connector.LogicState.Color(), 10);
             }
         }
 
@@ -90,9 +90,18 @@ namespace LCM.Game {
             );
         }
 
-        public abstract Texture2D GetTexture();
+        protected abstract Texture2D GetTexture();
 
-        public abstract SavedTile Save();
+        public SavedTile Save() {
+            SavedTile tile = this.SaveInternal();
+            foreach (KeyValuePair<string, Connector> pair in this.Connectors) {
+                tile.ConnectorActiveStates[pair.Key] = pair.Value.IsActive;
+            }
+
+            return tile;
+        }
+
+        protected abstract SavedTile SaveInternal();
 
         public override string ToString() {
             return $"{this.Name}{this.Position}";

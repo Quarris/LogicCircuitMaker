@@ -21,4 +21,8 @@
         <MonoGameContentReference Include="Content\Content.mgcb" />
         <Content Include="Content\*\**" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Content\Textures\Ui" />
+    </ItemGroup>
 </Project>

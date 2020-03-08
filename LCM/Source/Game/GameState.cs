@@ -14,6 +14,7 @@ namespace LCM.Game {
         private readonly InteractionManager interactionManager;
 
         public GameState() {
+            this.LoadLevel("level.json");
             this.Camera = new Camera(LCMGame.Inst.GraphicsDevice) {
                 AutoScaleWithScreen = true,
                 MinScale = 48.0f / Constants.PixelsPerUnit,
