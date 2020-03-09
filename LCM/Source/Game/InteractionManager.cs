@@ -188,12 +188,10 @@ namespace LCM.Game {
                         tile.DrawName(sb, LCMGame.Inst.Font, 0.35f, Color.Black);
                         break;
                     case Connector connector:
-                        Vector2 stringSize = LCMGame.Inst.Font.MeasureString(connector.Name);
-                        //Console.WriteLine($"Pos: {connector.Position}, Text: {connector.Position + connector.Direction.Offset().ToVector2()}, Size: {stringSize * GameState.Camera.ActualScale / Constants.PixelsPerUnit}");
                         sb.DrawCenteredString(
                             LCMGame.Inst.Font,
                             connector.Name,
-                            connector.Position * Constants.PixelsPerUnit + stringSize * new Vector2(1, 0.5f) * GameState.Camera.ActualScale,
+                            connector.Position * Constants.PixelsPerUnit,
                             0.2f,
                             Color.Black
                         );
