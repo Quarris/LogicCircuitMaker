@@ -9,7 +9,7 @@ using MonoGame.Extended;
 
 namespace LCM.Game {
     public class Pin : Tile {
-        public static readonly Texture2D texture = MlemGame.LoadContent<Texture2D>("Textures/Components/pin");
+        public static readonly Texture2D Texture = MlemGame.LoadContent<Texture2D>("Textures/Components/pin");
 
         public readonly bool IsInput;
 
@@ -17,9 +17,9 @@ namespace LCM.Game {
             this.IsInput = isInput;
 
             if (isInput) {
-                this.Outputs.Add("Output", new Output(this, new Vector2(1, 0.5f), Direction2.Right, false, 0.3f, null));
+                this.Outputs.Add("Output", new Output("Out", this, new Vector2(1, 0.5f), Direction2.Right, false, 0.3f, null));
             } else {
-                this.Inputs.Add("Input", new Input(this, new Vector2(0, 0.5f), Direction2.Left, false, 0.3f));
+                this.Inputs.Add("Input", new Input("In", this, new Vector2(0, 0.5f), Direction2.Left, false, 0.3f));
             }
         }
 
@@ -36,7 +36,7 @@ namespace LCM.Game {
         public override string Name => this.IsInput ? "Input" : "Output";
 
         protected override Texture2D GetTexture() {
-            return texture;
+            return Texture;
         }
 
         protected override SavedTile SaveInternal() {

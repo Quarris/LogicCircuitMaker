@@ -15,11 +15,9 @@ using Newtonsoft.Json;
 namespace LCM.Game {
     public class Level {
         public readonly ObservableCollection<Tile> Tiles = new ObservableCollection<Tile>();
-        [JsonIgnore]
         public readonly ISet<IInteractable> Interactables = new HashSet<IInteractable>();
         public readonly ObservableCollection<Wire> Wires = new ObservableCollection<Wire>();
 
-        [JsonIgnore]
         public readonly LogicSimulator LogicSimulator;
 
         public Level() {
@@ -101,24 +99,12 @@ namespace LCM.Game {
         }
 
         public Tile GetTileAt(Point point) {
-            foreach (Tile tile in this.Tiles) {
-                if (tile.Area.Contains(point)) {
-                    return tile;
-                }
-            }
-
-            return null;
+            return this.Tiles.FirstOrDefault(tile => tile.Area.Contains(point));
         }
 
         public bool IsAreaOccupied(Point position, Size size) {
             Rectangle area = new Rectangle(position, size);
-            foreach (Tile tile in this.Tiles) {
-                if (tile.Area.Intersects(area)) {
-                    return true;
-                }
-            }
-
-            return false;
+            return this.Tiles.Any(tile => tile.Area.Intersects(area));
         }
 
         public void AddWire(Wire wire) {

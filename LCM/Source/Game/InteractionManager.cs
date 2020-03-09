@@ -10,8 +10,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MLEM.Cameras;
 using MLEM.Data;
+using MLEM.Extended.Extensions;
 using MLEM.Extensions;
 using MLEM.Input;
+using MLEM.Misc;
 using MLEM.Startup;
 using MLEM.Textures;
 using MonoGame.Extended;
@@ -19,60 +21,30 @@ using Newtonsoft.Json;
 
 namespace LCM.Game {
     public class InteractionManager {
-        public InputHandler Input => MlemGame.Input;
-        public Level Level => LCMGame.Inst.GameState.Level;
-        public Camera Camera => LCMGame.Inst.GameState.Camera;
-        public Vector2 MouseTilePosition => Camera.ToWorldPos(Input.MousePosition.ToVector2()) / Constants.PixelsPerUnit;
-
-        public string LastSave;
-
-        public readonly DraggingContext DraggingContext = new DraggingContext();
-        public Vector2 ClickedPosition;
-        public IInteractable HoveredItem;
-        public bool IsSelecting;
-        public bool IsWireSelected;
-        public int SelectedComponent { get; private set; }
-        public Connector SelectedConnector;
+        public static InputHandler Input => MlemGame.Input;
+        public static Level Level => LCMGame.Inst.GameState.Level;
+        public static Camera Camera => LCMGame.Inst.GameState.Camera;
+        public static Vector2 MouseTilePosition => Camera.ToWorldPos(Input.MousePosition.ToVector2()) / Constants.PixelsPerUnit;
 
         public GameState GameState { get; }
 
+        public readonly DraggingContext DraggingContext = new DraggingContext();
+        public Connector SelectedConnector;
+        public Vector2 ClickedPosition;
+        public IEnumerable<IInteractable> HoveredItems = new List<IInteractable>();
+        public bool IsSelecting;
+
+        public string SelectedComponent;
+        public bool IsSelectedPin;
+
+        public string LastSave;
+
         public InteractionManager(GameState gameState) {
             this.GameState = gameState;
+            Input.UpdateOrder = 100;
         }
 
         public void Update(GameTime gameTime) {
-            this.HoveredItem = this.GetHoveredItem();
-
-            /** Keys **/
-            if (Input.IsKeyPressed(Keys.F5)) {
-                JsonSerializer serializer = new JsonSerializer {
-                    TypeNameHandling = TypeNameHandling.Auto
-                };
-                StringWriter writer = new StringWriter();
-                serializer.Serialize(writer, this.Level.Save());
-                this.LastSave = writer.ToString();
-                Console.WriteLine($"Saved level to {this.LastSave}");
-            }
-
-            if (Input.IsKeyPressed(Keys.F6)) {
-                JsonSerializer serializer = new JsonSerializer {
-                    TypeNameHandling = TypeNameHandling.Auto
-                };
-                SavedLevel level = serializer.Deserialize<SavedLevel>(new JsonTextReader(new StringReader(this.LastSave)));
-                Console.WriteLine($"Loaded level from {this.LastSave}");
-                LevelManager.LoadLevel(level.Load());
-            }
-
-            if (Input.IsKeyPressed(Keys.F9)) {
-                FileManager.SaveLevel(this.Level, "level", true);
-            }
-
-            if (Input.IsKeyPressed(Keys.F10)) {
-                if (FileManager.LoadLevel("level.json", out Level level)) {
-                    LevelManager.LoadLevel(level);
-                }
-            }
-
             if (Input.IsDown(Keys.S)) {
                 Camera.Position += new Vector2(0, Constants.PixelsPerUnit / 16f * 10f);
             }
@@ -89,26 +61,57 @@ namespace LCM.Game {
                 Camera.Position += new Vector2(Constants.PixelsPerUnit / 16f * 10f, 0);
             }
 
-            if (Input.IsKeyPressed(Keys.I)) {
-                this.IsWireSelected = !this.IsWireSelected;
+            if (LCMGame.Inst.UiSystem.Controls.GetElementUnderPos(Input.MousePosition.ToVector2()) != null)
+                return;
+
+            this.HoveredItems = this.GetHoveredItems();
+
+            /** Keys **/
+            if (Input.IsKeyPressed(Keys.F5)) {
+                JsonSerializer serializer = new JsonSerializer {
+                    TypeNameHandling = TypeNameHandling.Auto
+                };
+                StringWriter writer = new StringWriter();
+                serializer.Serialize(writer, Level.Save());
+                this.LastSave = writer.ToString();
+                Console.WriteLine($"Saved level to {this.LastSave}");
+            }
+
+            if (Input.IsKeyPressed(Keys.F6)) {
+                JsonSerializer serializer = new JsonSerializer {
+                    TypeNameHandling = TypeNameHandling.Auto
+                };
+                SavedLevel level = serializer.Deserialize<SavedLevel>(new JsonTextReader(new StringReader(this.LastSave)));
+                Console.WriteLine($"Loaded level from {this.LastSave}");
+                LevelManager.LoadLevel(level.Load());
+            }
+
+            if (Input.IsKeyPressed(Keys.F9)) {
+                FileManager.SaveLevel(Level, "level", true);
+            }
+
+            if (Input.IsKeyPressed(Keys.F10)) {
+                if (FileManager.LoadLevel("level.json", out Level level)) {
+                    LevelManager.LoadLevel(level);
+                }
             }
 
             for (int i = (int) Keys.D1; i < (int) Keys.D9; i++) {
                 if (Input.IsKeyPressed((Keys) i)) {
                     int index = i - (int) Keys.D1;
                     if (index >= 0 && index < Components.ComponentList.Count) {
-                        Console.WriteLine("Selecting component " + Components.ComponentList.Keys.ToArray()[i-(int)Keys.D1]);
-                        this.SelectedComponent = i - (int) Keys.D1;
+                        Console.WriteLine("Selecting component " + Components.ComponentList.Keys.ToArray()[i - (int) Keys.D1]);
+                        //this.SelectedComponent = i - (int) Keys.D1;
                     }
                 }
             }
 
             if (Input.IsKeyPressed(Keys.OemMinus)) {
-                this.SelectedComponent = -1;
+                //this.SelectedComponent = -1;
             }
 
             if (Input.IsKeyPressed(Keys.OemPlus)) {
-                this.SelectedComponent = -2;
+                //this.SelectedComponent = -2;
             }
 
             /** Scroll **/
@@ -122,23 +125,25 @@ namespace LCM.Game {
 
             /** Mouse **/
             if (Input.IsMouseButtonPressed(MouseButton.Left)) {
-                this.ClickedPosition = this.MouseTilePosition;
-                if (this.HoveredItem != null) {
-                    this.HoveredItem.Interact(this, this.MouseTilePosition, InteractType.LClickPress);
+                this.ClickedPosition = MouseTilePosition;
+                IInteractable item = this.GetInteractableItem(InteractType.LClickPress);
+                if (item != null) {
+                    item.Interact(this, MouseTilePosition, InteractType.LClickPress);
                 } else {
                     Point pos = MouseTilePosition.FloorToPoint();
                     Tile tile;
-                    if (this.SelectedComponent < 0) {
-                        tile = new Pin(pos, this.SelectedComponent == -1);
+                    if (this.IsSelectedPin) {
+                        tile = new Pin(pos, this.SelectedComponent.Equals("input"));
                     } else {
-                        tile = new ComponentTile(pos, Components.GetComponentByIndex(this.SelectedComponent));
+                        tile = new ComponentTile(pos, Components.ComponentList[this.SelectedComponent]);
                     }
+
                     LevelManager.TryAddTile(pos, tile);
                 }
             }
 
             if (Input.IsMouseButtonReleased(MouseButton.Left)) {
-                this.HoveredItem?.Interact(this, this.MouseTilePosition, InteractType.LClickRelease);
+                this.GetInteractableItem(InteractType.LClickRelease)?.Interact(this, MouseTilePosition, InteractType.LClickRelease);
                 this.IsSelecting = false;
                 if (this.DraggingContext.Button == MouseButton.Left) {
                     this.DraggingContext.Deactivate();
@@ -146,87 +151,111 @@ namespace LCM.Game {
             }
 
             if (Input.IsMouseButtonPressed(MouseButton.Right)) {
-                this.ClickedPosition = this.MouseTilePosition;
-                this.HoveredItem?.Interact(this, this.MouseTilePosition, InteractType.RClickPress);
+                this.ClickedPosition = MouseTilePosition;
+                this.GetInteractableItem(InteractType.RClickPress)?.Interact(this, MouseTilePosition, InteractType.RClickPress);
             }
 
             if (Input.IsMouseButtonReleased(MouseButton.Right)) {
-                this.HoveredItem?.Interact(this, this.MouseTilePosition, InteractType.RClickRelease);
+                this.GetInteractableItem(InteractType.RClickRelease)?.Interact(this, MouseTilePosition, InteractType.RClickRelease);
                 if (this.DraggingContext.Button == MouseButton.Right) {
                     this.DraggingContext.Deactivate();
                 }
             }
 
             if (Input.IsMouseButtonPressed(MouseButton.Middle)) {
-                this.HoveredItem?.Interact(this, this.MouseTilePosition, InteractType.MClickPress);
+                this.GetInteractableItem(InteractType.MClickPress)?.Interact(this, MouseTilePosition, InteractType.MClickPress);
             }
 
             if (Input.IsMouseButtonReleased(MouseButton.Middle)) {
-                this.HoveredItem?.Interact(this, this.MouseTilePosition, InteractType.MClickRelease);
+                this.GetInteractableItem(InteractType.MClickRelease)?.Interact(this, MouseTilePosition, InteractType.MClickRelease);
                 if (this.DraggingContext.Button == MouseButton.Middle) {
                     this.DraggingContext.Deactivate();
                 }
             }
 
-            this.SetDraggingContext();
-            if (this.DraggingContext.IsActive && this.DraggingContext.Item != null && this.DraggingContext.Item.CanInteract(this, this.MouseTilePosition, InteractType.Drag)) {
-                this.DraggingContext.Item.Interact(this, this.MouseTilePosition, InteractType.Drag);
+            this.SetDraggingContext(this.GetInteractableItem(InteractType.Drag));
+            if (this.DraggingContext.IsActive && this.DraggingContext.Item != null && this.DraggingContext.Item.CanInteract(this, MouseTilePosition, InteractType.Drag)) {
+                this.DraggingContext.Item.Interact(this, MouseTilePosition, InteractType.Drag);
             }
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
-            if (this.HoveredItem != null && this.HoveredItem.CanInteract(this, this.MouseTilePosition)) {
-                this.HoveredItem.DrawOutline(sb, gameTime, this.MouseTilePosition);
-                if (this.HoveredItem is Tile tile) {
-                    tile.DrawName(sb, LCMGame.Inst.Font, 0.35f, Color.Black);
+            IInteractable item = this.GetInteractableItem();
+            if (item != null) {
+                item.DrawOutline(sb, gameTime, MouseTilePosition);
+                switch (item) {
+                    case Tile tile:
+                        tile.DrawName(sb, LCMGame.Inst.Font, 0.35f, Color.Black);
+                        break;
+                    case Connector connector:
+                        Vector2 stringSize = LCMGame.Inst.Font.MeasureString(connector.Name);
+                        //Console.WriteLine($"Pos: {connector.Position}, Text: {connector.Position + connector.Direction.Offset().ToVector2()}, Size: {stringSize * GameState.Camera.ActualScale / Constants.PixelsPerUnit}");
+                        sb.DrawCenteredString(
+                            LCMGame.Inst.Font,
+                            connector.Name,
+                            connector.Position * Constants.PixelsPerUnit + stringSize * new Vector2(1, 0.5f) * GameState.Camera.ActualScale,
+                            0.2f,
+                            Color.Black
+                        );
+                        break;
                 }
             }
 
             if (this.IsSelecting) { // Render wire preview
-                IList<Vector2> points = Helper.GetWirePointPositions(this.ClickedPosition, this.MouseTilePosition);
-                for (int i = 0; i < points.Count-1; i++) {
-                    sb.DrawLine(points[i] * Constants.PixelsPerUnit, points[i+1] * Constants.PixelsPerUnit, Color.Red, 6);
+                IList<Vector2> points = Helper.GetWirePointPositions(this.ClickedPosition, MouseTilePosition);
+                for (int i = 0; i < points.Count - 1; i++) {
+                    sb.DrawLine(points[i] * Constants.PixelsPerUnit, points[i + 1] * Constants.PixelsPerUnit, Color.Red, 6);
                 }
-            } else if (this.HoveredItem == null) { // Render tile preview
+            } else if (this.GetInteractableItem() == null && this.SelectedComponent?.Length > 0) { // Render tile preview
                 Texture2D texture;
                 Size size;
-                Point pos = this.MouseTilePosition.FloorToPoint();
+                Point pos = MouseTilePosition.FloorToPoint();
 
-                if (this.SelectedComponent < 0) {
-                    texture = Pin.texture;
+                if (this.IsSelectedPin) {
+                    texture = Pin.Texture;
                     size = new Size(1, 1);
                 } else {
-                    Component component = Components.ComponentList.Values.ToArray()[this.SelectedComponent];
+                    Component component = Components.ComponentList[this.SelectedComponent];
                     texture = component.Texture;
                     size = component.Size;
                 }
+
                 if (!LevelManager.Level.IsAreaOccupied(pos, size)) {
                     sb.Draw(texture, pos.ToVector2() * Constants.PixelsPerUnit, Color.Multiply(Constants.ComponentColor, 0.5f));
                 }
             }
         }
 
-        private void SetDraggingContext() {
-            if (Input.IsMouseButtonDown(MouseButton.Left) && !this.ClickedPosition.EqualsWithTolerence(this.MouseTilePosition, 0.1f)) {
+        private void SetDraggingContext(IInteractable item) {
+            if (Input.IsMouseButtonDown(MouseButton.Left) && !this.ClickedPosition.EqualsWithTolerence(MouseTilePosition, 0.1f)) {
                 if (!this.DraggingContext.IsActive) {
-                    this.DraggingContext.Activate(MouseButton.Left, this.ClickedPosition, this.HoveredItem);
+                    this.DraggingContext.Activate(MouseButton.Left, this.ClickedPosition, item);
                 }
-            } else if (Input.IsMouseButtonDown(MouseButton.Right) && !this.ClickedPosition.EqualsWithTolerence(this.MouseTilePosition, 0.1f)) {
+            } else if (Input.IsMouseButtonDown(MouseButton.Right) && !this.ClickedPosition.EqualsWithTolerence(MouseTilePosition, 0.1f)) {
                 if (!this.DraggingContext.IsActive) {
-                    this.DraggingContext.Activate(MouseButton.Right, this.ClickedPosition, this.HoveredItem);
+                    this.DraggingContext.Activate(MouseButton.Right, this.ClickedPosition, item);
                 }
-            } else if (Input.IsMouseButtonDown(MouseButton.Middle) && !this.ClickedPosition.EqualsWithTolerence(this.MouseTilePosition, 0.1f)) {
+            } else if (Input.IsMouseButtonDown(MouseButton.Middle) && !this.ClickedPosition.EqualsWithTolerence(MouseTilePosition, 0.1f)) {
                 if (!this.DraggingContext.IsActive) {
-                    this.DraggingContext.Activate(MouseButton.Middle, this.ClickedPosition, this.HoveredItem);
+                    this.DraggingContext.Activate(MouseButton.Middle, this.ClickedPosition, item);
                 }
             }
         }
 
-        private IInteractable GetHoveredItem() {
-            return this.Level?.Interactables
-                .Where(item => item.InteractableArea.Contains(this.MouseTilePosition) && item.CanInteract(this, this.MouseTilePosition))
+        private IInteractable GetInteractableItem(InteractType type = InteractType.Hover) {
+            return this.HoveredItems
+                .FirstOrDefault(item => item.CanInteract(this, MouseTilePosition, type));
+        }
+
+        private IEnumerable<IInteractable> GetHoveredItems() {
+            return Level?.Interactables
                 .OrderByDescending(item => item.Layer)
-                .FirstOrDefault();
+                .Where(item => item.InteractableArea.Contains(MouseTilePosition) && item.CanInteract(this, MouseTilePosition));
+        }
+
+        public void SelectComponent(string name, bool isPin) {
+            this.SelectedComponent = name;
+            this.IsSelectedPin = isPin;
         }
     }
 }

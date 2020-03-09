@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using LCM.Game;
 using LCM.Game.Save;
@@ -15,6 +16,10 @@ namespace LCM.Utilities {
                 Console.WriteLine($"Creating AppData at {AppData}");
                 AppData.Create();
             }
+        }
+
+        public static IEnumerable<FileInfo> ListLevels() {
+            return LevelDirectory.EnumerateFiles();
         }
 
         public static bool SaveLevel(Level level, string name, bool force) {
@@ -45,7 +50,7 @@ namespace LCM.Utilities {
                 return false;
             }
 
-            FileInfo file = new FileInfo(Path.Combine(LevelDirectory.FullName, name));
+            FileInfo file = new FileInfo(Path.Combine(LevelDirectory.FullName, name+".json"));
 
             if (!file.Exists) {
                 Console.WriteLine($"Level file {file.FullName} doesn't exist");

@@ -22,12 +22,12 @@ namespace LCM.Game {
 
             foreach (KeyValuePair<string, InputTemplate> tuple in component.Inputs) {
                 InputTemplate template = tuple.Value;
-                this.Inputs.Add(tuple.Key, new Input(this, template.Position, template.Direction, template.Optional, template.Length));
+                this.Inputs.Add(tuple.Key, new Input(tuple.Key, this, template.Position, template.Direction, template.Optional, template.Length));
             }
 
             foreach (KeyValuePair<string, OutputTemplate> tuple in component.Outputs) {
                 OutputTemplate template = tuple.Value;
-                this.Outputs.Add(tuple.Key, new Output(this, template.Position, template.Direction, template.Optional, template.Length, Compiler.Compile(component.Inputs.Keys, template.Function)));
+                this.Outputs.Add(tuple.Key, new Output(tuple.Key, this, template.Position, template.Direction, template.Optional, template.Length, Compiler.Compile(component.Inputs.Keys, template.Function)));
             }
         }
 

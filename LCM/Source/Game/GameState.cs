@@ -11,10 +11,10 @@ namespace LCM.Game {
         public Level Level { get; private set; }
         public Camera Camera { get; }
         private InputHandler Input => LCMGame.Input;
-        private readonly InteractionManager interactionManager;
+        public readonly InteractionManager InteractionManager;
 
         public GameState() {
-            this.LoadLevel("level.json");
+            this.LoadLevel(new Level());
             this.Camera = new Camera(LCMGame.Inst.GraphicsDevice) {
                 AutoScaleWithScreen = true,
                 MinScale = 48.0f / Constants.PixelsPerUnit,
@@ -22,12 +22,12 @@ namespace LCM.Game {
                 Scale = 24.0f / Constants.PixelsPerUnit,
                 LookingPosition = Vector2.Zero
             };
-            this.interactionManager = new InteractionManager(this);
+            this.InteractionManager = new InteractionManager(this);
         }
 
         public void Update(GameTime gameTime) {
             // Update User Interactions
-            this.interactionManager.Update(gameTime);
+            this.InteractionManager.Update(gameTime);
 
             // Update Level Logic
             this.Level.Update(gameTime);
@@ -37,14 +37,14 @@ namespace LCM.Game {
             sb.Begin(transformMatrix: this.Camera.ViewMatrix, samplerState: SamplerState.PointClamp);
             // Render Logic Components (Gates etc...)
             this.Level.Draw(sb, gameTime);
-            this.interactionManager.Draw(sb, gameTime);
+            this.InteractionManager.Draw(sb, gameTime);
             sb.End();
 
             sb.Begin(samplerState: SamplerState.PointClamp);
             // Selected Gate
             //sb.DrawString(LCMGame.Inst.Font, Components.ComponentList[this.interactionManager.SelectedComponent].Name, new Vector2(10), Color.Black, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0);
 
-            sb.DrawString(LCMGame.Inst.Font, $"{this.interactionManager.MouseTilePosition.FloorToPoint().X} : {this.interactionManager.MouseTilePosition.FloorToPoint().Y}", new Vector2(10, LCMGame.Inst.GraphicsDevice.Viewport.Height - LCMGame.Inst.Font.MeasureString("R").Y * 0.1f - 10), Color.Black, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0);
+            sb.DrawString(LCMGame.Inst.Font, $"{InteractionManager.MouseTilePosition.FloorToPoint().X} : {InteractionManager.MouseTilePosition.FloorToPoint().Y}", new Vector2(10, LCMGame.Inst.GraphicsDevice.Viewport.Height - LCMGame.Inst.Font.MeasureString("R").Y * 0.1f - 10), Color.Black, 0, Vector2.Zero, 0.1f, SpriteEffects.None, 0);
             sb.End();
         }
 

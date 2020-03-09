@@ -1,3 +1,4 @@
+using System;
 using LCM.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,12 +8,13 @@ using RectangleF = MonoGame.Extended.RectangleF;
 
 namespace LCM.Game {
     public class Connector : IInteractable {
-        public int Layer { get; }
+        public int Layer => 20;
 
         private readonly RectangleF activeInteractableArea;
         private readonly RectangleF inactiveInteractableArea;
         public RectangleF InteractableArea => this.IsActive ? this.activeInteractableArea : this.inactiveInteractableArea;
 
+        public readonly string Name;
         public Vector2 OffsetPosition;
         public Vector2 InsetPosition;
         public Vector2 Position => this.IsActive ? this.OffsetPosition : this.InsetPosition;
@@ -38,7 +40,8 @@ namespace LCM.Game {
             }
         }
 
-        protected Connector(Tile tile, Vector2 position, Direction2 direction, bool optional, float length) {
+        protected Connector(string name, Tile tile, Vector2 position, Direction2 direction, bool optional, float length) {
+            this.Name = name;
             this.Tile = tile;
             this.Direction = direction;
             this.IsOptional = optional;
@@ -49,7 +52,6 @@ namespace LCM.Game {
             Vector2 size = new Vector2(1 / 6f);
             this.inactiveInteractableArea = new RectangleF(this.InsetPosition - size, size * 2);
             this.activeInteractableArea = new RectangleF(this.OffsetPosition - size, size * 2);
-            this.Layer = 10;
         }
 
         public void DrawOutline(SpriteBatch sb, GameTime gameTime, Vector2 position) {
@@ -57,6 +59,9 @@ namespace LCM.Game {
         }
 
         public bool CanInteract(InteractionManager manager, Vector2 position, InteractType type) {
+            if (type == InteractType.Hover) {
+                return true;
+            }
             return this.Wire == null || manager.SelectedConnector?.GetType() == this.GetType();
         }
 
@@ -113,7 +118,8 @@ namespace LCM.Game {
     public class Output : Connector {
         private readonly Instruction instructions;
 
-        public Output(Tile tile, Vector2 position, Direction2 direction, bool optional, float length, Instruction instructions) : base(tile, position, direction, optional, length) {
+        public Output(string name, Tile tile, Vector2 position, Direction2 direction, bool optional, float length, Instruction instructions)
+            : base(name, tile, position, direction, optional, length) {
             this.instructions = instructions;
         }
 
@@ -123,7 +129,8 @@ namespace LCM.Game {
     }
 
     public class Input : Connector {
-        public Input(Tile tile, Vector2 position, Direction2 direction, bool optional, float length) : base(tile, position, direction, optional, length) {
+        public Input(string name, Tile tile, Vector2 position, Direction2 direction, bool optional, float length)
+            : base(name, tile, position, direction, optional, length) {
         }
     }
 }

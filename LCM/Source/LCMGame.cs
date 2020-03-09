@@ -29,12 +29,12 @@ namespace LCM {
             LCM.Game.Components.LoadComponents(this.Content);
             this.Font = this.Content.Load<SpriteFont>("Fonts/Default");
             this.GameState = new GameState();
-            this.UiManager = new UiManager(this.UiSystem, this.Content);
+            this.UiManager = new UiManager(this.UiSystem, this.Content, this.SpriteBatch);
         }
 
         protected override void DoUpdate(GameTime gameTime) {
-            base.DoUpdate(gameTime);
             this.GameState.Update(gameTime);
+            base.DoUpdate(gameTime);
         }
 
         protected override void DoDraw(GameTime gameTime) {

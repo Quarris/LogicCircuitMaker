@@ -10,7 +10,7 @@ using MonoGame.Extended;
 
 namespace LCM.Game {
     public class Wire : IInteractable {
-        public int Layer => 20;
+        public int Layer => 10;
         public RectangleF InteractableArea { get; }
 
         public readonly List<Vector2> WirePoints;
