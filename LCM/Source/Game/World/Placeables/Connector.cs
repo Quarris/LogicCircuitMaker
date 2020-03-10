@@ -72,6 +72,8 @@ namespace LCM.Game {
                         manager.IsSelecting = true;
                         manager.SelectedConnector = this;
                         manager.ClickedPosition = this.InteractableArea.Center;
+                    } else if (this.IsOptional) {
+                        this.IsActive = true;
                     }
 
                     break;
@@ -92,9 +94,9 @@ namespace LCM.Game {
                     }
 
                     break;
-                case InteractType.MClickPress:
-                    if (this.IsOptional) {
-                        this.IsActive = !this.IsActive;
+                case InteractType.RClickPress:
+                    if (this.IsOptional && this.IsActive) {
+                        this.IsActive = false;
                     }
                     break;
             }
