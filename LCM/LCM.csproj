@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>WinExe</OutputType>
+        <OutputType Condition=" '$(Configuration)' == 'Debug' ">Exe</OutputType>
+        <OutputType Condition=" '$(Configuration)' == 'Release' ">WinExe</OutputType>
         <TargetFramework>net462</TargetFramework>
         <AutoBundleUseLib>true</AutoBundleUseLib>
     </PropertyGroup>

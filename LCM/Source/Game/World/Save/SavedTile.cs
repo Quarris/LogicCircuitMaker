@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
-namespace LCM.Game.Save {
+namespace LCM.Game {
     public abstract class SavedTile {
         public Point Position;
         public readonly Dictionary<string, bool> ConnectorActiveStates = new Dictionary<string, bool>();
@@ -23,6 +24,7 @@ namespace LCM.Game.Save {
         public string Component;
 
         protected override Tile LoadInternal() {
+            Console.WriteLine($"Loading {this.Component}");
             return new ComponentTile(this.Position, Components.ComponentList[this.Component]);
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using LCM.Game;
@@ -86,8 +87,8 @@ namespace LCM.Ui {
                             OnPressed = e => {
                                 if (FileManager.LoadLevel(name, out Level level)) {
                                     LevelManager.LoadLevel(level);
-                                    e.System.Remove(e.Root.Name);
                                 }
+                                e.System.Remove(e.Root.Name);
                             },
                             Padding = new Vector2(0, 0.5f)
                         });

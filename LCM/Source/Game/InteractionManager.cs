@@ -34,7 +34,7 @@ namespace LCM.Game {
         public IEnumerable<IInteractable> HoveredItems = new List<IInteractable>();
         public bool IsSelecting;
 
-        public string SelectedComponent;
+        public string SelectedComponent = "";
         public bool IsSelectedPin;
 
         public string LastSave;
@@ -101,7 +101,7 @@ namespace LCM.Game {
                 IInteractable item = this.GetInteractableItem(InteractType.LClickPress);
                 if (item != null) {
                     item.Interact(this, MouseTilePosition, InteractType.LClickPress);
-                } else {
+                } else if (this.SelectedComponent.Length > 0) {
                     Point pos = MouseTilePosition.FloorToPoint();
                     Tile tile;
                     if (this.IsSelectedPin) {
