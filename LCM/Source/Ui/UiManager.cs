@@ -55,6 +55,7 @@ namespace LCM.Ui {
                         OnPressed = saveSave => {
                             string text = textField.Text;
                             FileManager.SaveLevel(LevelManager.Level, text, true);
+                            saveSave.System.Remove(saveSave.Root.Name);
                         },
                         OnUpdated = (e, time) => ((Button) e).IsDisabled = textField.Text.Length == 0
                     });
@@ -77,7 +78,7 @@ namespace LCM.Ui {
                         ChildPadding = new Vector2(2)
                     });
 
-                    Panel levelSelect = group.AddChild(new Panel(Anchor.TopCenter, new Vector2(1, 0.7f), Vector2.Zero, true, false, new Point(5, 5)) {
+                    Panel levelSelect = group.AddChild(new Panel(Anchor.TopCenter, new Vector2(1, 0.7f), Vector2.Zero, false, true, new Point(5, 5)) {
                         ChildPadding = new Vector2(2)
 
                     });
