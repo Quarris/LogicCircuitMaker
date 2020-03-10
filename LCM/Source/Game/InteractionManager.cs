@@ -86,34 +86,6 @@ namespace LCM.Game {
                 LevelManager.LoadLevel(level.Load());
             }
 
-            if (Input.IsKeyPressed(Keys.F9)) {
-                FileManager.SaveLevel(Level, "level", true);
-            }
-
-            if (Input.IsKeyPressed(Keys.F10)) {
-                if (FileManager.LoadLevel("level.json", out Level level)) {
-                    LevelManager.LoadLevel(level);
-                }
-            }
-
-            for (int i = (int) Keys.D1; i < (int) Keys.D9; i++) {
-                if (Input.IsKeyPressed((Keys) i)) {
-                    int index = i - (int) Keys.D1;
-                    if (index >= 0 && index < Components.ComponentList.Count) {
-                        Console.WriteLine("Selecting component " + Components.ComponentList.Keys.ToArray()[i - (int) Keys.D1]);
-                        //this.SelectedComponent = i - (int) Keys.D1;
-                    }
-                }
-            }
-
-            if (Input.IsKeyPressed(Keys.OemMinus)) {
-                //this.SelectedComponent = -1;
-            }
-
-            if (Input.IsKeyPressed(Keys.OemPlus)) {
-                //this.SelectedComponent = -2;
-            }
-
             /** Scroll **/
             int scrollDelta = Input.ScrollWheel - Input.LastScrollWheel;
 
@@ -200,7 +172,16 @@ namespace LCM.Game {
             }
 
             if (this.IsSelecting) { // Render wire preview
-                IList<Vector2> points = Helper.GetWirePointPositions(this.ClickedPosition, MouseTilePosition);
+                Vector2 start;
+                Vector2 end;
+                if (this.SelectedConnector is Output) {
+                    start = this.SelectedConnector.Position;
+                    end = MouseTilePosition;
+                } else {
+                    start = MouseTilePosition;
+                    end = this.SelectedConnector.Position;
+                }
+                IList<Vector2> points = Helper.GetWirePointPositions(start, end);
                 for (int i = 0; i < points.Count - 1; i++) {
                     sb.DrawLine(points[i] * Constants.PixelsPerUnit, points[i + 1] * Constants.PixelsPerUnit, Color.Red, 6);
                 }
