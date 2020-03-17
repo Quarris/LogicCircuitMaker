@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 
 namespace LCM.Game {
-    public class LevelManager {
+    public static class LevelManager {
         public static Level Level => LCMGame.Inst.GameState.Level;
 
         public static bool TryAddTile(Point position, Tile tile) {
@@ -17,13 +17,25 @@ namespace LCM.Game {
             Level.RemoveTile(point);
         }
 
+        public static Wire CreateWire(Vector2 start, Vector2 end) {
+            Wire wire = new Wire(Helper.GetWirePointPositions(start, end));
+
+            Level.AddWire(wire);
+
+            return wire;
+        }
+
         public static Wire CreateWire(Output startConnector, Input endConnector) {
             Vector2 start = startConnector.InteractableArea.Center;
             Vector2 end = endConnector.InteractableArea.Center;
 
-            Wire wire = new Wire(startConnector, endConnector, Helper.GetWirePointPositions(start, end));
+            Wire wire = CreateWire(start, end);
 
-            Level.AddWire(wire);
+            wire.Start = startConnector;
+            wire.End = endConnector;
+
+            startConnector.Wire = wire;
+            endConnector.Wire = wire;
 
             return wire;
         }

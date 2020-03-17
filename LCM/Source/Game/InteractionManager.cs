@@ -116,7 +116,17 @@ namespace LCM.Game {
 
             if (Input.IsMouseButtonReleased(MouseButton.Left)) {
                 this.GetInteractableItem(InteractType.LClickRelease)?.Interact(this, MouseTilePosition, InteractType.LClickRelease);
-                this.IsSelecting = false;
+                if (this.IsSelecting) {
+                    if (this.SelectedConnector != null) {
+                        Wire wire = LevelManager.CreateWire(this.SelectedConnector.InteractableArea.Center, MouseTilePosition);
+                        if (this.SelectedConnector is Input input) {
+                            wire.End = input;
+                        } else {
+                            wire.Start = (Output) this.SelectedConnector;
+                        }
+                    }
+                    this.IsSelecting = false;
+                }
                 if (this.DraggingContext.Button == MouseButton.Left) {
                     this.DraggingContext.Deactivate();
                 }

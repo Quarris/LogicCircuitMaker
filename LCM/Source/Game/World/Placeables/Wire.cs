@@ -14,8 +14,8 @@ namespace LCM.Game {
         public RectangleF InteractableArea { get; }
 
         public readonly List<Vector2> WirePoints;
-        public readonly Output Start;
-        public readonly Input End;
+        public Output Start;
+        public Input End;
 
         private LogicState logicState = LogicState.Undefined;
         public LogicState LogicState {
@@ -38,13 +38,18 @@ namespace LCM.Game {
             }
         }
 
-        public Wire(Output start, Input end, List<Vector2> points) {
+        public Wire(List<Vector2> points, Output start = null, Input end = null) {
             this.Start = start;
             this.End = end;
             this.WirePoints = points;
 
-            this.Start.Wire = this;
-            this.End.Wire = this;
+            if (this.Start != null) {
+                this.Start.Wire = this;
+            }
+
+            if (this.End != null) {
+                this.End.Wire = this;
+            }
 
             float minX = float.MaxValue, minY = float.MaxValue, maxX = float.MinValue, maxY = float.MinValue;
             foreach (Vector2 point in this.WirePoints) {

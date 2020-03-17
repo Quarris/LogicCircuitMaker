@@ -17,7 +17,7 @@ namespace LCM.Game.Save {
             Output output = level.Tiles.First(tile => tile.Position == this.StartTile).Outputs[this.StartConnector];
             Input input = level.Tiles.First(tile => tile.Position == this.EndTile).Inputs[this.EndConnector];
 
-            return new Wire(output, input, this.WirePoints);
+            return new Wire(this.WirePoints, output, input);
         }
     }
 }
