@@ -55,11 +55,21 @@ namespace LCM.Game {
                         .Where(kv => kv.Value.LogicState != LogicState.Undefined)
                         .Select(kv => kv.Value)
                         .Where(conn => conn.Wire != null)
-                        .Select(conn => conn.Wire.Start == conn ? conn.Wire.End.Tile : conn.Wire.Start.Tile);
+                        .Select(conn => conn.Wire.End.Tile);
 
                     foreach (Tile tile in tiles) {
                         if (!this.queue.Contains(tile)) {
-                            this.queue.Enqueue(tile);
+                            bool enqueue = true;
+                            foreach (Input input in tile.Inputs.Values) {
+                                if (input.LogicState == LogicState.Undefined) {
+                                    enqueue = false;
+                                    break;
+                                }
+                            }
+
+                            if (enqueue) {
+                                this.queue.Enqueue(tile);
+                            }
                         }
                     }
                 }
