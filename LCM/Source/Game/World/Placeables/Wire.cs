@@ -85,11 +85,16 @@ namespace LCM.Game {
         }
 
         public bool CanInteract(InteractionManager manager, Vector2 position, InteractType type = InteractType.Hover) {
+            if (type == InteractType.Drag) {
+                return true;
+            }
             return IsHoveredOver(position);
         }
 
         public void Interact(InteractionManager manager, Vector2 position, InteractType type) {
-            if (IsHoveredOver(position)) {
+            if (type == InteractType.StartDrag) {
+
+            } else if (IsHoveredOver(position)) {
                 if (type == InteractType.RClickPress) {
                     LevelManager.RemoveWire(this);
                 }

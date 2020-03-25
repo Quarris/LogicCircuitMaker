@@ -62,35 +62,22 @@ namespace LCM.Game {
             if (type == InteractType.Hover) {
                 return true;
             }
-            return this.Wire == null || manager.SelectedConnector?.GetType() == this.GetType();
+            return this.Wire == null || manager.WireSelectionContext.SelectedConnector?.GetType() == this.GetType();
         }
 
         public void Interact(InteractionManager manager, Vector2 position, InteractType type) {
             switch (type) {
                 case InteractType.LClickPress:
                     if (this.IsActive) {
-                        manager.IsSelecting = true;
-                        manager.SelectedConnector = this;
-                        manager.ClickedPosition = this.InteractableArea.Center;
+                        manager.WireSelectionContext.Activate(this);
                     } else if (this.IsOptional) {
                         this.IsActive = true;
                     }
 
                     break;
                 case InteractType.LClickRelease:
-                    if (this.IsActive && manager.IsSelecting) {
-                        manager.IsSelecting = false;
-
-                        Vector2 start = manager.ClickedPosition;
-                        Vector2 end = this.InteractableArea.Center;
-
-                        if (start.EqualsWithTolerence(end)) {
-                            break;
-                        }
-
-                        Output output = manager.SelectedConnector is Output outputConn ? outputConn : (Output) this;
-                        Input input = manager.SelectedConnector is Input inputConn ? inputConn : (Input) this;
-                        LevelManager.CreateWire(output, input);
+                    if (this.IsActive && manager.WireSelectionContext.IsActive) {
+                        manager.WireSelectionContext.Deactivate(manager, this);
                     }
 
                     break;

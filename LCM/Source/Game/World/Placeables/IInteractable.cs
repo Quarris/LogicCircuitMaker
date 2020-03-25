@@ -25,6 +25,8 @@ namespace LCM.Game {
         RClickPress,
         MClickRelease,
         MClickPress,
-        Drag
+        StartDrag,
+        Drag,
+        EndDrag
     }
 }

@@ -10,7 +10,7 @@ namespace LCM.Utilities {
         public static readonly Color BackgroundColor = Color.White;
         public static readonly Color ComponentColor = Color.Black;
 
-        public static readonly Color OnLogicStateColor = Color.Green;
+        public static readonly Color OnLogicStateColor = Color.LimeGreen;
         public static readonly Color OffLogicStateColor = Color.Red;
         public static readonly Color UndefinedLogicStateColor = Color.Gray;
     }
