@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LCM.Extensions;
@@ -14,7 +15,7 @@ namespace LCM.Game {
         private RectangleF interactableArea;
         public RectangleF InteractableArea => this.interactableArea;
 
-        public readonly List<Vector2> WirePoints;
+        public List<Vector2> WirePoints;
         public Output Start;
         public Input End;
 
@@ -68,35 +69,40 @@ namespace LCM.Game {
         public bool CanInteract(InteractionManager manager, Vector2 position, InteractType type = InteractType.Hover) {
             Vector2? hov = GetHoveredPoint(position);
             if (type == InteractType.StartDrag) {
-                return hov != null && hov.Equals(this.WirePoints.Last());
+                return hov != null && (hov.Equals(this.WirePoints.Last()) && this.End == null || hov.Equals(this.WirePoints.First()) && this.Start == null);
             }
 
             if (type == InteractType.EndDrag) {
+                return true;
+                /*
                 IInteractable item = manager.GetInteractableItem(InteractType.EndDrag);
                 if (item is Connector connector) {
                     return connector.Wire == null;
                 }
 
-                return item == null;
+                return item is Wire || item == null;
+                */
             }
 
-            return IsHoveredOver(position);
+            return this.IsHoveredOver(position);
         }
 
         public void Interact(InteractionManager manager, Vector2 position, InteractType type) {
             switch (type) {
                 case InteractType.StartDrag:
                     Vector2? hov = GetHoveredPoint(position);
-                    if (hov != null && hov == this.WirePoints.Last()) {
+                    if (hov != null && (hov == this.WirePoints.Last() || hov == this.WirePoints.First())) {
                         manager.WireSelectionContext.Activate(this);
                     }
 
                     break;
                 case InteractType.EndDrag:
                     if (manager.WireSelectionContext.IsActive) {
-                        IInteractable item = manager.GetInteractableItem(InteractType.LClickRelease);
+                        IInteractable item = manager.GetInteractableItem(InteractType.EndDrag);
                         if (item is Connector connector) {
                             manager.WireSelectionContext.Deactivate(manager, connector);
+                        } else if (item is Wire wire) {
+                            manager.WireSelectionContext.Deactivate(manager, position, wire);
                         } else {
                             manager.WireSelectionContext.Deactivate(manager, position);
                         }
@@ -116,13 +122,14 @@ namespace LCM.Game {
         }
 
         public void Draw(SpriteBatch sb, GameTime gameTime) {
-            for (int i = 1; i < this.WirePoints.Count; i++) {
+            for (int i = 0; i < this.WirePoints.Count; i++) {
                 if (i < this.WirePoints.Count) {
                     sb.TiledDrawCircle(this.WirePoints[i], Constants.PointRadius, 10, Color.Multiply(this.logicState.Color(), 0.9f),
                         10);
                 }
 
-                sb.TiledDrawLine(this.WirePoints[i - 1], this.WirePoints[i], this.logicState.Color(), Constants.WireWidth);
+                if (i > 0)
+                    sb.TiledDrawLine(this.WirePoints[i - 1], this.WirePoints[i], this.logicState.Color(), Constants.WireWidth);
             }
         }
 
@@ -138,30 +145,82 @@ namespace LCM.Game {
             }
         }
 
-        public bool IsHoveredOver(Vector2 position) {
-            return GetHoveredPoint(position) != null || GetHoveredLine(position) != null;
-        }
+        public void Extend(Vector2 pos, bool toStart) {
+            if (toStart) {
+                List<Vector2> points = Helper.GetWirePointPositions(pos, this.WirePoints.First());
 
-        public void Extend(Vector2 end) {
-            List<Vector2> points = Helper.GetWirePointPositions(this.WirePoints.Last(), end);
-            for (int i = 1; i < points.Count; i++) {
-                this.WirePoints.Add(points[i]);
+                for (int i = 1; i < this.WirePoints.Count; i++) {
+                    points.Add(this.WirePoints[i]);
+                }
+
+                this.WirePoints = points;
+            } else {
+                List<Vector2> points = Helper.GetWirePointPositions(this.WirePoints.Last(), pos);
+                for (int i = 1; i < points.Count; i++) {
+                    this.WirePoints.Add(points[i]);
+                }
             }
+
 
             this.UpdateInteractableArea();
         }
 
         public void Extend(Connector end) {
-            this.Extend(end.InteractableArea.Center);
+            this.Extend(end.InteractableArea.Center, end is Output);
 
             if (end is Input input) {
                 this.End = input;
             } else if (end is Output output) {
                 this.Start = output;
             }
+
+            end.Wire = this;
         }
 
-        private Vector2? GetHoveredPoint(Vector2 position) {
+        public void Extend(Wire wire) {
+            Wire start;
+            Wire end;
+            if (this.Start == null) {
+                start = wire;
+                end = this;
+            } else {
+                start = this;
+                end = wire;
+            }
+
+            List<Vector2> midPoints = Helper.GetWirePointPositions(start.WirePoints.Last(), end.WirePoints.First());
+
+            for (int i = 1; i < midPoints.Count-1; i++) {
+                start.WirePoints.Add(midPoints[i]);
+            }
+
+            for (int i = 0; i < end.WirePoints.Count; i++) {
+                start.WirePoints.Add(end.WirePoints[i]);
+            }
+
+            this.WirePoints = start.WirePoints;
+
+            start.End = end.End;
+            end.Start = start.Start;
+
+            LevelManager.RemoveWire(wire);
+
+            if (this.Start != null) {
+                this.Start.Wire = this;
+            }
+
+            if (this.End != null) {
+                this.End.Wire = this;
+            }
+
+            this.UpdateInteractableArea();
+        }
+
+        public bool IsHoveredOver(Vector2 position) {
+            return GetHoveredPoint(position) != null || GetHoveredLine(position) != null;
+        }
+
+        public Vector2? GetHoveredPoint(Vector2 position) {
             for (int i = 0; i < this.WirePoints.Count; i++) {
                 if (this.WirePoints[i].EqualsWithTolerence(position, Constants.PointRadius * 2)) {
                     return this.WirePoints[i];
@@ -171,7 +230,7 @@ namespace LCM.Game {
             return null;
         }
 
-        private RectangleF? GetHoveredLine(Vector2 position) {
+        public RectangleF? GetHoveredLine(Vector2 position) {
             for (int i = 0; i < this.WirePoints.Count; i++) {
                 if (i < this.WirePoints.Count - 1) {
                     RectangleF line = Helper.RectFromCorners(this.WirePoints[i], this.WirePoints[i + 1]);

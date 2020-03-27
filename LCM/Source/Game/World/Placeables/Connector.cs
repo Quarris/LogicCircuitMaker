@@ -92,11 +92,13 @@ namespace LCM.Game {
                     manager.WireSelectionContext.Activate(this);
                     break;
                 case InteractType.EndDrag:
-                    IInteractable hovered = manager.GetInteractableItem(InteractType.LClickRelease);
-                    if (hovered != null && hovered is Connector endConn) {
+                    IInteractable item = manager.GetInteractableItem(InteractType.LClickRelease);
+                    if (item != null && item is Connector endConn) {
                         if (this.IsActive && manager.WireSelectionContext.IsActive) {
                             manager.WireSelectionContext.Deactivate(manager, endConn);
                         }
+                    } else if (item is Wire wire) {
+                        manager.WireSelectionContext.Deactivate(manager, position, wire);
                     } else {
                         manager.WireSelectionContext.Deactivate(manager, position);
                     }
