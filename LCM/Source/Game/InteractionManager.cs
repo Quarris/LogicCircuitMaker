@@ -29,6 +29,7 @@ namespace LCM.Game {
         public GameState GameState { get; }
 
         public readonly DraggingContext DraggingContext = new DraggingContext();
+        public IInteractable DraggingItem;
         public readonly WireSelectionContext WireSelectionContext = new WireSelectionContext();
         public Vector2 ClickedPosition;
         public IEnumerable<IInteractable> HoveredItems = new List<IInteractable>();
@@ -97,6 +98,7 @@ namespace LCM.Game {
             /** Mouse **/
             if (Input.IsMouseButtonPressed(MouseButton.Left)) {
                 this.ClickedPosition = MouseTilePosition;
+                this.DraggingItem = this.GetInteractableItem(InteractType.StartDrag);
                 IInteractable item = this.GetInteractableItem(InteractType.LClickPress);
                 if (item != null) {
                     item.Interact(this, MouseTilePosition, InteractType.LClickPress);
@@ -115,9 +117,6 @@ namespace LCM.Game {
 
             if (Input.IsMouseButtonReleased(MouseButton.Left)) {
                 this.GetInteractableItem(InteractType.LClickRelease)?.Interact(this, MouseTilePosition, InteractType.LClickRelease);
-                if (this.WireSelectionContext.IsActive) {
-                    this.WireSelectionContext.Deactivate(this, MouseTilePosition);
-                }
 
                 if (this.DraggingContext.Button == MouseButton.Left) {
                     this.DraggingContext.Deactivate(this, MouseTilePosition);
@@ -126,6 +125,7 @@ namespace LCM.Game {
 
             if (Input.IsMouseButtonPressed(MouseButton.Right)) {
                 this.ClickedPosition = MouseTilePosition;
+                this.DraggingItem = this.GetInteractableItem(InteractType.StartDrag);
                 this.GetInteractableItem(InteractType.RClickPress)?.Interact(this, MouseTilePosition, InteractType.RClickPress);
             }
 
@@ -137,6 +137,8 @@ namespace LCM.Game {
             }
 
             if (Input.IsMouseButtonPressed(MouseButton.Middle)) {
+                this.ClickedPosition = MouseTilePosition;
+                this.DraggingItem = this.GetInteractableItem(InteractType.StartDrag);
                 this.GetInteractableItem(InteractType.MClickPress)?.Interact(this, MouseTilePosition, InteractType.MClickPress);
             }
 
@@ -148,7 +150,7 @@ namespace LCM.Game {
             }
 
             if (!this.DraggingContext.IsActive) {
-                this.SetDraggingContext(this.GetInteractableItem(InteractType.StartDrag));
+                this.SetDraggingContext(this.DraggingItem);
             } else if (this.DraggingContext.Item != null && this.DraggingContext.Item.CanInteract(this, MouseTilePosition, InteractType.Drag)) {
                 this.DraggingContext.Item.Interact(this, MouseTilePosition, InteractType.Drag);
             }
@@ -207,7 +209,7 @@ namespace LCM.Game {
             }
         }
 
-        private IInteractable GetInteractableItem(InteractType type = InteractType.Hover) {
+        public IInteractable GetInteractableItem(InteractType type = InteractType.Hover) {
             return this.HoveredItems
                 .FirstOrDefault(item => item.CanInteract(this, MouseTilePosition, type));
         }

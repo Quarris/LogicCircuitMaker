@@ -1,9 +1,7 @@
-using System;
 using LCM.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MLEM.Misc;
-using MonoGame.Extended;
 using RectangleF = MonoGame.Extended.RectangleF;
 
 namespace LCM.Game {
@@ -62,29 +60,47 @@ namespace LCM.Game {
             if (type == InteractType.Hover) {
                 return true;
             }
+
+            if (type == InteractType.StartDrag) {
+                return this.Wire == null;
+            }
+
+            if (type == InteractType.EndDrag) {
+                return true;
+            }
             return this.Wire == null || manager.WireSelectionContext.SelectedConnector?.GetType() == this.GetType();
         }
 
         public void Interact(InteractionManager manager, Vector2 position, InteractType type) {
             switch (type) {
                 case InteractType.LClickPress:
-                    if (this.IsActive) {
-                        manager.WireSelectionContext.Activate(this);
-                    } else if (this.IsOptional) {
+                    if (this.IsOptional && !this.IsActive) {
                         this.IsActive = true;
                     }
 
                     break;
                 case InteractType.LClickRelease:
-                    if (this.IsActive && manager.WireSelectionContext.IsActive) {
-                        manager.WireSelectionContext.Deactivate(manager, this);
-                    }
+
 
                     break;
                 case InteractType.RClickPress:
                     if (this.IsOptional && this.IsActive) {
                         this.IsActive = false;
                     }
+                    break;
+                case InteractType.StartDrag:
+                    manager.WireSelectionContext.Activate(this);
+                    break;
+                case InteractType.EndDrag:
+                    IInteractable hovered = manager.GetInteractableItem(InteractType.LClickRelease);
+                    if (hovered != null && hovered is Connector endConn) {
+                        if (this.IsActive && manager.WireSelectionContext.IsActive) {
+                            manager.WireSelectionContext.Deactivate(manager, endConn);
+                        }
+                    } else {
+                        manager.WireSelectionContext.Deactivate(manager, position);
+                    }
+
                     break;
             }
         }

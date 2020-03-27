@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LCM.Utilities;
@@ -40,8 +41,11 @@ namespace LCM.Game {
                     } else {
                         wire.Start = (Output) this.SelectedConnector;
                     }
+
+                    this.SelectedConnector.Wire = wire;
                 }
             } else if (this.Type == WireSelectionType.Wire) {
+                this.SelectedWire.Extend(end);
             }
 
             this.Deactivate();
@@ -49,7 +53,7 @@ namespace LCM.Game {
 
         public void Deactivate(InteractionManager manager, Connector connector) {
             if (this.Type == WireSelectionType.Connector) {
-                Vector2 start = manager.ClickedPosition;
+                Vector2 start = this.SelectedConnector.InteractableArea.Center;
                 Vector2 end = connector.InteractableArea.Center;
 
                 if (!start.EqualsWithTolerence(end)) {
@@ -58,6 +62,7 @@ namespace LCM.Game {
                     LevelManager.CreateWire(output, input);
                 }
             } else if (this.Type == WireSelectionType.Wire) {
+                this.SelectedWire.Extend(connector);
             }
 
             this.Deactivate();
@@ -80,7 +85,8 @@ namespace LCM.Game {
                     end = this.SelectedConnector.Position;
                 }
             } else if (this.Type == WireSelectionType.Wire) {
-
+                start = this.SelectedWire.WirePoints.Last();
+                end = position;
             }
             IList<Vector2> points = Helper.GetWirePointPositions(start, end);
             for (int i = 0; i < points.Count - 1; i++) {

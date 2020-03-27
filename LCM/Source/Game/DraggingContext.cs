@@ -20,6 +20,9 @@ namespace LCM.Game {
         }
 
         public void Deactivate(InteractionManager manager, Vector2 position) {
+            if (!this.IsActive) {
+                return;
+            }
             this.IsActive = false;
             if (this.Item != null && this.Item.CanInteract(manager, position, InteractType.EndDrag)) {
                 this.Item.Interact(manager, position, InteractType.EndDrag);
